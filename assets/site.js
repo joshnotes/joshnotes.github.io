@@ -36,55 +36,52 @@
     });
   }
 
-  // ---------- Discount-rate calculator: value of a growing perpetuity, 1 / (r - g) ----------
+  // ---------- Discount-rate figure: value of a growing perpetuity, 1 / (r - g) ----------
+  // One line per year. Line t is what year t's cash flow, $1 growing 3% a year, is worth today.
+  // The lines add up to the big number; dimmed lines are the years after half the value is reached.
   const dFig = $('#dc-fig'), dIn = $('#dc-r');
   let drawDC = () => {};
   if (dFig && dIn) {
-    const g = 0.03, r0 = 0.06, r1 = 0.12;
-    let rate = 0.095, dGeom = null;
+    const g = 0.03, r0 = 0.06, r1 = 0.12, YEARS = 60;
+    let rate = 0.095;
     const val = r => 1 / (r - g);
+    const pv = (r, t) => Math.pow(1 + g, t - 1) / Math.pow(1 + r, t);
+    const half = r => Math.log(0.5) / Math.log((1 + g) / (1 + r));
     const pct = r => (r * 100).toFixed(1) + '%';
-    const dPad = {l: 6, r: 6, t: 14, b: 28};
-    const placeDC = () => {
-      if (!dGeom) return;
-      const gx = $('#dc-x'), gp = $('#dc-p'); if (!gx) return;
-      const x = dGeom.X(rate).toFixed(1), y = dGeom.Y(val(rate)).toFixed(1);
-      gx.style.transform = `translate(${x}px,0)`;
-      gp.style.transform = `translate(${x}px,${y}px)`;
+    const pad = {t: 4, b: 24};
+    let lines = [];
+    const place = () => {
+      const H = dFig.clientHeight, top = pv(r0, 1), h = half(rate);
+      lines.forEach((ln, i) => {
+        const t = i + 1, y = pad.t + (1 - pv(rate, t) / top) * (H - pad.t - pad.b);
+        ln.setAttribute('y1', y.toFixed(1));
+        ln.classList.toggle('late', t > h);
+      });
     };
     drawDC = () => {
       const W = dFig.clientWidth, H = dFig.clientHeight; if (!W) return;
-      const X = r => dPad.l + (r - r0) / (r1 - r0) * (W - dPad.l - dPad.r);
-      const yMax = val(r0) * 1.04;
-      const Y = v => dPad.t + (1 - v / yMax) * (H - dPad.t - dPad.b);
-      dGeom = {X, Y};
-      let d = '';
-      for (let i = 0; i <= 120; i++) { const r = r0 + (r1 - r0) * i / 120; d += (i ? 'L' : 'M') + X(r).toFixed(1) + ' ' + Y(val(r)).toFixed(1); }
-      const x = X(rate).toFixed(1), y = Y(val(rate)).toFixed(1);
-      const ticks = [0.06, 0.08, 0.10, 0.12].filter((t, i) => W > 360 || i % 2 === 0);
-      dFig.innerHTML = `<svg aria-hidden="true"><defs><linearGradient id="dcg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="currentColor" stop-opacity=".22"/><stop offset="1" stop-color="currentColor" stop-opacity="0"/></linearGradient></defs>
-        <path d="${d} L${X(r1).toFixed(1)} ${H - dPad.b} L${X(r0).toFixed(1)} ${H - dPad.b}Z" fill="url(#dcg)"/>
-        <path class="ln" pathLength="1" d="${d}"/>
-        ${ticks.map(t => `<text class="tick" x="${X(t).toFixed(1)}" y="${H - 6}" text-anchor="${t === r0 ? 'start' : t === r1 ? 'end' : 'middle'}">${Math.round(t * 100)}%</text>`).join('')}
-        <g id="dc-x" class="mv" style="transform:translate(${x}px,0)"><line class="xh" x1="0" x2="0" y1="${dPad.t}" y2="${H - dPad.b}"/></g>
-        <g id="dc-p" class="mv" style="transform:translate(${x}px,${y}px)"><circle class="halo" r="14"/><circle class="dot" r="6"/></g></svg>`;
+      const step = W / YEARS, x = t => (t - 0.5) * step, yB = H - pad.b;
+      let svg = `<svg aria-hidden="true"><line class="base" x1="0" x2="${W}" y1="${yB + 0.5}" y2="${yB + 0.5}"/>`;
+      for (let t = 1; t <= YEARS; t++) svg += `<line class="yr" style="--d:${(t * 9)}ms" x1="${x(t).toFixed(1)}" x2="${x(t).toFixed(1)}" y1="${yB}" y2="${yB}"/>`;
+      svg += [1, 20, 40, 60].map(t => `<text class="tick" x="${t === 1 ? 0 : t === YEARS ? W : x(t).toFixed(1)}" y="${H - 4}" text-anchor="${t === 1 ? 'start' : t === YEARS ? 'end' : 'middle'}">${t === 1 ? 'YEAR 1' : t}</text>`).join('') + '</svg>';
+      dFig.innerHTML = svg;
+      lines = $$('.yr', dFig);
+      place();
     };
     const setRate = r => {
       rate = Math.min(r1, Math.max(r0, Math.round(r * 1000) / 1000));
       $('#dc-out').textContent = '$' + val(rate).toFixed(2);
       $('#dc-cap').textContent = `Value today of $1 of cash flow next year, growing 3% a year forever, at a ${pct(rate)} discount rate.`;
       $('#dc-v').textContent = pct(rate);
-      $('#dc-delta').textContent = `One point higher, at ${pct(rate + 0.01)}, cuts the value by ${Math.round((1 - val(rate + 0.01) / val(rate)) * 100)}%.`;
+      $('#dc-delta').textContent = `Half of that value comes after year ${Math.round(half(rate))}. One point higher, at ${pct(rate + 0.01)}, cuts the value by ${Math.round((1 - val(rate + 0.01) / val(rate)) * 100)}%.`;
       dIn.value = (rate * 100).toFixed(1);
       dIn.setAttribute('aria-valuetext', `${pct(rate)}, value $${val(rate).toFixed(2)}`);
-      placeDC();
+      place();
     };
-    const scrubDC = e => { const b = dFig.getBoundingClientRect(); setRate(r0 + (e.clientX - b.left - dPad.l) / (b.width - dPad.l - dPad.r) * (r1 - r0)); };
-    dFig.addEventListener('pointermove', scrubDC);
-    dFig.addEventListener('pointerdown', scrubDC);
     dIn.addEventListener('input', () => setRate(+dIn.value / 100));
     drawDC();
     setRate(0.095);
+    if (animate) requestAnimationFrame(() => requestAnimationFrame(() => dFig.classList.add('in')));
   }
 
   // ---------- Keep drawn pieces sized to their boxes ----------
