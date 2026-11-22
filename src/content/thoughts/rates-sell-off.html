@@ -1,8 +1,8 @@
 <!--meta
 {
-  "title": "This sell-off isn't about AI. It's about a 5% risk-free rate.",
-  "dek": "Everyone is blaming the AI trade. Look at the 10-year instead: when the risk-free rate goes up, the longest-dated stocks get repriced first.",
-  "date": "2026-11-21",
+  "title": "The price of risk, not the price of money",
+  "dek": "The 10-year Treasury yield fell this week and the S&P 500 fell 8.6% anyway. That isn't a rates story. Taking the sell-off apart, and what it means for the AI trade.",
+  "date": "2026-11-22",
   "section": "thoughts",
   "slug": "rates-sell-off",
   "kick": "Hot take",
@@ -12,35 +12,44 @@
 }
 -->
 <div class="prose">
-<p>Here's the story you'll hear this weekend: the AI trade cracked. Nvidia's numbers were strong, the stocks fell anyway, so the boom must be over.</p>
-<p>I don't buy it. Not because AI stocks can't fall, but because the market is telling a simpler story, and it's written in the bond market.</p>
-<h2>The number that moved</h2>
-<p>The 10-year Treasury yield closed at about 5.05% on Thursday. At the end of February it was under 4%. That's more than a full percentage point added to the risk-free rate in nine months.</p>
-<p>The Fed is pushing the same way. It raised rates in September, held at 3.75% to 4.00% in October with two officials voting for another hike, and after the October jobs report futures priced roughly an 80% chance of a December increase.</p>
-<p>On Thursday the S&amp;P 500 fell for a sixth straight day, its longest losing streak in two and a half years, leaving it about 8% below its October high. The AP listed high interest rates right alongside AI worries as the cause.</p>
-<h2>Why the AI names fall first</h2>
-<p>Every stock is a claim on future cash flows, discounted back at some rate. A utility pays you mostly in the next few years. A company priced on what AI might earn in 2032 pays you mostly in the distant future. That's duration, the same idea bond traders use: the further out the cash, the more a change in the discount rate moves today's value.</p>
-<p>Run the simplest valuation there is: one dollar of cash flow next year, growing 3% a year forever. At an 8% discount rate it's worth $20. At 9.5% it's worth about $15.38. Nothing about the business changed. The value fell 23%.</p>
-<div class="tablewrap"><table>
-<thead><tr><th>Discount rate</th><th class="n">Value of $1, growing 3%</th><th class="n">Change vs 8%</th></tr></thead>
+<p class="disc">Revised November 22, 2026. The first version of this piece, written before Friday's close, argued that the sell-off was mostly about a 5% risk-free rate. Friday's numbers didn't fit that story, so I rewrote it.</p>
+<p>When I first sat down to write about this sell-off, I had a tidy explanation. The 10-year Treasury yield went from under 4% in February to above 5% in October. Every stock is a claim on future cash flows, and when the rate you discount those cash flows at rises by more than a full point, the companies whose cash flows sit furthest in the future get hit hardest. The AI names are about as far out on that curve as the market gets, so it seemed natural that they would fall first. I still think that story explains a good part of 2026. It does not explain this week.</p>
+<p>Between the close on November 13 and the close on November 20, the S&amp;P 500 fell 8.6%, its worst week since April 2025, and finished Friday at 6,910, more than 10% below its October 6 record. That makes it a correction by the usual definition. The Nasdaq lost 10% and gave back everything it had gained in 2026. Over the same week, the 10-year yield fell from about 5.15% to 4.92%. If the price of money were doing the selling, lower yields should have cushioned stocks. Instead investors sold stocks and bought Treasuries, which is what a flight to safety looks like. In this piece, I want to separate the two parts of the rate we use to value stocks, estimate which one moved, and think through what that means for the AI trade.</p>
+<h2>Two parts of a discount rate</h2>
+<p>The rate you use to value a stock, its cost of equity, has two parts. The first is the risk-free rate, what you can earn without taking any risk at all; for dollar investors the 10-year Treasury yield is the usual stand-in. The second is the equity risk premium, the extra return investors demand for owning stocks instead. The first is quoted every second in the bond market. The second is never quoted anywhere. It lives inside stock prices, and you have to back it out.</p>
+<p>The most widely used public estimate is Aswath Damodaran's implied equity risk premium, which he updates at the start of each month by asking what return investors must be expecting, given the level of the S&amp;P 500 and the cash flows it is expected to deliver. His last two readings already hint at the story:</p>
+<div class="tablewrap"><p class="fh">Exhibit 1: Since October, the risk-free rate has fallen and the risk premium has risen</p><table>
+<thead><tr><th>Date</th><th class="n">10-year Treasury</th><th class="n">Equity risk premium</th><th class="n">Cost of equity</th></tr></thead>
 <tbody>
-<tr><td>8.0%</td><td class="n">$20.00</td><td class="n">—</td></tr>
-<tr><td>9.0%</td><td class="n">$16.67</td><td class="n">−17%</td></tr>
-<tr><td>9.5%</td><td class="n">$15.38</td><td class="n">−23%</td></tr>
-<tr><td>10.0%</td><td class="n">$14.29</td><td class="n">−29%</td></tr>
-<tr><td>10.5%</td><td class="n">$13.33</td><td class="n">−33%</td></tr>
-</tbody></table></div>
-<p>And 9.5% isn't a scary hypothetical. Aswath Damodaran's implied equity risk premium was 4.20% on October 1, measured against a 5.29% Treasury rate. Add the two and the cost of equity for the average stock is right around 9.5%.</p>
+<tr><td>October 1, 2026</td><td class="n">5.29%</td><td class="n">4.20%</td><td class="n">9.49%</td></tr>
+<tr><td>November 1, 2026</td><td class="n">4.94%</td><td class="n">4.41%</td><td class="n">9.35%</td></tr>
+<tr class="tot"><td>November 20, 2026 (my estimate)</td><td class="n">4.92%</td><td class="n">about 4.84%</td><td class="n">about 9.76%</td></tr>
+</tbody></table>
+<p class="fnote">Cost of equity for a stock of average risk is the Treasury rate plus the premium. Source: Damodaran Online (October and November readings); U.S. Treasury par yield curve (November 20); my estimate for November 20, explained below.</p></div>
+<p>In October, the Treasury rate fell 0.35 percentage points and the premium rose 0.21 points, so the two nearly offset and the cost of equity barely moved. Stocks did not have a bad October because money got more expensive. They had one because investors got more nervous at the same time money got a little cheaper.</p>
+<h2>Backing out this week's risk premium</h2>
+<p>I can't rerun Damodaran's full model on a weekend, but a simpler version gets close. Think of the market as a growing perpetuity: its value is next year's cash flow divided by the cost of equity minus the growth rate. Damodaran's model assumes that, in the long run, nominal growth can't outrun the risk-free rate, so he sets the two equal. Do that, and the cost of equity minus growth collapses to just the risk premium. The risk-free rate drops out entirely, and the value of the market moves inversely with the premium.</p>
+<p>That gives a quick rule. If expected cash flows didn't change, the premium must have risen by about as much as the market fell. From the October 30 close that sits behind Damodaran's November 1 number (7,580) to Friday's close (6,910), the S&amp;P 500 fell 8.8%. Holding cash flows constant, that takes the premium from 4.41% to about 4.84%, and the cost of equity from 9.35% to about 9.76%. Over the same three weeks, the Treasury rate moved two hundredths of a point.</p>
+<p>This is a crude estimate, and it leans on the assumption that expected cash flows held still. If analysts are quietly cutting 2027 earnings, part of the drop is about cash flows, and the premium rose by less. But even with generous allowances for that, the direction is clear: the move this month was in the price of risk, not the price of money.</p>
+<h2>What moved the price of risk</h2>
+<p>Most of what investors reacted to this week was not news about the cash flows of the AI build-out. Nvidia reported its quarter on November 17 with $115.8 billion of revenue and $2.68 of adjusted earnings per share, both well above estimates, and guided to about $130 billion for the next quarter. The stock still fell 23% over the week, including 14% on Friday to $125.53, after Reuters reported that SEC staff were looking at possible accounting issues, a report neither the SEC nor Nvidia had confirmed. That came eight days after Jensen Huang resigned as CEO. Anthropic priced the largest IPO on record at $83 a share on November 18, opened at $111.50, closed its first day at $97.17, and fell another 8.5% on Friday. And Fed officials spent the week signaling that policy may need to get tighter, not looser.</p>
+<p>Put those together and you get a market questioning trust, governance and how much to pay for a story, not one that has learned the AI build-out will deliver less cash than it expected a month ago. Those are exactly the things investors charge a premium for, and a premium, unlike a single company's bad quarter, gets charged on every stock in the market.</p>
 <h2>My take</h2>
-<p>The AI story didn't break this week. The price of waiting for it went up. That distinction matters, because it changes what you do about it. If the problem were AI demand, you'd sell everything that depends on it. If the problem is the discount rate, you look for businesses whose cash shows up sooner: real orders, real backlog, real free cash flow this year.</p>
-<p>That's why I'm more interested in the companies selling power equipment into data centers than in the ones promising what data centers will earn in five years. Same theme, shorter duration.</p>
-<div class="wim"><p class="kick">What would change my mind</p><p>If yields fall back below 4.5% and the AI names keep sliding anyway, this was never a rates story. And if analysts start cutting 2027 earnings estimates rather than multiples, the problem is the business, not the discount rate.</p></div>
+<p>The distinction matters because it changes what you do. A rise in the risk-free rate is mechanical: you can see it, hedge it and work out which assets it hurts most. A rise in the risk premium is a judgment about fear, and fear can reverse quickly or feed on itself. Premiums tend to spike in a scare and come back down when the uncertainty behind them resolves. Some of this week's uncertainty has dates attached: Nvidia will name a permanent CEO, the SEC question will be confirmed or put to rest, and Anthropic will settle into a trading range.</p>
+<p>So my read is that the AI story didn't break this week. Investors' trust in it did, and they are now charging more to own it. If you think that fear fades as those questions are answered, a higher premium today is an opportunity. If you think it's the start of a longer repricing, the companies to own are the ones whose cash flows show up soonest, because a higher premium does the least damage to near-term cash. That is the lens I used to revisit <a href="/research/eaton/">my Eaton pitch</a>, and it changed my answer.</p>
+<div class="wim"><p class="kick">What would change my mind</p><p>If the premium settles back toward 4.4% and AI stocks keep falling anyway, the market is telling us the cash flows themselves are in doubt, which is a different and worse story. The tell will be 2027 earnings estimates for the AI names: if those start coming down, the problem is the business, not the price of risk.</p></div>
 </div>
 <section class="sources"><h2>Sources</h2><ol>
+<li><a href="https://pages.stern.nyu.edu/~adamodar/New_Home_Page/home.htm">Implied equity risk premium, November 1 and October 1, 2026</a>, Damodaran Online, NYU Stern</li>
+<li><a href="https://www.etftrends.com/fixed-income-content-hub/treasury-yields-snapshot-november-20-2026/">Treasury Yields Snapshot: November 20, 2026</a>, ETF Trends</li>
+<li><a href="https://stocktwits.com/news-articles/markets/equity/the-weekly-spread-what-shaped-us-treasury-yields-and-the-dollar-this-week-1/cNbmPyOR91X">The Weekly Spread: What Shaped US Treasury Yields And The Dollar This Week</a>, Stocktwits, Nov 21, 2026</li>
 <li><a href="https://www.morningstar.com/news/dow-jones/202611198503/10-year-treasury-yield-falls-to-5051-data-talk">10-Year Treasury Yield Falls to 5.051%</a>, Dow Jones via Morningstar, Nov 19, 2026</li>
-<li><a href="https://www.wealthmanagement.com/fixed-income/fed-holds-rates-says-more-data-will-help-next-decision">Fed Holds Rates, Says More Data Will Help Next Decision</a>, WealthManagement.com, Oct 28, 2026</li>
-<li><a href="https://www.benzinga.com/node/63012338">Nasdaq 100 Has Worst Day Since 2020, Jobs Beat Keeps Fed Hike Alive</a>, Benzinga</li>
-<li><a href="https://www.nbcboston.com/news/national-international/wall-street-longest-losing-streak-since-2024/4052369/">Wall Street's longest losing streak</a>, Associated Press via NBC Boston</li>
-<li><a href="https://www.xtb.com/en/market-analysis/three-markets-to-watch-next-week-20-11-2026">Three Markets to Watch Next Week</a>, XTB, Nov 20, 2026</li>
-<li><a href="https://pages.stern.nyu.edu/~adamodar/New_Home_Page/home.htm">Damodaran Online, implied equity risk premium</a>, NYU Stern</li>
+<li><a href="https://www.yakimaherald.com/news/nation_and_world/business/how-major-us-stock-indexes-fared-friday-11-20-2026/article_963ce6d2-85a3-5fd6-981d-e60b72a58fbb.html">How major US stock indexes fared Friday 11/20/2026</a>, Associated Press</li>
+<li><a href="https://stockinvest.us/digest/digest-us-market-close-2026-11-20">S&amp;P 500 Enters Correction and Nasdaq Falls 5.3% as Chip Stocks Slide</a>, StockInvest.us, Nov 20, 2026</li>
+<li><a href="https://www.lanacion.com.ar/usa/how-major-us-stock-indexes-fared-friday-10302026-nid30102026/">How major US stock indexes fared Friday 10/30/2026</a>, Associated Press via La Nación</li>
+<li><a href="https://finance.yahoo.com/markets/stocks/article/the-post-earnings-slide-in-nvidia-stock-is-getting-uglier-by-the-day-112801786.html">The post-earnings slide in Nvidia stock is getting uglier by the day</a>, Yahoo Finance</li>
+<li><a href="https://www.southshorepress.com/business/nvidia-falls-14-percent-on-an-unconfirmed-account-of-an-sec-accounting-review-dca24c37">Nvidia Falls 14 Percent on an Unconfirmed Account of an SEC Accounting Review</a>, South Shore Press, Nov 20, 2026</li>
+<li><a href="https://www.fool.com/investing/2026/11/21/after-its-worst-week-in-18-years-nvidia-now-faces-an-sec-investigation-what-it-means-for-investors/">After Its Worst Week in 18 Years, Nvidia Now Faces an SEC Investigation</a>, The Motley Fool, Nov 21, 2026</li>
+<li><a href="https://www.neoteo.com/en/anthropics-nasdaq-debut-leaves-the-ai-bubble-question-open">Anthropic's Nasdaq debut leaves the AI bubble question open</a>, Neoteo</li>
+<li><a href="https://www.fxstreet.com/news/us-10-year-treasury-yield-slips-below-5-as-global-equity-rout-deepens-202611201233">US 10-year Treasury yield slips below 5% as global equity rout deepens</a>, FXStreet, Nov 20, 2026</li>
 </ol></section>
