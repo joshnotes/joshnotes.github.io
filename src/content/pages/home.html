@@ -1,0 +1,49 @@
+<!--meta
+{"title": "ThoughtsbyJosh", "page_title": "ThoughtsbyJosh | Joshuva Johnson", "dek": "Takes on the latest developments in finance by Joshuva Johnson.", "path": "/", "nav": "thoughts", "legacy": "thoughts"}
+-->
+<header class="hero gut">
+  <div class="wrap">
+    <h1 class="rv">ThoughtsbyJosh</h1>
+    <p class="sub rv" style="--d:1">Exercising my freedom of speech to give my take on the latest developments in finance.</p>
+  </div>
+</header>
+
+<section class="gut">
+  <div class="wrap">
+    <article class="feature rv" style="--d:2">
+      <div>
+        <p class="kick">Hot take</p>
+        <h2>{{LEAD_TITLE}}</h2>
+        <p class="dek">{{LEAD_DEK}}</p>
+        <p class="meta">{{LEAD_META}}</p>
+        <div class="ctas" style="justify-content:flex-start;margin-top:22px"><a class="pill" href="{{LEAD_URL}}">Read the take</a></div>
+      </div>
+      <div class="calc">
+        <p class="read" id="dc-out">$15.38</p>
+        <p class="cap" id="dc-cap">Value today of $1 of cash flow next year, growing 3% a year forever, at a 9.5% discount rate.</p>
+        <div class="fig" id="dc-fig" role="img" aria-label="Value of a growing cash flow falls as the discount rate rises from 6% to 12%"></div>
+        <div class="slide"><label for="dc-r">Discount rate</label><input id="dc-r" type="range" min="6" max="12" step="0.1" value="9.5"><output id="dc-v" for="dc-r">9.5%</output></div>
+        <p class="delta" id="dc-delta"></p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="sec gut">
+  <div class="wrap">
+    <div class="head rv"><h2>More thoughts.</h2></div>
+    <div class="segc rv" data-filter="t-grid" role="group" aria-label="Filter posts by topic"><span class="ind"></span>{{THOUGHTS_SEG}}</div>
+    <div class="grid2" id="t-grid">
+{{THOUGHTS_CARDS}}
+    </div>
+  </div>
+</section>
+
+<section class="sec gut" style="padding-top:0">
+  <div class="wrap">
+    <div class="banner rv">
+      <p>New takes go up on LinkedIn first.</p>
+      <a class="pill" href="https://www.linkedin.com/in/joshuvajohnson">Follow on LinkedIn</a>
+    </div>
+  </div>
+</section>

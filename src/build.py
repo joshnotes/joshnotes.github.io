@@ -1,0 +1,196 @@
+#!/usr/bin/env python3
+"""Build the static site from src/ into the repository root.
+
+Run from anywhere:  python3 src/build.py
+Every page is written as <path>/index.html so GitHub Pages serves clean URLs.
+"""
+import datetime
+import html
+import json
+import pathlib
+import re
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+SRC = ROOT / 'src'
+SITE = 'https://joshuvajohnson.github.io'
+TEMPLATE = (SRC / 'templates' / 'base.html').read_text()
+
+
+def read_doc(path):
+    text = path.read_text()
+    m = re.match(r'<!--meta\s*(\{.*?\})\s*-->\s*', text, re.S)
+    if not m:
+        raise SystemExit(f'{path}: missing <!--meta {{...}} --> block')
+    return json.loads(m.group(1)), text[m.end():]
+
+
+def esc(s):
+    return html.escape(s, quote=True)
+
+
+def nice_date(iso):
+    d = datetime.date.fromisoformat(iso)
+    return f"{d.strftime('%b')} {d.day}, {d.year}"
+
+
+def read_minutes(body):
+    prose = body.split('<section class="sources">')[0]
+    words = len(re.sub(r'<[^>]+>', ' ', prose).split())
+    return max(2, round(words / 230))
+
+
+def lower_first(s):
+    return s[0].lower() + s[1:] if re.match(r'^[A-Z][a-z]', s) else s
+
+
+def page(meta, content, nav='', og_type='website', og_extra='', body_class=''):
+    path = meta['path']
+    canonical = SITE + (path if path != '/404.html' else '/')
+    cur = ' aria-current="page"'
+    out = TEMPLATE
+    for key, val in {
+        '{{TITLE}}': esc(meta.get('page_title') or f"{meta['title']} | Joshuva Johnson"),
+        '{{OG_TITLE}}': esc(meta['title']),
+        '{{DESCRIPTION}}': esc(meta['dek']),
+        '{{CANONICAL}}': canonical,
+        '{{OG_TYPE}}': og_type,
+        '{{OG_EXTRA}}': og_extra + ('<meta name="robots" content="noindex">\n' if meta.get('noindex') else ''),
+        '{{NAV_THOUGHTS}}': cur if nav == 'thoughts' else '',
+        '{{NAV_RESEARCH}}': cur if nav == 'research' else '',
+        '{{NAV_ABOUT}}': cur if nav == 'about' else '',
+        '{{BODY_CLASS}}': body_class,
+        '{{CONTENT}}': content,
+    }.items():
+        out = out.replace(key, val)
+    return out
+
+
+def write(rel_path, text):
+    target = ROOT / rel_path.lstrip('/')
+    if rel_path.endswith('/'):
+        target = target / 'index.html'
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(text)
+    return target
+
+
+def load_articles(section):
+    items = []
+    for f in sorted((SRC / 'content' / section).glob('*.html')):
+        meta, body = read_doc(f)
+        meta['path'] = f'/{section}/{meta["slug"]}/'
+        meta['mins'] = read_minutes(body)
+        items.append((meta, body))
+    items.sort(key=lambda mb: (mb[0].get('order', 99), mb[0]['date']))
+    return items
+
+
+def article_html(meta, body, prev_item, next_item):
+    section_name = 'Thoughts' if meta['section'] == 'thoughts' else 'Research'
+    section_url = '/' if meta['section'] == 'thoughts' else '/research/'
+    pager = '<nav class="pager" aria-label="More in ' + section_name + '">'
+    if prev_item:
+        pager += f'<a class="nextup" href="{prev_item["path"]}"><p class="kick">Previous</p><h3>{esc(prev_item["title"])}</h3></a>'
+    if next_item:
+        pager += f'<a class="nextup" href="{next_item["path"]}"><p class="kick">Next</p><h3>{esc(next_item["title"])}</h3></a>'
+    pager += '</nav>'
+    return f'''<article class="artwrap gut">
+  <p class="crumbs"><a href="{section_url}">{section_name}</a><span>/</span><span>{esc(meta["kick"])}</span></p>
+  <p class="kick">{esc(meta["kick"])}, {esc(lower_first(meta["topic"]))}</p>
+  <h1>{esc(meta["title"])}</h1>
+  <p class="dek">{esc(meta["dek"])}</p>
+  <p class="byline"><b>Joshuva Johnson</b><time datetime="{meta["date"]}">{nice_date(meta["date"])}</time><span>{meta["mins"]} min read</span></p>
+{body}
+  {pager}
+</article>'''
+
+
+def seg_buttons(options):
+    return ''.join(f'<button type="button" data-k="{esc(k)}" aria-pressed="{"true" if i == 0 else "false"}">{esc(label)}</button>'
+                   for i, (k, label) in enumerate(options))
+
+
+def main():
+    built = []
+    thoughts = load_articles('thoughts')
+    research = load_articles('research')
+
+    # Articles
+    for items, nav in ((thoughts, 'thoughts'), (research, 'research')):
+        for i, (meta, body) in enumerate(items):
+            prev_item = items[i - 1][0] if i > 0 else None
+            next_item = items[i + 1][0] if i + 1 < len(items) else None
+            og_extra = f'<meta property="article:published_time" content="{meta["date"]}">\n<meta property="article:author" content="Joshuva Johnson">\n'
+            built.append(write(meta['path'], page(meta, article_html(meta, body, prev_item, next_item), nav, 'article', og_extra, 'article')))
+
+    # Home (ThoughtsbyJosh)
+    meta, content = read_doc(SRC / 'content' / 'pages' / 'home.html')
+    lead, rest = thoughts[0][0], [m for m, _ in thoughts[1:]]
+    topics = list(dict.fromkeys(m['topic'] for m in rest))
+    cards = '\n'.join(
+        f'      <a class="cardlink rv" style="--d:{i % 2}" href="{m["path"]}" data-k="{esc(m["topic"])}"><div class="card"><p class="kick">{esc(m["topic"])}</p><h3>{esc(m["title"])}</h3><p class="dek">{esc(m["dek"])}</p><p class="meta"><span>{nice_date(m["date"])}</span><span>{m["mins"]} min read</span></p></div></a>'
+        for i, m in enumerate(rest))
+    content = (content.replace('{{LEAD_TITLE}}', esc(lead['title']))
+               .replace('{{LEAD_DEK}}', esc(lead['dek']))
+               .replace('{{LEAD_META}}', f'<span>{esc(lead["topic"])}</span><span>{nice_date(lead["date"])}</span><span>{lead["mins"]} min read</span>')
+               .replace('{{LEAD_URL}}', lead['path'])
+               .replace('{{THOUGHTS_SEG}}', seg_buttons([('', 'All')] + [(t, t) for t in topics]))
+               .replace('{{THOUGHTS_CARDS}}', cards))
+    # Old single-page links looked like /#a-eaton. Send them to the new pages.
+    legacy = {'research': '/research/', 'about': '/about/', 'r-method': '/research/method/', 'library': '/research/'}
+    legacy.update({m['legacy']: m['path'] for m, _ in thoughts + research if m.get('legacy')})
+    redirect = ('<script>(function(){var m=' + json.dumps(legacy, separators=(',', ':')) +
+                ';function go(){var h=location.hash.slice(1);if(m[h])location.replace(m[h]);else if(h==="thoughts")history.replaceState(null,"","/");}'
+                'go();addEventListener("hashchange",go);})();</script>\n')
+    built.append(write('/', page(meta, content, 'thoughts', og_extra=redirect, body_class='home')))
+
+    # /thoughts/ points at the home page, which is the Thoughts index
+    built.append(write('/thoughts/', '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Thoughts | Joshuva Johnson</title>'
+                       f'<link rel="canonical" href="{SITE}/"><meta http-equiv="refresh" content="0; url=/"><meta name="robots" content="noindex"></head>'
+                       '<body><p>Thoughts live on the <a href="/">home page</a>.</p></body></html>\n'))
+
+    # Research index
+    meta, content = read_doc(SRC / 'content' / 'pages' / 'research.html')
+    kinds = [('pitch', 'Stock pitches'), ('deal', 'Deals'), ('industry', 'Industry notes'), ('note', 'Market notes')]
+    present = {m.get('kind') for m, _ in research}
+    rows = '\n'.join(
+        f'      <a class="lrow" href="{m["path"]}" data-k="{esc(m.get("kind", ""))}"><p class="kick">{esc(m["kick"])}</p><div><h3>{esc(m["title"])}</h3><p>{esc(m["dek"])}</p></div><p class="tp">{esc(m["topic"])}</p></a>'
+        for m, _ in research)
+    content = (content.replace('{{RESEARCH_SEG}}', seg_buttons([('', 'All')] + [k for k in kinds if k[0] in present]))
+               .replace('{{RESEARCH_ROWS}}', rows))
+    built.append(write('/research/', page(meta, content, 'research')))
+
+    # Method, About, 404
+    for name, nav, body_class in (('method', 'research', 'method'), ('about', 'about', ''), ('404', '', 'page-404')):
+        meta, content = read_doc(SRC / 'content' / 'pages' / f'{name}.html')
+        target = '/404.html' if name == '404' else meta['path']
+        text = page(meta, content, nav, body_class=body_class)
+        if name == '404':
+            built.append(write_file('/404.html', text))
+        else:
+            built.append(write(target, text))
+
+    # sitemap.xml, robots.txt, .nojekyll
+    today = datetime.date.today().isoformat()
+    urls = ['/', '/research/', '/research/method/', '/about/'] + [m['path'] for m, _ in thoughts + research]
+    lastmod = {m['path']: m['date'] for m, _ in thoughts + research}
+    sitemap = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    sitemap += [f'  <url><loc>{SITE}{u}</loc><lastmod>{lastmod.get(u, today)}</lastmod></url>' for u in urls]
+    sitemap.append('</urlset>')
+    built.append(write_file('/sitemap.xml', '\n'.join(sitemap) + '\n'))
+    built.append(write_file('/robots.txt', f'User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n'))
+    built.append(write_file('/.nojekyll', ''))
+
+    for p in built:
+        print('built', p.relative_to(ROOT))
+
+
+def write_file(rel_path, text):
+    target = ROOT / rel_path.lstrip('/')
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(text)
+    return target
+
+
+if __name__ == '__main__':
+    main()
