@@ -108,6 +108,12 @@ def article_html(meta, body, prev_item, next_item):
 </article>'''
 
 
+def ticker(company, body):
+    """The ticker the pitch gives right after the company's name, as in 'Eaton (ETN)'."""
+    m = re.search(re.escape(company) + r'[^(<]{0,40}\(([A-Z]{1,5})\)', body)
+    return m.group(1) if m else ''
+
+
 def pitch_table(research):
     """Ratings table for the stock pitches, read from each pitch's key-figure strip."""
     rows, as_of = [], ''
@@ -123,7 +129,8 @@ def pitch_table(research):
         (rating, _), (value, _), (gap, _), (price, price_label) = cells[:4]
         as_of = as_of or re.sub(r'^Price (at )?', '', price_label)
         company = meta['title'].split(':')[0].split(' after ')[0]
-        rows.append(f'<tr><th scope="row"><a href="{meta["path"]}">{esc(company)}</a><span>{esc(meta["topic"])}</span></th>'
+        tk = ticker(company, body)
+        rows.append(f'<tr><th scope="row"><a href="{meta["path"]}">{esc(company)}</a><span>{tk + ", " if tk else ""}{esc(meta["topic"])}</span></th>'
                     f'<td>{rating}</td><td class="n">{value}</td><td class="n hide-s">{price}</td><td class="n">{gap}</td></tr>')
     if not rows:
         return ''
@@ -147,16 +154,23 @@ def main():
             og_extra = f'<meta property="article:published_time" content="{meta["date"]}">\n<meta property="article:author" content="Joshuva Johnson">\n'
             built.append(write(meta['path'], page(meta, article_html(meta, body, prev_item, next_item), nav, 'article', og_extra, 'article')))
 
-    # Home (ThoughtsbyJosh)
+    # Home (Thoughts)
     meta, content = read_doc(SRC / 'content' / 'pages' / 'home.html')
     lead, rest = thoughts[0][0], [m for m, _ in thoughts[1:]]
+    # Latest pitch: most recent date; on a tie, the first in research order.
+    pitches = [(m, b) for m, b in research if m.get('kind') == 'pitch']
+    pm, pb = max(pitches, key=lambda x: (x[0]['date'], -pitches.index(x)))
+    company = pm['title'].split(':')[0].split(' after ')[0]
+    rating = re.search(r'<div class="kf[^"]*"><div><b>(.*?)</b>', pb)
+    tk = ticker(company, pb)
+    pitch_line = esc(company) + (f' ({tk})' if tk else '') + (f': {rating.group(1)}' if rating else '')
     cards = '\n'.join(
-        f'      <a class="cardlink" href="{m["path"]}"><div class="card"><p class="kick">{esc(m["topic"])}</p><h3>{esc(m["title"])}</h3><p class="dek">{esc(m["dek"])}</p><p class="meta"><span>{nice_date(m["date"])}</span></p></div></a>'
+        f'      <a class="cardlink" href="{m["path"]}"><div class="card"><p class="kick">{esc(m["topic"])}</p><h3>{esc(m["title"])}</h3><p class="dek">{esc(m["dek"])}</p></div></a>'
         for m in rest)
     content = (content.replace('{{LEAD_TITLE}}', esc(lead['title']))
-               .replace('{{LEAD_DEK}}', esc(lead['dek']))
-               .replace('{{LEAD_META}}', f'<span>{esc(lead["topic"])}</span><span>{nice_date(lead["date"])}</span>')
                .replace('{{LEAD_URL}}', lead['path'])
+               .replace('{{PITCH_URL}}', pm['path'])
+               .replace('{{PITCH_LINE}}', pitch_line)
                .replace('{{THOUGHTS_CARDS}}', cards)
                .replace('{{PITCH_TABLE}}', pitch_table(research)))
     # Old single-page links looked like /#a-eaton. Send them to the new pages.
