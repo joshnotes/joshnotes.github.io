@@ -105,11 +105,11 @@ footer ::selection{background:var(--bone);color:var(--black)}
 .split-in{width:100%;max-width:480px}
 .wordmark{font-size:clamp(28px,4.6cqw - 8px,48px);line-height:1.1;font-weight:400;letter-spacing:.03em;text-transform:uppercase;white-space:nowrap}
 .wordmark::after{content:"_";content:"_"/""}
-.byname{margin-top:20px;font-size:17px;line-height:26px;color:var(--ink2)}
-.byname a{color:var(--ink);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
 .split .ctas{margin-top:40px}
 .split-r{position:relative;margin:0;background:var(--black);overflow:hidden}
 .split-r img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 35%}
+.credit{position:absolute;right:0;bottom:0;padding:6px 10px;background:var(--black);color:#A29D97;font:400 11px/16px var(--mono);letter-spacing:.02em}
+.credit a{color:var(--bone);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px}
 
 /* Photos are black and white; hover (or a tap on touch screens) brings back the colour. */
 .photo{cursor:pointer;-webkit-tap-highlight-color:transparent}
