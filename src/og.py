@@ -7,14 +7,13 @@ Each page gets assets/og/<key>.png at 1200 x 627, where the key comes from its p
 / -> home, /research/ -> research, /research/eaton/ -> research-eaton.
 build.py adds the og:image tags for every page that has an image.
 """
-import math
 import pathlib
 import re
 import sys
 import tempfile
 
 from fontTools.ttLib import TTFont
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from build import ROOT, load_articles, nice_date  # noqa: E402
@@ -136,11 +135,23 @@ def key_figures(body):
     return re.findall(r'<b>(.*?)</b><span>(.*?)</span>', m.group(1)) if m else []
 
 
+def photo_panel(im, path, x0, y0=0, w=None, h=H, focus=(0.5, 0.5)):
+    """Paste a photo, in black and white like on the site, cropped to fill the panel."""
+    if not path.exists():
+        return False
+    w = w or W - x0
+    ph = ImageOps.grayscale(Image.open(path)).convert('RGB')
+    ph = ImageOps.fit(ph, (w * S, h * S), Image.LANCZOS, centering=focus)
+    im.paste(ph, (x0 * S, y0 * S))
+    return True
+
+
 def article_image(meta, body):
     im, d = canvas()
     section = 'Thoughts' if meta['section'] == 'thoughts' else 'Research'
     figs = key_figures(body) if meta.get('kind') == 'pitch' else []
-    panel = 400 if figs else 0
+    photo = ROOT / 'assets' / 'img' / 'lead' / f'{key_for(meta["path"])}-1200.webp'
+    panel = 400 if (figs or photo.exists()) else 0
     right_edge = W - panel - M + (0 if not panel else 16)
     wordmark(d, M, M - 8)
     if not panel:
@@ -149,7 +160,9 @@ def article_image(meta, body):
     title_block(d, meta['title'], None, M, 168, (W - panel - 2 * M) if panel else W - 2 * M,
                 sizes=(60, 54, 50, 46, 42) if panel else (64, 58, 52, 48, 44), max_lines=4 if panel else 3)
     footer_labels(d, f'{meta["kick"]} / {meta["topic"]}', nice_date(meta['date']), right_edge if not panel else W - panel - 56)
-    if panel:
+    if panel and not figs:
+        photo_panel(im, photo, W - panel)
+    elif panel:
         x0 = W - panel
         d.rectangle([x0 * S, 0, W * S, H * S], fill=BLACK)
         labels = ['Rating', 'Value per share', 'Value vs price', figs[3][1].replace(', 2026', '').replace('Price at', 'Price,')]
@@ -162,48 +175,26 @@ def article_image(meta, body):
     return im
 
 
-def pv(rate, t, g=0.03):
-    return (1 + g) ** (t - 1) / (1 + rate) ** t
-
-
 def home_image(meta):
     im, d = canvas()
     half = W // 2
-    d.rectangle([half * S, 0, W * S, H * S], fill=BLACK)
-    # Left: the name of the publication, the line, the author.
-    f = sans(44, 400)
-    tracked(d, M, 210, 'THOUGHTSBYJOSH_', f, BLACK, 0.03)
-    d.text((M * S, 286 * S), 'Hot takes, discounted', font=sans(26, 400), fill=BLACK)
-    d.text((M * S, 322 * S), 'to present value.', font=sans(26, 400), fill=BLACK)
-    d.text((M * S, 384 * S), 'By Joshuva Johnson', font=sans(20, 400), fill=INK2)
-    footer_labels(d, 'Markets and stock pitches', None)
-    # Right: one line per year, sized by what $1 growing 3% is worth today at 9.5%.
-    g, r, r0, years = 0.03, 0.095, 0.06, 60
-    x0, x1, yb, top = half + 56, W - 56, H - 120, 230
-    tracked(d, x0, 72, 'WHAT A DISCOUNT RATE DOES TO VALUE', mono(13), INK2_DARK)
-    d.text((x0 * S, 102 * S), f'${1 / (r - g):.2f}', font=sans(64, 300), fill=BONE)
-    half_year = math.log(0.5) / math.log((1 + g) / (1 + r))
-    step = (x1 - x0) / years
-    for t in range(1, years + 1):
-        x = x0 + (t - 0.5) * step
-        y = yb - pv(r, t) / pv(r0, 1) * (yb - top)
-        d.line([(x * S, y * S), (x * S, yb * S)], fill=BONE if t <= half_year else DIM_DARK, width=3)
-    d.line([(x0 * S, (yb + 1) * S), (x1 * S, (yb + 1) * S)], fill=(46, 43, 40), width=2)
-    tracked(d, x0, yb + 18, 'YEAR 1', mono(12), INK2_DARK)
-    tracked(d, x1 - tracked_width('60', mono(12)), yb + 18, '60', mono(12), INK2_DARK)
-    d.text((x0 * S, (yb + 50) * S), f'At a 9.5% discount rate, half the value comes after year {round(half_year)}.', font=sans(15, 400), fill=INK2_DARK)
+    tracked(d, M, 270, 'THOUGHTS_', sans(64, 400), BLACK, 0.03)
+    if not photo_panel(im, ROOT / 'assets' / 'img' / 'facade-1280.webp', half):
+        d.rectangle([half * S, 0, W * S, H * S], fill=BLACK)
     wordmark(d, M, M - 8, size=20)
     return im
 
 
-def page_image(title, sub, label, panel_rows=None):
+def page_image(title, sub, label, panel_rows=None, photo=None):
     im, d = canvas()
-    panel = 440 if panel_rows else 0
+    panel = 440 if (panel_rows or photo) else 0
     wordmark(d, M, M - 8)
     width = W - panel - 2 * M
     title_block(d, title, sub, M, 168, width, sizes=(72, 64, 56), max_lines=2)
     footer_labels(d, label, None)
-    if panel_rows:
+    if photo:
+        photo_panel(im, photo, W - panel, focus=(0.5, 0.35))
+    elif panel_rows:
         x0 = W - panel
         d.rectangle([x0 * S, 0, W * S, H * S], fill=BLACK)
         tracked(d, x0 + 48, M - 4, 'STOCK PITCHES', mono(14), INK2_DARK)
@@ -227,11 +218,12 @@ def main():
         figs = key_figures(body) if meta.get('kind') == 'pitch' else []
         if len(figs) >= 3:
             rows.append((meta['title'].split(':')[0].split(' after ')[0], figs[0][0], figs[2][0]))
-    pages = {'research': ('Research', 'Stock pitches, deal breakdowns and industry notes, built from public filings.', 'Research', rows[:3]),
-             'research-method': ('How I build a pitch', 'Five steps, from the industry down to one value per share.', 'Research / Method', None),
-             'about': ('Joshuva Johnson', 'Analyst at JPMorgan Chase in New York. I write about markets, companies and deals.', 'About', None)}
-    for key, (title, sub, label, panel_rows) in pages.items():
-        made.append(save(page_image(title, sub, label, panel_rows), key))
+    portrait = ROOT / 'assets' / 'img' / 'joshuva-johnson-1440.jpg'
+    pages = {'research': ('Research', None, 'Research', rows[:3], None),
+             'research-method': ('How I build a pitch', 'Five steps, from the industry down to one value per share.', 'Research / Method', None, None),
+             'about': ('Joshuva Johnson', 'Analyst, JPMorgan Chase, New York', 'About', None, portrait)}
+    for key, (title, sub, label, panel_rows, photo) in pages.items():
+        made.append(save(page_image(title, sub, label, panel_rows, photo), key))
     for p in made:
         print('drew', p.relative_to(ROOT))
 

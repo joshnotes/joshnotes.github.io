@@ -185,6 +185,13 @@ footer ::selection{background:var(--bone);color:var(--black)}
 .byline>*+*::before{content:"";display:inline-block;width:1px;height:12px;background:var(--rule);margin-right:16px;vertical-align:-1px}
 @media(max-width:640px){.artwrap{padding-top:44px;padding-bottom:72px}.artwrap h1{font-size:32px;line-height:38px}.artwrap .dek{font-size:19px;line-height:28px}}
 
+/* Lead photo: wider than the text column, black and white like every photo on the site. */
+.lead{--w:min(880px,100vw - 2*var(--gut));width:var(--w);margin:32px 0 0 calc(50% - var(--w)/2)}
+.lead img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;background:var(--surface)}
+.lead figcaption{margin-top:8px;font-size:13px;line-height:19px;color:var(--ink2)}
+.lead figcaption a{color:var(--ink2);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px}
+.kf.dark+.lead{margin-top:24px}
+@media(max-width:640px){.lead{--w:100vw;margin-top:24px}.lead img{aspect-ratio:3/2}.lead figcaption{padding-inline:var(--gut)}}
 .prose{font-size:18px;line-height:30px;margin-top:36px}
 .prose p{margin:0 0 20px}
 .prose h2{font-size:26px;line-height:32px;font-weight:400;letter-spacing:-.015em;margin:56px 0 14px}

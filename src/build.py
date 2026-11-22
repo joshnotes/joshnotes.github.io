@@ -89,6 +89,24 @@ def load_articles(section):
     return items
 
 
+PHOTOS = json.loads((SRC / 'photos.json').read_text()) if (SRC / 'photos.json').exists() else {}
+
+
+def lead_photo(meta):
+    """The piece's photo, black and white until hovered or tapped, with its credit underneath."""
+    key = meta['path'].strip('/').replace('/', '-')
+    ph = PHOTOS.get(key)
+    if not ph or not (ROOT / 'assets' / 'img' / 'lead' / f'{key}-1200.webp').exists():
+        return ''
+    lic = ph['license']
+    lic_html = f'<a href="{esc(ph["license_url"])}">{esc(lic)}</a>' if ph.get('license_url') else esc(lic.lower() if lic == 'Public domain' else lic)
+    changed = ', cropped' if lic.startswith('CC BY') else ''
+    return (f'<figure class="lead photo"><img src="/assets/img/lead/{key}-1200.webp" '
+            f'srcset="/assets/img/lead/{key}-600.webp 600w, /assets/img/lead/{key}-1200.webp 1200w" '
+            f'sizes="(max-width: 640px) 100vw, 880px" width="{ph["w"]}" height="{ph["h"]}" alt="{esc(ph["alt"])}">'
+            f'<figcaption>Photo: <a href="{esc(ph["page"])}">{esc(ph["artist"])}</a>, {lic_html}{changed}</figcaption></figure>\n')
+
+
 def article_html(meta, body, prev_item, next_item):
     section_name = 'Thoughts' if meta['section'] == 'thoughts' else 'Research'
     section_url = '/' if meta['section'] == 'thoughts' else '/research/'
@@ -103,7 +121,7 @@ def article_html(meta, body, prev_item, next_item):
   <h1>{esc(meta["title"])}</h1>
   <p class="dek">{esc(meta["dek"])}</p>
   <p class="byline"><b>Joshuva Johnson</b><time datetime="{meta["date"]}">{nice_date(meta["date"])}</time></p>
-{body}
+{body.replace('<div class="prose">', lead_photo(meta) + '<div class="prose">', 1)}
   {pager}
 </article>'''
 
