@@ -43,9 +43,20 @@ def lower_first(s):
     return s[0].lower() + s[1:] if re.match(r'^[A-Z][a-z]', s) else s
 
 
+def share_image(path, alt):
+    """og:image tags for the page's preview image, drawn by src/og.py, if it has one."""
+    key = path.strip('/').replace('/', '-') or 'home'
+    if not (ROOT / 'assets' / 'og' / f'{key}.png').exists():
+        return ''
+    return (f'<meta property="og:image" content="{SITE}/assets/og/{key}.png">\n'
+            '<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="627">\n'
+            f'<meta property="og:image:alt" content="{esc(alt)}">\n<meta name="twitter:card" content="summary_large_image">\n')
+
+
 def page(meta, content, nav='', og_type='website', og_extra='', body_class=''):
     path = meta['path']
     canonical = SITE + (path if path != '/404.html' else '/')
+    og_extra = share_image(path, meta['title']) + og_extra
     cur = ' aria-current="page"'
     out = TEMPLATE
     for key, val in {
