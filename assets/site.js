@@ -9,11 +9,12 @@
   if (hasIO) rootEl.classList.add('io');
   if (animate) rootEl.classList.add('js');
 
-  // ---------- Reveal on scroll ----------
+  // ---------- Exhibit bars grow once, the first time they scroll into view ----------
   const io = animate ? new IntersectionObserver(entries => {
     for (const e of entries) { if (!e.isIntersecting) continue; e.target.classList.add('in'); io.unobserve(e.target); }
-  }, {rootMargin: '0px 0px -6% 0px', threshold: 0}) : null;
-  for (const el of $$('.rv')) { if (io) io.observe(el); else el.classList.add('in'); }
+  }, {rootMargin: '0px 0px -10% 0px', threshold: 0}) : null;
+  const watch = root => { for (const el of $$('.chartbox, .inviz', root)) { if (io) io.observe(el); else el.classList.add('in'); } };
+  watch(document);
 
   // ---------- Segmented filters (buttons are in the HTML; items carry data-k) ----------
   const segs = $$('.segc[data-filter]');
@@ -86,9 +87,9 @@
     setRate(0.095);
   }
 
-  // ---------- Method page: five steps with a sticky chart (illustrative figures) ----------
-  const stepsEl = $('#steps'), stageEl = $('#stage');
-  if (stepsEl && stageEl) {
+  // ---------- Method page: five steps, each with its chart ----------
+  const stepsEl = $('#steps');
+  if (stepsEl) {
     const hrow = (label, l, w, v, j, extra = '', quiet = false) => `<div class="hb"><span>${label}</span><span class="tr"><i class="b${quiet ? ' q' : ''}" style="--l:${l}%;--w:${w}%;--j:${j}"></i>${extra}</span><span class="v">${v}</span></div>`;
     const ff = {min: 50, max: 120, price: 76, rows: [['52-week range', 62, 88], ['Trading comps', 70, 95], ['Precedent deals', 78, 104], ['DCF, base case', 84, 112], ['Analyst targets', 80, 100]]};
     const pos = v => (v - ff.min) / (ff.max - ff.min) * 100;
@@ -110,35 +111,9 @@
       ['Value it three ways', 'Trading comps, precedent transactions and a DCF, cross-checked against where the stock trades.'],
       ['Write the risks first', 'What would make me wrong, how likely it is, and what it would cost. Bear, base and bull cases.']
     ];
-    stepsEl.innerHTML = stepsTxt.map(([h, p], i) => `<article class="st${i ? '' : ' on'}" data-i="${i}"><p class="kick">Step ${i + 1} of 5</p><h3>${h}</h3><p>${p}</p><div class="inviz rv">${viz[i]()}</div></article>`).join('');
-    stageEl.innerHTML = viz.map((f, i) => `<figure class="frame${i ? '' : ' on'}" data-i="${i}">${f()}</figure>`).join('');
-    for (const el of $$('.rv', stepsEl)) { if (io) io.observe(el); else el.classList.add('in'); }
-    const steps = $$('.st'), frames = $$('.frame');
-    const setStep = i => { steps.forEach((s, k) => s.classList.toggle('on', k === i)); frames.forEach((f, k) => f.classList.toggle('on', k === i)); };
-    if (hasIO) {
-      const stepIO = new IntersectionObserver(es => { for (const e of es) if (e.isIntersecting) setStep(+e.target.dataset.i); }, {rootMargin: '-45% 0px -45% 0px'});
-      steps.forEach(s => stepIO.observe(s));
-    }
+    stepsEl.innerHTML = stepsTxt.map(([h, p], i) => `<article class="st${i ? '' : ' on'}" data-i="${i}"><p class="kick">Step ${i + 1} of 5</p><h3>${h}</h3><p>${p}</p><div class="inviz">${viz[i]()}</div></article>`).join('');
+    watch(stepsEl);
   }
-
-  // ---------- Hover light ----------
-  const glowSel = '.feature,.card,.pro,.list,.banner,.frame,.nextup';
-  let lastMove = null, moveQueued = false;
-  const applyMove = () => {
-    moveQueued = false;
-    const e = lastMove; if (!e) return;
-    rootEl.style.setProperty('--ax', e.clientX + 'px');
-    rootEl.style.setProperty('--ay', e.clientY + 'px');
-    const t = e.target instanceof Element ? e.target.closest(glowSel) : null;
-    if (t) { const r = t.getBoundingClientRect(); t.style.setProperty('--mx', (e.clientX - r.left) + 'px'); t.style.setProperty('--my', (e.clientY - r.top) + 'px'); }
-  };
-  document.addEventListener('pointermove', e => {
-    if (e.pointerType !== 'mouse') return;
-    rootEl.classList.add('hovering');
-    lastMove = e;
-    if (!moveQueued) { moveQueued = true; requestAnimationFrame(applyMove); }
-  }, {passive: true});
-  rootEl.addEventListener('mouseleave', () => rootEl.classList.remove('hovering'));
 
   // ---------- Keep drawn pieces sized to their boxes ----------
   const resize = () => { drawDC(); segs.forEach(segInd); };

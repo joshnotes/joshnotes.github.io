@@ -95,8 +95,7 @@ def article_html(meta, body, prev_item, next_item):
         pager += f'<a class="nextup" href="{next_item["path"]}"><p class="kick">Next</p><h3>{esc(next_item["title"])}</h3></a>'
     pager += '</nav>'
     return f'''<article class="artwrap gut">
-  <p class="crumbs"><a href="{section_url}">{section_name}</a><span>/</span><span>{esc(meta["kick"])}</span></p>
-  <p class="kick">{esc(meta["kick"])}, {esc(lower_first(meta["topic"]))}</p>
+  <p class="crumbs"><a href="{section_url}">{section_name}</a><span>/</span><span>{esc(meta["kick"])}</span><span>/</span><span>{esc(meta["topic"])}</span></p>
   <h1>{esc(meta["title"])}</h1>
   <p class="dek">{esc(meta["dek"])}</p>
   <p class="byline"><b>Joshuva Johnson</b><time datetime="{meta["date"]}">{nice_date(meta["date"])}</time><span>{meta["mins"]} min read</span></p>
