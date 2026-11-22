@@ -159,7 +159,8 @@ def article_image(meta, body):
         tracked(d, W - M - tracked_width(section.upper(), fm), M - 4, section.upper(), fm, BLACK)
     title_block(d, meta['title'], None, M, 168, (W - panel - 2 * M) if panel else W - 2 * M,
                 sizes=(60, 54, 50, 46, 42) if panel else (64, 58, 52, 48, 44), max_lines=4 if panel else 3)
-    footer_labels(d, f'{meta["kick"]} / {meta["topic"]}', nice_date(meta['date']), right_edge if not panel else W - panel - 56)
+    label = meta['kick'] if meta['kick'] == meta['topic'] else f'{meta["kick"]} / {meta["topic"]}'
+    footer_labels(d, label, nice_date(meta['date']), right_edge if not panel else W - panel - 56)
     if panel and not figs:
         photo_panel(im, photo, W - panel)
     elif panel:
