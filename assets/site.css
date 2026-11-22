@@ -189,13 +189,13 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
 .fh{font-size:16px;line-height:24px;font-weight:600;color:var(--ink);margin-bottom:16px;max-width:60ch}
 .fnote{font-size:13px;line-height:19px;color:var(--ink2);margin-top:16px;max-width:72ch}
 .fnote b{color:var(--ink);font-variant-numeric:tabular-nums}
-.prose table{width:100%;border-collapse:collapse;font-size:15px;line-height:22px}
-.prose th,.prose td{padding:10px 12px 10px 0;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
-.prose th:last-child,.prose td:last-child{padding-right:0}
-.prose th{font-weight:600;color:var(--ink2);font-size:13px;line-height:18px;border-bottom-color:var(--ink)}
-.prose tr:last-child td{border-bottom:0}
-.prose .n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
-.prose tr.tot td{font-weight:600;border-top:1px solid var(--ink)}
+.tablewrap table{width:100%;border-collapse:collapse;font-size:15px;line-height:22px}
+.tablewrap th,.tablewrap td{padding:10px 12px 10px 0;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
+.tablewrap th:last-child,.tablewrap td:last-child{padding-right:0}
+.tablewrap th{font-weight:600;color:var(--ink2);font-size:13px;line-height:18px;border-bottom-color:var(--ink)}
+.tablewrap tr:last-child td{border-bottom:0}
+.tablewrap .n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tablewrap tr.tot td{font-weight:600;border-top:1px solid var(--ink)}
 .hb{display:grid;grid-template-columns:9.5em minmax(0,1fr) 6.4em;gap:16px;align-items:center;padding:6px 0;font-size:15px;line-height:20px}
 .hb>span:first-child{color:var(--ink)}
 .tr{height:16px;position:relative}
@@ -211,8 +211,8 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
 @media(max-width:640px){.chartbox,.tablewrap{padding:16px;margin:24px calc(-1*var(--gut))}.hb,.axis{grid-template-columns:7.2em minmax(0,1fr) 5.4em;gap:8px;font-size:14px}}
 
 /* Bars grow once when the exhibit first scrolls into view. */
-.js .chartbox .b,.js .inviz .b{transform:scaleX(0);transition:transform .4s cubic-bezier(.2,.8,.2,1) calc(var(--j,0)*60ms)}
-.js .chartbox.in .b,.js .inviz.in .b{transform:none}
+.js .chartbox .b{transform:scaleX(0);transition:transform .4s cubic-bezier(.2,.8,.2,1) calc(var(--j,0)*60ms)}
+.js .chartbox.in .b{transform:none}
 
 /* ---------- Callout ---------- */
 .wim{border-left:3px solid var(--accent);padding:4px 0 4px 20px;margin:40px 0 8px}
@@ -250,27 +250,16 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
 .srow a{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
 @media(max-width:640px){.srow{grid-template-columns:minmax(0,1fr);padding:24px 0}}
 
-/* ---------- Method page: five steps, shown in order ---------- */
-.scrolly{display:block}
-.stage{display:none}
-.st{display:grid;grid-template-columns:280px minmax(0,1fr);gap:8px 48px;padding:32px 0;border-top:1px solid var(--rule)}
-.st>.kick,.st>h3,.st>p{grid-column:1}
-.st>.kick{color:var(--ink2)}
-.st h3{font-size:24px;line-height:30px;font-weight:600;letter-spacing:-.015em}
-.st>p:not(.kick){color:var(--ink2);font-size:17px;line-height:27px}
-.inviz{display:block;grid-column:2;grid-row:1/span 4;background:var(--surface);padding:24px}
-.mix{display:flex;height:16px;gap:2px;margin-bottom:16px}
-.sg{background:var(--accent);transform-origin:left}
-.sg.s2{background:color-mix(in srgb,var(--accent) 55%,var(--surface))}
-.sg.s3{background:var(--neutral)}
-.legend{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;font-size:14px;color:var(--ink2)}
-.legend b{display:block;font-size:24px;line-height:30px;color:var(--ink);font-variant-numeric:tabular-nums}
-.chain{display:grid;grid-template-columns:minmax(0,1fr) 24px minmax(0,1fr) 24px minmax(0,1fr);align-items:center}
-.box{border:1px solid var(--rule);background:var(--bg);padding:12px 8px;text-align:center;font-size:14px;font-weight:600;line-height:20px}
-.arr{height:1px;background:var(--ink2);position:relative}
-.arr::after{content:"";position:absolute;right:0;top:-4px;border-top:4px solid transparent;border-bottom:4px solid transparent;border-left:6px solid var(--ink2)}
-.checks{padding-left:1.2em;margin-top:16px;display:grid;gap:8px;font-size:14px;line-height:20px;color:var(--ink2)}
-@media(max-width:900px){.st{grid-template-columns:minmax(0,1fr)}.inviz{grid-column:1;grid-row:auto;margin-top:16px}}
+/* ---------- Method page: five steps, each with a real exhibit ---------- */
+.st{display:grid;grid-template-columns:280px minmax(0,1fr);gap:16px 48px;padding:40px 0;border-top:1px solid var(--rule);align-items:start}
+.st:last-child{border-bottom:1px solid var(--rule)}
+.st h2{font-size:24px;line-height:30px;font-weight:600;letter-spacing:-.015em;margin:4px 0 8px}
+.st .text p:not(.kick){color:var(--ink2);font-size:17px;line-height:27px;margin-bottom:12px}
+.st>.chartbox,.st>.tablewrap{margin:0}
+.method-end{max-width:var(--reading);margin-top:40px;color:var(--ink2);font-size:17px;line-height:27px}
+.method-end a{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+@media(max-width:900px){.st{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:640px){.st>.chartbox,.st>.tablewrap{margin:0 calc(-1*var(--gut))}}
 
 /* ---------- 404 ---------- */
 .notfound{list-style:none;padding:0;margin:32px 0 0;border-top:1px solid var(--rule)}

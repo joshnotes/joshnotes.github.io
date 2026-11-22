@@ -13,7 +13,7 @@
   const io = animate ? new IntersectionObserver(entries => {
     for (const e of entries) { if (!e.isIntersecting) continue; e.target.classList.add('in'); io.unobserve(e.target); }
   }, {rootMargin: '0px 0px -10% 0px', threshold: 0}) : null;
-  const watch = root => { for (const el of $$('.chartbox, .inviz', root)) { if (io) io.observe(el); else el.classList.add('in'); } };
+  const watch = root => { for (const el of $$('.chartbox', root)) { if (io) io.observe(el); else el.classList.add('in'); } };
   watch(document);
 
   // ---------- Segmented filters (buttons are in the HTML; items carry data-k) ----------
@@ -85,34 +85,6 @@
     dIn.addEventListener('input', () => setRate(+dIn.value / 100));
     drawDC();
     setRate(0.095);
-  }
-
-  // ---------- Method page: five steps, each with its chart ----------
-  const stepsEl = $('#steps');
-  if (stepsEl) {
-    const hrow = (label, l, w, v, j, extra = '', quiet = false) => `<div class="hb"><span>${label}</span><span class="tr"><i class="b${quiet ? ' q' : ''}" style="--l:${l}%;--w:${w}%;--j:${j}"></i>${extra}</span><span class="v">${v}</span></div>`;
-    const ff = {min: 50, max: 120, price: 76, rows: [['52-week range', 62, 88], ['Trading comps', 70, 95], ['Precedent deals', 78, 104], ['DCF, base case', 84, 112], ['Analyst targets', 80, 100]]};
-    const pos = v => (v - ff.min) / (ff.max - ff.min) * 100;
-    const sc = [['Bear, 25%', 60, 0.25], ['Base, 50%', 94, 0.5], ['Bull, 25%', 120, 0.25]];
-    const weighted = sc.reduce((t, [, v, p]) => t + v * p, 0);
-    const viz = [
-      () => `<p class="fh">Market share</p>` + [['Leader', 28], ['Second', 19], ['Third', 14], ['Rest of market', 39]].map(([l, v], j) => hrow(l, 0, v / 40 * 100, v + '%', j, '', j === 3)).join(''),
-      () => `<p class="fh">Revenue by segment</p><div class="mix"><i class="sg" style="flex:46;--j:0"></i><i class="sg s2" style="flex:32;--j:1"></i><i class="sg s3" style="flex:22;--j:2"></i></div><div class="legend"><span><b>46%</b>Products</span><span><b>32%</b>Services</span><span><b>22%</b>Software</span></div>`,
-      () => `<p class="fh">How the statements link</p><div class="chain"><span class="box">Income statement</span><span class="arr"></span><span class="box">Cash flow</span><span class="arr"></span><span class="box">Balance sheet</span></div><ul class="checks"><li>Net income flows into cash flow and retained earnings</li><li>Ending cash ties to the balance sheet</li><li>Assets equal liabilities plus equity, every year</li></ul>`,
-      () => `<p class="fh">Valuation summary, dollars per share</p>` + ff.rows.map(([l, a, b], j) => hrow(l, pos(a).toFixed(2), (pos(b) - pos(a)).toFixed(2), `$${a} to $${b}`, j, `<i class="px" style="--p:${pos(ff.price).toFixed(2)}%"></i>`, !l.startsWith('DCF'))).join('') +
-        `<div class="axis"><span></span><span class="tk">${[50, 70, 90, 110].map(t => `<span style="left:${pos(t).toFixed(2)}%">$${t}</span>`).join('')}</span><span></span></div><p class="fnote">Dashed line: current price, $${ff.price}.</p>`,
-      () => `<p class="fh">Scenario values per share</p>` + sc.map(([l, v], j) => hrow(l, 0, v / 130 * 100, '$' + v, j, '', !l.startsWith('Base'))).join('') +
-        `<p class="fnote">Probability-weighted value <b>$${weighted.toFixed(0)}</b>, ${Math.round((weighted / ff.price - 1) * 100)}% above the $${ff.price} price.</p>`
-    ];
-    const stepsTxt = [
-      ['Map the industry', 'Who sells what to whom, how big the market is, how fast it grows, and where the profit pools sit.'],
-      ['Understand the business', 'Segments, unit economics, customers, and the few numbers that actually drive results.'],
-      ['Build the model', 'A three-statement model from the filings, with drivers I can defend line by line.'],
-      ['Value it three ways', 'Trading comps, precedent transactions and a DCF, cross-checked against where the stock trades.'],
-      ['Write the risks first', 'What would make me wrong, how likely it is, and what it would cost. Bear, base and bull cases.']
-    ];
-    stepsEl.innerHTML = stepsTxt.map(([h, p], i) => `<article class="st${i ? '' : ' on'}" data-i="${i}"><p class="kick">Step ${i + 1} of 5</p><h3>${h}</h3><p>${p}</p><div class="inviz">${viz[i]()}</div></article>`).join('');
-    watch(stepsEl);
   }
 
   // ---------- Keep drawn pieces sized to their boxes ----------
