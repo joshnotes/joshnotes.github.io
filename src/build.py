@@ -33,12 +33,6 @@ def nice_date(iso):
     return f"{d.strftime('%b')} {d.day}, {d.year}"
 
 
-def read_minutes(body):
-    prose = body.split('<section class="sources">')[0]
-    words = len(re.sub(r'<[^>]+>', ' ', prose).split())
-    return max(2, round(words / 230))
-
-
 def lower_first(s):
     return s[0].lower() + s[1:] if re.match(r'^[A-Z][a-z]', s) else s
 
@@ -90,7 +84,6 @@ def load_articles(section):
     for f in sorted((SRC / 'content' / section).glob('*.html')):
         meta, body = read_doc(f)
         meta['path'] = f'/{section}/{meta["slug"]}/'
-        meta['mins'] = read_minutes(body)
         items.append((meta, body))
     items.sort(key=lambda mb: (mb[0].get('order', 99), mb[0]['date']))
     return items
@@ -106,18 +99,13 @@ def article_html(meta, body, prev_item, next_item):
         pager += f'<a class="nextup" href="{next_item["path"]}"><p class="kick">Next</p><h3>{esc(next_item["title"])}</h3></a>'
     pager += '</nav>'
     return f'''<article class="artwrap gut">
-  <p class="crumbs"><a href="{section_url}">{section_name}</a><span>/</span><span>{esc(meta["kick"])}</span><span>/</span><span>{esc(meta["topic"])}</span></p>
+  <p class="crumbs"><a href="{section_url}">{section_name}</a><span>/</span><span>{esc(meta["kick"])}</span></p>
   <h1>{esc(meta["title"])}</h1>
   <p class="dek">{esc(meta["dek"])}</p>
-  <p class="byline"><b>Joshuva Johnson</b><time datetime="{meta["date"]}">{nice_date(meta["date"])}</time><span>{meta["mins"]} min read</span></p>
+  <p class="byline"><b>Joshuva Johnson</b><time datetime="{meta["date"]}">{nice_date(meta["date"])}</time></p>
 {body}
   {pager}
 </article>'''
-
-
-def seg_buttons(options):
-    return ''.join(f'<button type="button" data-k="{esc(k)}" aria-pressed="{"true" if i == 0 else "false"}">{esc(label)}</button>'
-                   for i, (k, label) in enumerate(options))
 
 
 def pitch_table(research):
@@ -162,15 +150,13 @@ def main():
     # Home (ThoughtsbyJosh)
     meta, content = read_doc(SRC / 'content' / 'pages' / 'home.html')
     lead, rest = thoughts[0][0], [m for m, _ in thoughts[1:]]
-    topics = list(dict.fromkeys(m['topic'] for m in rest))
     cards = '\n'.join(
-        f'      <a class="cardlink rv" style="--d:{i % 2}" href="{m["path"]}" data-k="{esc(m["topic"])}"><div class="card"><p class="kick">{esc(m["topic"])}</p><h3>{esc(m["title"])}</h3><p class="dek">{esc(m["dek"])}</p><p class="meta"><span>{nice_date(m["date"])}</span><span>{m["mins"]} min read</span></p></div></a>'
-        for i, m in enumerate(rest))
+        f'      <a class="cardlink" href="{m["path"]}"><div class="card"><p class="kick">{esc(m["topic"])}</p><h3>{esc(m["title"])}</h3><p class="dek">{esc(m["dek"])}</p><p class="meta"><span>{nice_date(m["date"])}</span></p></div></a>'
+        for m in rest)
     content = (content.replace('{{LEAD_TITLE}}', esc(lead['title']))
                .replace('{{LEAD_DEK}}', esc(lead['dek']))
-               .replace('{{LEAD_META}}', f'<span>{esc(lead["topic"])}</span><span>{nice_date(lead["date"])}</span><span>{lead["mins"]} min read</span>')
+               .replace('{{LEAD_META}}', f'<span>{esc(lead["topic"])}</span><span>{nice_date(lead["date"])}</span>')
                .replace('{{LEAD_URL}}', lead['path'])
-               .replace('{{THOUGHTS_SEG}}', seg_buttons([('', 'All')] + [(t, t) for t in topics]))
                .replace('{{THOUGHTS_CARDS}}', cards)
                .replace('{{PITCH_TABLE}}', pitch_table(research)))
     # Old single-page links looked like /#a-eaton. Send them to the new pages.
@@ -188,13 +174,11 @@ def main():
 
     # Research index
     meta, content = read_doc(SRC / 'content' / 'pages' / 'research.html')
-    kinds = [('pitch', 'Stock pitches'), ('deal', 'Deals'), ('industry', 'Industry notes'), ('note', 'Market notes')]
-    present = {m.get('kind') for m, _ in research}
+    # The pitches are already in the ratings table, so the list below it holds everything else.
     rows = '\n'.join(
-        f'      <a class="lrow" href="{m["path"]}" data-k="{esc(m.get("kind", ""))}"><p class="kick">{esc(m["kick"])}</p><div><h3>{esc(m["title"])}</h3><p>{esc(m["dek"])}</p></div><p class="tp">{esc(m["topic"])}</p></a>'
-        for m, _ in research)
-    content = (content.replace('{{RESEARCH_SEG}}', seg_buttons([('', 'All')] + [k for k in kinds if k[0] in present]))
-               .replace('{{RESEARCH_ROWS}}', rows)
+        f'      <a class="lrow" href="{m["path"]}"><p class="kick">{esc(m["kick"])}</p><div><h3>{esc(m["title"])}</h3><p>{esc(m["dek"])}</p></div><p class="tp">{esc(m["topic"])}</p></a>'
+        for m, _ in research if m.get('kind') != 'pitch')
+    content = (content.replace('{{RESEARCH_ROWS}}', rows)
                .replace('{{PITCH_TABLE}}', pitch_table(research)))
     built.append(write('/research/', page(meta, content, 'research')))
 
