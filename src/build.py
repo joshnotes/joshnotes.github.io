@@ -109,6 +109,32 @@ def seg_buttons(options):
                    for i, (k, label) in enumerate(options))
 
 
+def pitch_table(research):
+    """Ratings table for the stock pitches, read from each pitch's key-figure strip."""
+    rows, as_of = [], ''
+    for meta, body in research:
+        if meta.get('kind') != 'pitch':
+            continue
+        m = re.search(r'<div class="kf[^"]*">(.*?)</div></div>', body, re.S)
+        if not m:
+            continue
+        cells = re.findall(r'<b>(.*?)</b><span>(.*?)</span>', m.group(1))
+        if len(cells) < 4:
+            continue
+        (rating, _), (value, _), (gap, _), (price, price_label) = cells[:4]
+        as_of = as_of or re.sub(r'^Price (at )?', '', price_label)
+        company = meta['title'].split(':')[0].split(' after ')[0]
+        rows.append(f'<tr><th scope="row"><a href="{meta["path"]}">{esc(company)}</a><span>{esc(meta["topic"])}</span></th>'
+                    f'<td>{rating}</td><td class="n">{value}</td><td class="n hide-s">{price}</td><td class="n">{gap}</td></tr>')
+    if not rows:
+        return ''
+    return ('<div class="ratings"><table>\n'
+            '<thead><tr><th scope="col">Company</th><th scope="col">Rating</th><th scope="col" class="n">Value per share</th>'
+            '<th scope="col" class="n hide-s">Price</th><th scope="col" class="n">Value vs price</th></tr></thead>\n<tbody>\n'
+            + '\n'.join(rows) + '\n</tbody></table>\n'
+            f'<p class="fnote">Prices at the {esc(as_of)}. Values are probability-weighted, from each pitch. Personal research, not investment advice.</p></div>')
+
+
 def main():
     built = []
     thoughts = load_articles('thoughts')
@@ -134,7 +160,8 @@ def main():
                .replace('{{LEAD_META}}', f'<span>{esc(lead["topic"])}</span><span>{nice_date(lead["date"])}</span><span>{lead["mins"]} min read</span>')
                .replace('{{LEAD_URL}}', lead['path'])
                .replace('{{THOUGHTS_SEG}}', seg_buttons([('', 'All')] + [(t, t) for t in topics]))
-               .replace('{{THOUGHTS_CARDS}}', cards))
+               .replace('{{THOUGHTS_CARDS}}', cards)
+               .replace('{{PITCH_TABLE}}', pitch_table(research)))
     # Old single-page links looked like /#a-eaton. Send them to the new pages.
     legacy = {'research': '/research/', 'about': '/about/', 'r-method': '/research/method/', 'library': '/research/'}
     legacy.update({m['legacy']: m['path'] for m, _ in thoughts + research if m.get('legacy')})
@@ -156,7 +183,8 @@ def main():
         f'      <a class="lrow" href="{m["path"]}" data-k="{esc(m.get("kind", ""))}"><p class="kick">{esc(m["kick"])}</p><div><h3>{esc(m["title"])}</h3><p>{esc(m["dek"])}</p></div><p class="tp">{esc(m["topic"])}</p></a>'
         for m, _ in research)
     content = (content.replace('{{RESEARCH_SEG}}', seg_buttons([('', 'All')] + [k for k in kinds if k[0] in present]))
-               .replace('{{RESEARCH_ROWS}}', rows))
+               .replace('{{RESEARCH_ROWS}}', rows)
+               .replace('{{PITCH_TABLE}}', pitch_table(research)))
     built.append(write('/research/', page(meta, content, 'research')))
 
     # Method, About, 404

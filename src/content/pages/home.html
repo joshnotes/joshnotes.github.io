@@ -1,24 +1,26 @@
 <!--meta
-{"title": "ThoughtsbyJosh", "page_title": "ThoughtsbyJosh | Joshuva Johnson", "dek": "Takes on the latest developments in finance by Joshuva Johnson.", "path": "/", "nav": "thoughts", "legacy": "thoughts"}
+{"title": "ThoughtsbyJosh", "page_title": "ThoughtsbyJosh | Joshuva Johnson", "dek": "Takes on markets and stock pitches by Joshuva Johnson, a finance analyst in New York.", "path": "/", "nav": "thoughts", "legacy": "thoughts"}
 -->
 <header class="hero gut">
   <div class="wrap">
-    <h1 class="rv">ThoughtsbyJosh</h1>
-    <p class="sub rv" style="--d:1">Exercising my freedom of speech to give my take on the latest developments in finance.</p>
+    <h1>ThoughtsbyJosh</h1>
+    <p class="sub">Hot takes, discounted to present value.</p>
+    <p class="byname">By <a href="/about/">Joshuva Johnson</a>, an analyst at JPMorgan Chase in New York.</p>
   </div>
 </header>
 
-<section class="gut">
+<section class="gut" aria-labelledby="lead-title">
   <div class="wrap">
-    <article class="feature rv" style="--d:2">
+    <article class="feature">
       <div>
         <p class="kick">Hot take</p>
-        <h2>{{LEAD_TITLE}}</h2>
+        <h2 id="lead-title"><a href="{{LEAD_URL}}">{{LEAD_TITLE}}</a></h2>
         <p class="dek">{{LEAD_DEK}}</p>
         <p class="meta">{{LEAD_META}}</p>
-        <div class="ctas" style="justify-content:flex-start;margin-top:22px"><a class="pill" href="{{LEAD_URL}}">Read the take</a></div>
+        <div class="ctas"><a class="textlink" href="{{LEAD_URL}}">Read the take</a></div>
       </div>
       <div class="calc">
+        <p class="calc-h">What a discount rate does to value</p>
         <p class="read" id="dc-out">$15.38</p>
         <p class="cap" id="dc-cap">Value today of $1 of cash flow next year, growing 3% a year forever, at a 9.5% discount rate.</p>
         <div class="fig" id="dc-fig" role="img" aria-label="Value of a growing cash flow falls as the discount rate rises from 6% to 12%"></div>
@@ -29,21 +31,27 @@
   </div>
 </section>
 
-<section class="sec gut">
+<section class="sec gut" aria-labelledby="pitches-title">
   <div class="wrap">
-    <div class="head rv"><h2>More thoughts.</h2></div>
-    <div class="segc rv" data-filter="t-grid" role="group" aria-label="Filter posts by topic"><span class="ind"></span>{{THOUGHTS_SEG}}</div>
+    <div class="head head-row"><h2 id="pitches-title">Latest stock pitches</h2><a class="textlink" href="/research/">All research</a></div>
+    {{PITCH_TABLE}}
+  </div>
+</section>
+
+<section class="sec gut" aria-labelledby="more-title">
+  <div class="wrap">
+    <div class="head"><h2 id="more-title">More thoughts</h2></div>
     <div class="grid2" id="t-grid">
 {{THOUGHTS_CARDS}}
     </div>
   </div>
 </section>
 
-<section class="sec gut" style="padding-top:0">
+<section class="sec gut">
   <div class="wrap">
-    <div class="banner rv">
+    <div class="banner">
       <p>New takes go up on LinkedIn first.</p>
-      <a class="pill" href="https://www.linkedin.com/in/joshuvajohnson">Follow on LinkedIn</a>
+      <a class="textlink" href="https://www.linkedin.com/in/joshuvajohnson">Follow on LinkedIn</a>
     </div>
   </div>
 </section>

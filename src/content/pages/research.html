@@ -1,38 +1,26 @@
 <!--meta
-{"title": "Research", "page_title": "Research | Joshuva Johnson", "dek": "Stock pitches, deal breakdowns and industry notes, built from public filings and data.", "path": "/research/", "nav": "research", "legacy": "research"}
+{"title": "Research", "page_title": "Research | Joshuva Johnson", "dek": "Stock pitches, deal breakdowns and industry notes by Joshuva Johnson, built from public filings and data.", "path": "/research/", "nav": "research", "legacy": "research"}
 -->
 <header class="hero gut">
   <div class="wrap">
-    <h1 class="rv">Research.</h1>
-    <p class="sub rv" style="--d:1">Stock pitches, deal breakdowns and industry notes, built from public filings and data.</p>
-    <div class="ctas rv" style="--d:2">
-      <a class="textlink" href="/research/method/">How I build a pitch</a>
-    </div>
+    <h1>Research</h1>
+    <p class="sub">Stock pitches, deal breakdowns and industry notes, built from public filings and data. Every pitch follows the same five steps, from the industry to a probability-weighted value.</p>
+    <div class="ctas"><a class="textlink" href="/research/method/">How I build a pitch</a></div>
   </div>
 </header>
 
-<section class="gut">
+<section class="gut" aria-labelledby="pitches-title">
   <div class="wrap">
-    <article class="pro rv" style="--d:2">
-      <p class="kick">Stock pitch, electrical equipment</p>
-      <h2>Eaton after the fall.</h2>
-      <p class="sub">Cheaper, but not yet cheap.</p>
-      <div class="stats4">
-        <div><b>Hold</b><span>Rating</span></div>
-        <div><b>$281</b><span>Value per share, probability-weighted</span></div>
-        <div><b>−10%</b><span>Value vs price</span></div>
-        <div><b>$311.33</b><span>Price, Nov 20, 2026 close</span></div>
-      </div>
-      <div class="ctas"><a class="pill light" href="/research/eaton/">Read the pitch</a></div>
-    </article>
+    <div class="head"><h2 id="pitches-title">Stock pitches</h2></div>
+    {{PITCH_TABLE}}
   </div>
 </section>
 
-<section class="sec gut" id="library">
+<section class="sec gut" id="library" aria-labelledby="all-title">
   <div class="wrap">
-    <div class="head rv"><h2>Library.</h2><p class="sub">Every pitch, deal breakdown and note in one place.</p></div>
-    <div class="segc rv" data-filter="r-list" role="group" aria-label="Filter research by type"><span class="ind"></span>{{RESEARCH_SEG}}</div>
-    <div class="list rv" id="r-list">
+    <div class="head"><h2 id="all-title">All research</h2></div>
+    <div class="segc" data-filter="r-list" role="group" aria-label="Filter research by type">{{RESEARCH_SEG}}</div>
+    <div class="list" id="r-list">
 {{RESEARCH_ROWS}}
     </div>
   </div>

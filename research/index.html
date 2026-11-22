@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Research | Joshuva Johnson</title>
-<meta name="description" content="Stock pitches, deal breakdowns and industry notes, built from public filings and data.">
+<meta name="description" content="Stock pitches, deal breakdowns and industry notes by Joshuva Johnson, built from public filings and data.">
 <link rel="canonical" href="https://joshuvajohnson.github.io/research/">
 <meta property="og:site_name" content="Joshuva Johnson">
 <meta property="og:title" content="Research">
-<meta property="og:description" content="Stock pitches, deal breakdowns and industry notes, built from public filings and data.">
+<meta property="og:description" content="Stock pitches, deal breakdowns and industry notes by Joshuva Johnson, built from public filings and data.">
 <meta property="og:url" content="https://joshuvajohnson.github.io/research/">
 <meta property="og:type" content="website">
 <meta name="author" content="Joshuva Johnson">
@@ -33,36 +33,31 @@
 <main id="main">
 <header class="hero gut">
   <div class="wrap">
-    <h1 class="rv">Research.</h1>
-    <p class="sub rv" style="--d:1">Stock pitches, deal breakdowns and industry notes, built from public filings and data.</p>
-    <div class="ctas rv" style="--d:2">
-      <a class="textlink" href="/research/method/">How I build a pitch</a>
-    </div>
+    <h1>Research</h1>
+    <p class="sub">Stock pitches, deal breakdowns and industry notes, built from public filings and data. Every pitch follows the same five steps, from the industry to a probability-weighted value.</p>
+    <div class="ctas"><a class="textlink" href="/research/method/">How I build a pitch</a></div>
   </div>
 </header>
 
-<section class="gut">
+<section class="gut" aria-labelledby="pitches-title">
   <div class="wrap">
-    <article class="pro rv" style="--d:2">
-      <p class="kick">Stock pitch, electrical equipment</p>
-      <h2>Eaton after the fall.</h2>
-      <p class="sub">Cheaper, but not yet cheap.</p>
-      <div class="stats4">
-        <div><b>Hold</b><span>Rating</span></div>
-        <div><b>$281</b><span>Value per share, probability-weighted</span></div>
-        <div><b>−10%</b><span>Value vs price</span></div>
-        <div><b>$311.33</b><span>Price, Nov 20, 2026 close</span></div>
-      </div>
-      <div class="ctas"><a class="pill light" href="/research/eaton/">Read the pitch</a></div>
-    </article>
+    <div class="head"><h2 id="pitches-title">Stock pitches</h2></div>
+    <div class="ratings"><table>
+<thead><tr><th scope="col">Company</th><th scope="col">Rating</th><th scope="col" class="n">Value per share</th><th scope="col" class="n hide-s">Price</th><th scope="col" class="n">Value vs price</th></tr></thead>
+<tbody>
+<tr><th scope="row"><a href="/research/eaton/">Eaton</a><span>Electrical equipment</span></th><td>Hold</td><td class="n">$281</td><td class="n hide-s">$311.33</td><td class="n">−10%</td></tr>
+<tr><th scope="row"><a href="/research/honeywell/">Honeywell</a><span>Industrial automation</span></th><td>Sell</td><td class="n">$171</td><td class="n hide-s">$212.64</td><td class="n">−20%</td></tr>
+<tr><th scope="row"><a href="/research/quantinuum/">Quantinuum</a><span>Quantum computing</span></th><td>Hold</td><td class="n">$26</td><td class="n hide-s">$27.74</td><td class="n">−7%</td></tr>
+</tbody></table>
+<p class="fnote">Prices at the Nov 20, 2026 close. Values are probability-weighted, from each pitch. Personal research, not investment advice.</p></div>
   </div>
 </section>
 
-<section class="sec gut" id="library">
+<section class="sec gut" id="library" aria-labelledby="all-title">
   <div class="wrap">
-    <div class="head rv"><h2>Library.</h2><p class="sub">Every pitch, deal breakdown and note in one place.</p></div>
-    <div class="segc rv" data-filter="r-list" role="group" aria-label="Filter research by type"><span class="ind"></span><button type="button" data-k="" aria-pressed="true">All</button><button type="button" data-k="pitch" aria-pressed="false">Stock pitches</button><button type="button" data-k="deal" aria-pressed="false">Deals</button><button type="button" data-k="industry" aria-pressed="false">Industry notes</button><button type="button" data-k="note" aria-pressed="false">Market notes</button></div>
-    <div class="list rv" id="r-list">
+    <div class="head"><h2 id="all-title">All research</h2></div>
+    <div class="segc" data-filter="r-list" role="group" aria-label="Filter research by type"><button type="button" data-k="" aria-pressed="true">All</button><button type="button" data-k="pitch" aria-pressed="false">Stock pitches</button><button type="button" data-k="deal" aria-pressed="false">Deals</button><button type="button" data-k="industry" aria-pressed="false">Industry notes</button><button type="button" data-k="note" aria-pressed="false">Market notes</button></div>
+    <div class="list" id="r-list">
       <a class="lrow" href="/research/eaton/" data-k="pitch"><p class="kick">Stock pitch</p><div><h3>Eaton after the fall: cheaper, but not yet cheap</h3><p>The stock is down 35% from its high on record orders and a third guidance raise. I value it at about $281 a share, which says the price still assumes a lot goes right. Hold, and a buyer below $280.</p></div><p class="tp">Electrical equipment</p></a>
       <a class="lrow" href="/research/honeywell/" data-k="pitch"><p class="kick">Stock pitch</p><div><h3>Honeywell after the breakup: a good plan, priced as if it&#x27;s already done</h3><p>Honeywell is now a pure automation company growing 4% to 6% a year. Even on management&#x27;s own targets I value it at about $171 a share, 20% below the price. The market is discounting it like a safer business than it is.</p></div><p class="tp">Industrial automation</p></a>
       <a class="lrow" href="/research/quantinuum/" data-k="pitch"><p class="kick">Stock pitch</p><div><h3>Quantinuum: a lottery ticket priced about right</h3><p>Quantinuum has $32 million of revenue, $1.9 billion of cash and some of the best quantum hardware anyone has built. Valuing it means pricing a story with a real chance of failure. I get about $26 a share, close to the price. Hold.</p></div><p class="tp">Quantum computing</p></a>

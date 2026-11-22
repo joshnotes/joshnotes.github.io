@@ -284,3 +284,27 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
 @media print{.nav,footer,.segc,.pager,.calc{display:none}body{font-size:12pt;line-height:1.5}.chartbox,.tablewrap{break-inside:avoid}}
 .byline+.kf{margin-top:0;border-top:0}
 @media(max-width:640px){.links{gap:0 20px}}
+
+/* ---------- Batch D2: home byline, calculator label, ratings table ---------- */
+.byname{margin-top:12px;font-size:15px;line-height:22px;color:var(--ink2)}
+.byname a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px}
+.byname a:hover{text-decoration-color:var(--ink)}
+.feature h2 a{text-decoration:none}
+.feature h2 a:hover{color:var(--accent)}
+.calc-h{font-size:14px;line-height:20px;font-weight:600;margin-bottom:12px}
+.head-row{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 24px;max-width:none}
+.ratings{border-top:2px solid var(--ink)}
+.ratings table{width:100%;border-collapse:collapse;font-size:17px;line-height:24px}
+.ratings th,.ratings td{padding:16px 16px 16px 0;border-bottom:1px solid var(--rule);text-align:left;vertical-align:baseline;font-weight:400}
+.ratings th:last-child,.ratings td:last-child{padding-right:0}
+.ratings thead th{font-size:13px;line-height:18px;font-weight:600;color:var(--ink2);padding-block:12px}
+.ratings tbody th a{font-size:19px;line-height:26px;font-weight:600;text-decoration:none}
+.ratings tbody th a:hover{color:var(--accent);text-decoration:underline;text-underline-offset:4px}
+.ratings tbody th span{display:block;font-size:14px;line-height:20px;color:var(--ink2)}
+.ratings td{font-weight:600}
+.ratings .n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.ratings .fnote{margin-top:12px}
+.ratings thead .n{white-space:normal}
+@media(max-width:640px){.ratings .hide-s{display:none}.ratings table{font-size:15px}.ratings tbody th a{font-size:17px}.ratings th,.ratings td{padding-right:10px}}
+.grid2{border-top:2px solid var(--ink)}
+.segc+.list{border-top:0}

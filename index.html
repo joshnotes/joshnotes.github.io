@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ThoughtsbyJosh | Joshuva Johnson</title>
-<meta name="description" content="Takes on the latest developments in finance by Joshuva Johnson.">
+<meta name="description" content="Takes on markets and stock pitches by Joshuva Johnson, a finance analyst in New York.">
 <link rel="canonical" href="https://joshuvajohnson.github.io/">
 <meta property="og:site_name" content="Joshuva Johnson">
 <meta property="og:title" content="ThoughtsbyJosh">
-<meta property="og:description" content="Takes on the latest developments in finance by Joshuva Johnson.">
+<meta property="og:description" content="Takes on markets and stock pitches by Joshuva Johnson, a finance analyst in New York.">
 <meta property="og:url" content="https://joshuvajohnson.github.io/">
 <meta property="og:type" content="website">
 <script>(function(){var m={"research":"/research/","about":"/about/","r-method":"/research/method/","library":"/research/","a-rates":"/thoughts/rates-sell-off/","a-bottleneck":"/thoughts/ai-bottleneck/","a-private-credit":"/thoughts/private-credit-defaults/","a-bonuses":"/thoughts/bonus-season/","a-life-cycle":"/thoughts/corporate-life-cycle/","a-eaton":"/research/eaton/","a-honeywell":"/research/honeywell-breakup/","a-stress-test":"/research/stress-test-2026/","a-copper":"/research/copper/","a-abs":"/research/auto-abs/","a-industrials":"/research/reading-industrials/"};function go(){var h=location.hash.slice(1);if(m[h])location.replace(m[h]);else if(h==="thoughts")history.replaceState(null,"","/");}go();addEventListener("hashchange",go);})();</script>
@@ -34,22 +34,24 @@
 <main id="main">
 <header class="hero gut">
   <div class="wrap">
-    <h1 class="rv">ThoughtsbyJosh</h1>
-    <p class="sub rv" style="--d:1">Exercising my freedom of speech to give my take on the latest developments in finance.</p>
+    <h1>ThoughtsbyJosh</h1>
+    <p class="sub">Hot takes, discounted to present value.</p>
+    <p class="byname">By <a href="/about/">Joshuva Johnson</a>, an analyst at JPMorgan Chase in New York.</p>
   </div>
 </header>
 
-<section class="gut">
+<section class="gut" aria-labelledby="lead-title">
   <div class="wrap">
-    <article class="feature rv" style="--d:2">
+    <article class="feature">
       <div>
         <p class="kick">Hot take</p>
-        <h2>The price of risk, not the price of money</h2>
+        <h2 id="lead-title"><a href="/thoughts/rates-sell-off/">The price of risk, not the price of money</a></h2>
         <p class="dek">The 10-year Treasury yield fell this week and the S&amp;P 500 fell 8.6% anyway. That isn&#x27;t a rates story. Taking the sell-off apart, and what it means for the AI trade.</p>
         <p class="meta"><span>Markets</span><span>Nov 22, 2026</span><span>6 min read</span></p>
-        <div class="ctas" style="justify-content:flex-start;margin-top:22px"><a class="pill" href="/thoughts/rates-sell-off/">Read the take</a></div>
+        <div class="ctas"><a class="textlink" href="/thoughts/rates-sell-off/">Read the take</a></div>
       </div>
       <div class="calc">
+        <p class="calc-h">What a discount rate does to value</p>
         <p class="read" id="dc-out">$15.38</p>
         <p class="cap" id="dc-cap">Value today of $1 of cash flow next year, growing 3% a year forever, at a 9.5% discount rate.</p>
         <div class="fig" id="dc-fig" role="img" aria-label="Value of a growing cash flow falls as the discount rate rises from 6% to 12%"></div>
@@ -60,10 +62,23 @@
   </div>
 </section>
 
-<section class="sec gut">
+<section class="sec gut" aria-labelledby="pitches-title">
   <div class="wrap">
-    <div class="head rv"><h2>More thoughts.</h2></div>
-    <div class="segc rv" data-filter="t-grid" role="group" aria-label="Filter posts by topic"><span class="ind"></span><button type="button" data-k="" aria-pressed="true">All</button><button type="button" data-k="Companies" aria-pressed="false">Companies</button><button type="button" data-k="Credit" aria-pressed="false">Credit</button><button type="button" data-k="Deals" aria-pressed="false">Deals</button><button type="button" data-k="Reading notes" aria-pressed="false">Reading notes</button></div>
+    <div class="head head-row"><h2 id="pitches-title">Latest stock pitches</h2><a class="textlink" href="/research/">All research</a></div>
+    <div class="ratings"><table>
+<thead><tr><th scope="col">Company</th><th scope="col">Rating</th><th scope="col" class="n">Value per share</th><th scope="col" class="n hide-s">Price</th><th scope="col" class="n">Value vs price</th></tr></thead>
+<tbody>
+<tr><th scope="row"><a href="/research/eaton/">Eaton</a><span>Electrical equipment</span></th><td>Hold</td><td class="n">$281</td><td class="n hide-s">$311.33</td><td class="n">−10%</td></tr>
+<tr><th scope="row"><a href="/research/honeywell/">Honeywell</a><span>Industrial automation</span></th><td>Sell</td><td class="n">$171</td><td class="n hide-s">$212.64</td><td class="n">−20%</td></tr>
+<tr><th scope="row"><a href="/research/quantinuum/">Quantinuum</a><span>Quantum computing</span></th><td>Hold</td><td class="n">$26</td><td class="n hide-s">$27.74</td><td class="n">−7%</td></tr>
+</tbody></table>
+<p class="fnote">Prices at the Nov 20, 2026 close. Values are probability-weighted, from each pitch. Personal research, not investment advice.</p></div>
+  </div>
+</section>
+
+<section class="sec gut" aria-labelledby="more-title">
+  <div class="wrap">
+    <div class="head"><h2 id="more-title">More thoughts</h2></div>
     <div class="grid2" id="t-grid">
       <a class="cardlink rv" style="--d:0" href="/thoughts/ai-bottleneck/" data-k="Companies"><div class="card"><p class="kick">Companies</p><h3>Microsoft just told you where the AI bottleneck is</h3><p class="dek">It isn&#x27;t chips. When the biggest buyer of AI capacity can&#x27;t spend money fast enough, the constraint is buildings, power and the gear in between.</p><p class="meta"><span>Nov 21, 2026</span><span>2 min read</span></p></div></a>
       <a class="cardlink rv" style="--d:1" href="/thoughts/private-credit-defaults/" data-k="Credit"><div class="card"><p class="kick">Credit</p><h3>Private credit&#x27;s scariest number isn&#x27;t the default rate</h3><p class="dek">Fitch&#x27;s default rate has sat above 6% since April. Half of those defaults never reach a courtroom. The borrowers just stop paying cash.</p><p class="meta"><span>Nov 21, 2026</span><span>2 min read</span></p></div></a>
@@ -73,11 +88,11 @@
   </div>
 </section>
 
-<section class="sec gut" style="padding-top:0">
+<section class="sec gut">
   <div class="wrap">
-    <div class="banner rv">
+    <div class="banner">
       <p>New takes go up on LinkedIn first.</p>
-      <a class="pill" href="https://www.linkedin.com/in/joshuvajohnson">Follow on LinkedIn</a>
+      <a class="textlink" href="https://www.linkedin.com/in/joshuvajohnson">Follow on LinkedIn</a>
     </div>
   </div>
 </section>
