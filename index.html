@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Joshuva Johnson</title>
-<meta name="description" content="Joshuva Johnson, analyst at JPMorgan Chase in New York. Background, experience and how I work.">
+<meta name="description" content="ThoughtsbyJosh: takes on the latest developments in finance, plus research on companies, deals and industries by Joshuva Johnson.">
 <meta property="og:title" content="Joshuva Johnson">
-<meta property="og:description" content="Analyst at JPMorgan Chase in New York. Background, experience and how I work.">
+<meta property="og:description" content="Takes on the latest developments in finance, plus research on companies, deals and industries.">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231d1d1f'/%3E%3Cpath d='M14 44 L26 34 L36 39 L50 20' fill='none' stroke='%2300c805' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,21 +14,22 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* VOICE quiet, exact, product-grade: content first, nothing decorative
-   IDEA a product page for a person: Apple-style reveals and tiles, a Robinhood-style chart you can scrub
-   PICTURE a career line from a family store to JPMorgan, drawn as you arrive
-   COLOUR white and #f5f5f7 tiles, ink #1d1d1f, grey #6e6e73, one green #00c805 for chart marks; night is black
-   TYPE system SF Pro where available, Inter elsewhere; 700 headlines tracked tight, 17px body
-   LAYOUT centered hero, then left-aligned sections of rounded tiles; phone: one column, chart full width */
-:root{color-scheme:light dark;--bg:light-dark(#ffffff,#000000);--tile:light-dark(#f5f5f7,#161617);--tile2:light-dark(#ffffff,#2c2c2e);--ink:light-dark(#1d1d1f,#f5f5f7);--ink2:light-dark(#6e6e73,#a1a1a6);--rule:light-dark(#d2d2d7,#38383a);--up:light-dark(#00c805,#00d60b);--upink:light-dark(#0a7d24,#30d158);--quiet:light-dark(#c7c7cc,#48484a);--nav:light-dark(rgba(255,255,255,.76),rgba(22,22,23,.76));--r:28px;--gut:max(5vw,20px);--ease:cubic-bezier(.2,.8,.2,1)}
+   IDEA a product page for a person: Apple-style reveals and tiles, Robinhood-style live charts you can scrub
+   PICTURE the charts are the pictures: a discount-rate curve, a pitch method that changes as you scroll, real data inside each article
+   COLOUR white and #f5f5f7 tiles, ink #1d1d1f, grey #6e6e73, one green #00c805 for every chart mark; night is black
+   TYPE system SF Pro where available, Inter elsewhere; 700 headlines tracked tight, 17px body, 19px for reading
+   LAYOUT centered page heroes, left-aligned tiles and lists, articles in a 720px reading column; phone: one column */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#000000);--tile:light-dark(#f5f5f7,#161617);--tile2:light-dark(#ffffff,#2c2c2e);--ink:light-dark(#1d1d1f,#f5f5f7);--ink2:light-dark(#6e6e73,#a1a1a6);--rule:light-dark(#d2d2d7,#38383a);--up:light-dark(#00c805,#00d60b);--upink:light-dark(#0a7d24,#30d158);--quiet:light-dark(#c7c7cc,#48484a);--pro:light-dark(#000000,#161617);--nav:light-dark(rgba(255,255,255,.76),rgba(22,22,23,.76));--r:28px;--gut:max(5vw,20px);--ease:cubic-bezier(.2,.8,.2,1)}
 :root[data-theme=light]{color-scheme:light}
 :root[data-theme=dark]{color-scheme:dark}
 *{box-sizing:border-box;min-width:0}
+html{scroll-padding-top:72px}
 body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 -apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:clip}
 h1,h2,h3{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Inter,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-weight:700;letter-spacing:-.03em;line-height:1.05;margin:0;text-wrap:balance}
-h1{font-size:clamp(52px,8vw,96px);letter-spacing:-.04em}
+h1{font-size:clamp(40px,10.5vw,96px);letter-spacing:-.04em}
 h2{font-size:clamp(34px,4.6vw,56px)}
 h3{font-size:24px;font-weight:600;letter-spacing:-.02em;line-height:1.15}
-p,ul{margin:0}
+p,ul,ol,dl,dd,figure{margin:0}
 a{color:inherit}
 button{font:inherit;color:inherit}
 :focus-visible{outline:3px solid var(--up);outline-offset:3px;border-radius:6px}
@@ -37,88 +38,209 @@ button{font:inherit;color:inherit}
 .sec{padding-block:clamp(64px,9vw,128px)}
 .sub{font-size:clamp(19px,2vw,24px);line-height:1.35;color:var(--ink2);font-weight:500;letter-spacing:-.01em;text-wrap:balance}
 .small{font-size:14px;color:var(--ink2)}
+.kick{font-size:15px;font-weight:600;color:var(--upink)}
 .head{display:grid;gap:14px;margin-bottom:40px;max-width:760px}
 
 .nav{position:sticky;top:0;z-index:30;background:var(--nav);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid color-mix(in srgb,var(--rule) 60%,transparent)}
-.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:52px}
+.nav .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0 24px;min-height:52px}
 .mark{font-weight:600;font-size:17px;letter-spacing:-.01em;text-decoration:none;display:inline-flex;align-items:center;min-height:44px}
-.navlink{font-size:15px;color:var(--ink2);text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
-.navlink:hover{color:var(--ink)}
+.links{display:flex;gap:0 26px;list-style:none;padding:0}
+.links a{display:inline-flex;align-items:center;min-height:44px;font-size:15px;text-decoration:none;color:var(--ink2);transition:color .2s}
+.links a:hover,.links a[aria-current=page]{color:var(--ink)}
+.links a[aria-current=page]{font-weight:600}
 
 .hero{text-align:center;padding-top:clamp(88px,13vw,160px);padding-bottom:clamp(40px,6vw,72px)}
-.hero .sub{max-width:30ch;margin:20px auto 0}
+.hero .sub{max-width:32ch;margin:20px auto 0}
 .ctas{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 20px;margin-top:32px;align-items:center}
-.pill{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 22px;border-radius:980px;background:var(--ink);color:var(--bg);font-size:17px;font-weight:500;text-decoration:none;transition:transform .3s var(--ease),opacity .2s}
+.pill{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 22px;border-radius:980px;background:var(--ink);color:var(--bg);font-size:17px;font-weight:500;text-decoration:none;border:0;cursor:pointer;transition:transform .3s var(--ease),opacity .2s}
 .pill:hover{opacity:.86}
 .pill:active{transform:scale(.97)}
+.pill.light{background:#f5f5f7;color:#000}
+.textlink{color:var(--upink);text-decoration:none;font-size:17px;font-weight:500;min-height:44px;display:inline-flex;align-items:center;background:none;border:0;cursor:pointer;padding:0}
+.textlink:hover{text-decoration:underline;text-underline-offset:4px}
 
 .js .rv{opacity:0;transform:translateY(36px) scale(.985);transition:opacity 1s var(--ease) calc(var(--d,0)*90ms),transform 1.1s var(--ease) calc(var(--d,0)*90ms)}
 .js .rv.in{opacity:1;transform:none}
 .ln{fill:none;stroke:currentColor;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
 .js .rv .ln{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 2.2s cubic-bezier(.4,.1,.2,1) .2s}
 .js .rv.in .ln{stroke-dashoffset:0}
+
 .fig{position:relative;color:var(--up);touch-action:pan-y;cursor:crosshair}
 .fig>svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .xh{stroke:var(--ink2);stroke-width:1;stroke-dasharray:3 4}
-.dot{fill:var(--up);stroke:var(--tile);stroke-width:3}
+.dot{fill:var(--up);stroke:var(--tile2);stroke-width:3}
 .halo{fill:var(--up);opacity:.18}
-.mdot{fill:var(--tile);stroke:var(--quiet);stroke-width:2;transition:opacity .3s}
-.mv{transition:transform .5s var(--ease)}
+.tick{fill:var(--ink2);font-size:13px}
+.mv{transition:transform .12s linear}
 @media(prefers-reduced-motion:reduce){.mv{transition:none}}
 
-.ctile{background:var(--tile);border-radius:36px;padding:clamp(26px,4vw,48px)}
-.ctop{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:8px 24px;min-height:96px}
-.ctop h3{font-size:clamp(30px,3.4vw,44px);font-weight:700;letter-spacing:-.035em}
-.ctop p{color:var(--ink2);font-size:17px;margin-top:6px}
-.ctile .fig{height:clamp(200px,26vw,320px);margin:24px 0 12px}
-.range{display:flex;flex-wrap:wrap;gap:4px}
-.range button{border:0;background:none;min-height:44px;padding:0 14px;border-radius:980px;font-size:15px;font-weight:600;color:var(--ink2);cursor:pointer;transition:background .3s,color .3s}
-.range button:hover{color:var(--ink)}
-.range button[aria-pressed=true]{color:var(--upink);background:color-mix(in srgb,var(--up) 14%,transparent)}
+.feature{background:var(--tile);border-radius:36px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:40px 56px;padding:clamp(28px,4.5vw,56px);align-items:center}
+.feature h2{font-size:clamp(32px,3.6vw,48px);margin:12px 0 16px}
+.feature .dek{font-size:19px;color:var(--ink2);max-width:40ch}
+.meta{display:flex;flex-wrap:wrap;gap:4px 18px;font-size:14px;color:var(--ink2);margin-top:18px}
+.calc{background:var(--tile2);border-radius:var(--r);padding:28px 28px 24px;display:grid;gap:6px}
+.read{font-size:clamp(44px,5vw,60px);font-weight:700;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
+.calc .cap{color:var(--ink2);font-size:15px;max-width:44ch}
+.calc .fig{height:200px;margin:14px 0 4px}
+.slide{display:grid;grid-template-columns:auto minmax(0,1fr) 3.6em;gap:14px;align-items:center;font-size:15px}
+.slide output{font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:44px;background:transparent;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:4px;background:var(--quiet)}
+input[type=range]::-moz-range-track{height:4px;border-radius:4px;background:var(--quiet)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;margin-top:-11px;border-radius:50%;background:#fff;border:0;box-shadow:0 1px 4px rgba(0,0,0,.3),0 0 0 2px var(--up)}
+input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;background:#fff;border:0;box-shadow:0 1px 4px rgba(0,0,0,.3),0 0 0 2px var(--up)}
+.calc .delta{font-size:15px;font-weight:500}
 
-.letter{max-width:760px}
-.letter h2{margin-bottom:28px}
-.letter p{font-size:clamp(19px,1.9vw,23px);line-height:1.5;letter-spacing:-.01em;margin-bottom:20px}
-.letter p.sig{font-weight:600}
-.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;border-top:1px solid var(--rule);padding-top:36px}
-.stat b{display:block;font-size:clamp(52px,6vw,80px);font-weight:700;letter-spacing:-.045em;line-height:1;font-variant-numeric:tabular-nums}
-.stat span{display:block;color:var(--ink2);margin-top:10px;max-width:18ch}
+.segc{position:relative;display:inline-flex;gap:2px;padding:4px;background:var(--tile);border-radius:980px;max-width:100%;overflow-x:auto;scrollbar-width:none;margin-bottom:28px}
+.segc::-webkit-scrollbar{display:none}
+.segc button{position:relative;z-index:1;flex:none;border:0;background:none;min-height:44px;padding:0 18px;border-radius:980px;font-size:15px;font-weight:500;color:var(--ink2);cursor:pointer;white-space:nowrap;transition:color .3s}
+.segc button[aria-pressed=true]{color:var(--ink)}
+.segc .ind{position:absolute;z-index:0;top:4px;bottom:4px;left:0;width:0;border-radius:980px;background:var(--tile2);box-shadow:0 1px 4px rgba(0,0,0,.12);transition:transform .5s var(--ease),width .5s var(--ease)}
+
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.cardlink{text-decoration:none;color:inherit;display:block;height:100%;border-radius:var(--r)}
+.card{background:var(--tile);border-radius:var(--r);padding:30px 28px 26px;display:flex;flex-direction:column;gap:10px;min-height:260px;height:100%;transition:transform .6s var(--ease)}
+.cardlink:hover .card{transform:scale(1.015)}
+.card .dek{color:var(--ink2);font-size:16px}
+.card .meta{margin-top:auto;padding-top:14px}
+
+.pro{background:var(--pro);color:#f5f5f7;border-radius:36px;padding:clamp(32px,6vw,72px)}
+.pro .kick{color:#00c805}
+.pro h2{font-size:clamp(48px,7vw,84px);letter-spacing:-.04em;margin:12px 0 10px}
+.pro .sub{color:#a1a1a6;max-width:34ch}
+.stats4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;margin-top:40px}
+.stats4 div{border-top:1px solid #3a3a3c;padding-top:14px}
+.stats4 b{display:block;font-size:clamp(26px,3vw,36px);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.stats4 span{font-size:14px;color:#a1a1a6}
+.pro .ctas{justify-content:flex-start;margin-top:36px}
+
 .list{background:var(--tile);border-radius:var(--r);padding:4px 28px}
-.xrow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.7fr);gap:8px 40px;padding:28px 0;border-top:1px solid var(--rule)}
-.xrow:first-child{border-top:0}
-.xrow h3{font-size:22px}
-.xrow .who p{color:var(--ink2);font-size:15px;margin-top:4px}
-.xrow ul{padding-left:1.1em;display:grid;gap:10px}
-.xrow li::marker{color:var(--up)}
-.xrow ul.intern{list-style:none;padding:0;gap:0}
-.intern li{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:4px 24px;padding:12px 0;border-top:1px solid var(--rule)}
-.intern li:first-child{border-top:0;padding-top:0}
-.intern span{color:var(--ink2)}
-.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
-.tile{background:var(--tile);border-radius:var(--r);padding:clamp(26px,3vw,40px);display:flex;flex-direction:column;gap:18px}
-.tile h3{font-size:clamp(24px,2.4vw,30px);font-weight:700;letter-spacing:-.03em}
-.edu{list-style:none;padding:0;display:grid;gap:16px}
-.edu b{display:block}
-.edu span{color:var(--ink2)}
-.tags{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0}
-.tags li{padding:8px 14px;background:var(--tile2);border-radius:980px;font-size:15px}
-.center{text-align:center}
-.center .sub{max-width:34ch;margin:18px auto 0}
+.lrow{display:grid;grid-template-columns:150px minmax(0,1fr) 170px;gap:6px 28px;padding:24px 0;border-top:1px solid var(--rule);align-items:baseline;text-decoration:none;color:inherit}
+.lrow:first-child{border-top:0}
+.lrow .kick{font-size:14px}
+.lrow h3{font-size:20px;margin-bottom:6px;transition:color .2s}
+.lrow:hover h3{color:var(--upink)}
+.lrow p{color:var(--ink2);font-size:15px;max-width:62ch}
+.lrow .tp{font-size:14px;color:var(--ink2);text-align:right}
 
-/* Hover light: a soft green gradient follows the pointer across the page and inside each tile */
-.ambient{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:0;transition:opacity .8s ease;background:radial-gradient(720px circle at var(--ax,50%) var(--ay,0%),color-mix(in srgb,var(--up) 9%,transparent),transparent 65%)}
+.scrolly{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:64px}
+.st{min-height:66vh;display:flex;flex-direction:column;justify-content:center;gap:12px;transition:opacity .5s var(--ease)}
+.io .st:not(.on){opacity:.25}
+.st h3{font-size:clamp(28px,3vw,40px);font-weight:700;letter-spacing:-.03em}
+.st>p:not(.kick){font-size:19px;color:var(--ink2);max-width:34ch}
+.stage{position:sticky;top:calc(52px + 8vh);height:min(76vh,580px)}
+.frame{position:absolute;inset:0;background:var(--tile);border-radius:36px;padding:clamp(28px,3.5vw,44px);display:flex;flex-direction:column;justify-content:center;opacity:0;transform:translateY(18px) scale(.97);transition:opacity .6s var(--ease),transform .8s var(--ease)}
+.frame.on{opacity:1;transform:none}
+.inviz{display:none}
+.fh{font-size:15px;color:var(--ink2);margin-bottom:18px}
+.frame .fh{font-size:17px;margin-bottom:22px}
+.hb{display:grid;grid-template-columns:8.5em minmax(0,1fr) 6.2em;gap:12px;align-items:center;font-size:15px;padding:7px 0}
+.frame .hb{font-size:16px;padding:9px 0}
+.tr{height:18px;position:relative}
+.frame .tr{height:22px}
+.b{position:absolute;top:0;bottom:0;left:var(--l,0%);width:var(--w);background:var(--up);border-radius:5px;transform-origin:left}
+.b.q{background:var(--quiet)}
+.px{position:absolute;top:-8px;bottom:-8px;left:var(--p);border-left:2px dashed var(--ink)}
+.v{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;font-weight:500}
+.axis{display:grid;grid-template-columns:8.5em minmax(0,1fr) 6.2em;gap:12px;font-size:13px;color:var(--ink2);margin-top:6px}
+.tk{position:relative;height:18px}
+.tk span{position:absolute;transform:translateX(-50%);white-space:nowrap}
+.js .frame .b,.js .rv .b,.js .frame .sg,.js .rv .sg{transform:scaleX(0);transition:transform 1s var(--ease) calc(.15s + var(--j,0)*90ms)}
+.js .frame.on .b,.js .rv.in .b,.js .frame.on .sg,.js .rv.in .sg{transform:none}
+.mix{display:flex;height:44px;gap:3px;margin-bottom:18px}
+.sg{background:var(--up);border-radius:8px;transform-origin:left}
+.sg.s2{background:color-mix(in srgb,var(--up) 55%,var(--tile))}
+.sg.s3{background:color-mix(in srgb,var(--up) 25%,var(--tile))}
+.legend{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;font-size:15px;color:var(--ink2)}
+.legend b{display:block;font-size:32px;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.chain{display:grid;grid-template-columns:minmax(0,1fr) 28px minmax(0,1fr) 28px minmax(0,1fr);align-items:center}
+.box{background:var(--tile2);border-radius:14px;padding:16px 8px;text-align:center;font-size:15px;font-weight:600;line-height:1.3}
+.arr{height:2px;background:var(--up);position:relative}
+.arr::after{content:"";position:absolute;right:-1px;top:-5px;border-top:6px solid transparent;border-bottom:6px solid transparent;border-left:8px solid var(--up)}
+.checks{list-style:none;padding:0;margin-top:22px;display:grid;gap:10px;font-size:15px}
+.checks li{display:grid;grid-template-columns:24px minmax(0,1fr)}
+.checks li::before{content:"✓";color:var(--upink);font-weight:700}
+.fnote{font-size:14px;color:var(--ink2);margin-top:16px}
+.fnote b{color:var(--ink);font-variant-numeric:tabular-nums}
+
+.banner{background:var(--tile);border-radius:var(--r);padding:clamp(24px,3.5vw,40px) clamp(24px,4vw,48px);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px 32px}
+.banner p{font-size:clamp(21px,2.4vw,30px);font-weight:700;letter-spacing:-.03em;line-height:1.15}
+
+/* About: a plain spec sheet */
+.spec{max-width:900px;margin-inline:auto}
+.srow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.6fr);gap:8px 40px;padding:30px 0;border-top:1px solid var(--rule)}
+.srow:last-child{border-bottom:1px solid var(--rule)}
+.srow>h2{font-size:21px;font-weight:600;letter-spacing:-.02em;line-height:1.3}
+.srow .body{display:grid;gap:16px;font-size:17px}
+.srow .body p{max-width:62ch}
+.entry b{display:block;font-weight:600}
+.entry span{color:var(--ink2)}
+.srow ul{padding-left:1.1em;display:grid;gap:8px;color:var(--ink2)}
+.srow li::marker{color:var(--up)}
+.tags,.srow ul.tags{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0}
+.tags li{padding:8px 14px;background:var(--tile);border-radius:980px;font-size:15px;color:var(--ink)}
+
+/* Articles */
+.artwrap{max-width:740px;margin:0 auto;padding-top:clamp(48px,7vw,88px);padding-bottom:clamp(56px,8vw,104px)}
+.back{margin-bottom:28px}
+.artwrap h1{font-size:clamp(36px,5.2vw,58px);letter-spacing:-.035em;line-height:1.05;margin:12px 0 18px}
+.artwrap .dek{font-size:clamp(19px,2vw,23px);line-height:1.4;color:var(--ink2);font-weight:500;letter-spacing:-.01em}
+.byline{display:flex;flex-wrap:wrap;gap:4px 18px;font-size:15px;color:var(--ink2);margin:22px 0 8px;padding-bottom:26px;border-bottom:1px solid var(--rule)}
+.byline b{color:var(--ink);font-weight:600}
+.prose{font-size:19px;line-height:1.65;margin-top:32px}
+.prose p{margin:0 0 1.1em}
+.prose h2{font-size:clamp(24px,2.6vw,30px);letter-spacing:-.025em;line-height:1.2;margin:1.9em 0 .6em}
+.prose ul,.prose ol{margin:0 0 1.2em;padding-left:1.2em;display:grid;gap:10px}
+.prose li::marker{color:var(--up)}
+.prose strong{font-weight:600}
+.tablewrap{overflow-x:auto;margin:28px 0;background:var(--tile);border-radius:22px;padding:8px 20px}
+.prose table{width:100%;border-collapse:collapse;font-size:15px;line-height:1.4}
+.prose th,.prose td{padding:12px 8px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
+.prose tr:last-child td{border-bottom:0}
+.prose th{font-weight:600;color:var(--ink2);font-size:14px}
+.prose .n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.prose tr.tot td{font-weight:600}
+.kf{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:30px 0}
+.kf div{background:var(--tile);border-radius:20px;padding:18px 18px 16px}
+.kf b{display:block;font-size:clamp(20px,2.2vw,27px);overflow-wrap:anywhere;font-weight:700;letter-spacing:-.035em;line-height:1.1;font-variant-numeric:tabular-nums}
+.kf span{display:block;font-size:14px;color:var(--ink2);line-height:1.35;margin-top:6px}
+.kf.dark div{background:var(--pro);color:#f5f5f7}
+.kf.dark span{color:#a1a1a6}
+.kf.dark .up{color:#00c805}
+.chartbox{background:var(--tile);border-radius:24px;padding:22px 22px 18px;margin:30px 0;font-size:15px;line-height:1.4}
+.wim{background:color-mix(in srgb,var(--up) 10%,var(--tile));border-radius:24px;padding:22px 24px;margin:36px 0 8px}
+.wim .kick{margin-bottom:6px}
+.wim p:last-child{margin-bottom:0}
+.sources{margin-top:44px;padding-top:22px;border-top:1px solid var(--rule)}
+.sources h2{font-size:19px;font-weight:600;letter-spacing:-.01em;margin-bottom:12px}
+.sources ol{font-size:14px;color:var(--ink2);padding-left:1.3em;display:grid;gap:6px;line-height:1.45}
+.sources a{color:var(--upink);text-decoration:none;overflow-wrap:anywhere}
+.sources a:hover{text-decoration:underline}
+.disc{font-size:14px;color:var(--ink2);margin-top:18px}
+.nextup{margin-top:48px;display:block;text-decoration:none;color:inherit;background:var(--tile);border-radius:var(--r);padding:26px 28px;position:relative;isolation:isolate}
+.nextup .kick{margin-bottom:6px}
+.nextup h3{font-size:22px}
+
+/* Hover light: a small soft green glow follows the pointer */
+.ambient{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:0;transition:opacity .8s ease;background:radial-gradient(260px circle at var(--ax,50%) var(--ay,0%),color-mix(in srgb,var(--up) 7%,transparent),transparent 70%)}
 html.hovering .ambient{opacity:1}
-.tile,.ctile,.list{position:relative;isolation:isolate}
-.tile::before,.ctile::before,.list::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .45s ease;background:radial-gradient(440px circle at var(--mx,50%) var(--my,50%),color-mix(in srgb,var(--up) 16%,transparent),transparent 62%)}
-.tile:hover::before,.ctile:hover::before,.list:hover::before{opacity:1}
+.feature,.card,.pro,.list,.banner,.nextup,.chartbox,.kf div{position:relative}
+.feature,.card,.pro,.list,.banner,.frame,.nextup,.chartbox,.kf div{isolation:isolate}
+.feature::before,.card::before,.pro::before,.list::before,.banner::before,.frame::before,.nextup::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .4s ease;background:radial-gradient(170px circle at var(--mx,50%) var(--my,50%),color-mix(in srgb,var(--up) 15%,transparent),transparent 70%)}
+.pro::before{background:radial-gradient(200px circle at var(--mx,50%) var(--my,50%),rgba(0,200,5,.2),transparent 70%)}
+.feature:hover::before,.card:hover::before,.pro:hover::before,.list:hover::before,.banner:hover::before,.frame:hover::before,.nextup:hover::before{opacity:1}
 
 footer{background:var(--tile);color:var(--ink2);font-size:13px;padding-block:28px 40px}
-footer .wrap{display:grid;gap:10px}
+footer .wrap{display:grid;gap:14px}
+footer .top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;padding-bottom:14px;border-bottom:1px solid var(--rule)}
+footer .links a{font-size:13px;min-height:32px}
+footer .mark{font-size:13px;min-height:32px;color:var(--ink)}
 footer p{max-width:80ch}
 
-@media(max-width:1000px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:900px){.xrow{grid-template-columns:minmax(0,1fr)}}
-@media(max-width:640px){body{font-size:16px}.two{grid-template-columns:minmax(0,1fr)}.list{padding:4px 20px}.intern li{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:1000px){.parts,.stats4{grid-template-columns:repeat(2,minmax(0,1fr))}.lrow{grid-template-columns:120px minmax(0,1fr)}.lrow .tp{grid-column:2;text-align:left}}
+@media(max-width:900px){.feature{grid-template-columns:minmax(0,1fr)}.scrolly{grid-template-columns:minmax(0,1fr);gap:0}.stage{display:none}.st{min-height:0;padding:28px 0;border-top:1px solid var(--rule)}.io .st:not(.on){opacity:1}.inviz{display:block;background:var(--tile);border-radius:var(--r);padding:24px;margin-top:10px}.srow{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:700px){.kf{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){body{font-size:16px}.grid2{grid-template-columns:minmax(0,1fr)}.card{min-height:0}.lrow{grid-template-columns:minmax(0,1fr);gap:4px}.lrow .tp{grid-column:1}.list{padding:4px 20px}.hb,.axis{grid-template-columns:6.4em minmax(0,1fr) 5.6em;gap:8px;font-size:14px}.links{gap:0 18px}.calc{padding:22px 18px 18px}.slide{grid-template-columns:minmax(0,1fr) 3.6em}.slide label{grid-column:1/-1}.prose{font-size:18px}.tablewrap{padding:4px 12px}}
 </style>
 </head>
 <body>
@@ -126,114 +248,571 @@ footer p{max-width:80ch}
 
 <nav class="nav gut" aria-label="Main">
   <div class="wrap">
-    <a class="mark" href="#top">Joshuva Johnson</a>
-    <a class="navlink" href="https://www.linkedin.com/in/joshuvajohnson">LinkedIn</a>
+    <a class="mark" href="#thoughts">Joshuva Johnson</a>
+    <ul class="links">
+      <li><a href="#thoughts" data-nav="thoughts">Thoughts</a></li>
+      <li><a href="#research" data-nav="research">Research</a></li>
+      <li><a href="#about" data-nav="about">About</a></li>
+    </ul>
   </div>
 </nav>
 
-<main id="top">
+<main>
+<!-- ================= THOUGHTS ================= -->
+<div id="v-thoughts" class="view">
   <header class="hero gut">
     <div class="wrap">
-      <h1 class="rv">Joshuva Johnson.</h1>
-      <p class="sub rv" style="--d:1">Analyst at JPMorgan Chase in New York. First in my family to graduate from college.</p>
-      <div class="ctas rv" style="--d:2"><a class="pill" href="https://www.linkedin.com/in/joshuvajohnson">Connect on LinkedIn</a></div>
+      <h1 class="rv">ThoughtsbyJosh</h1>
+      <p class="sub rv" style="--d:1">Exercising my freedom of speech to give my take on the latest developments in finance.</p>
     </div>
   </header>
 
   <section class="gut">
     <div class="wrap">
-      <div class="ctile rv" data-hook="career" style="--d:2">
-        <div class="ctop">
-          <div><h3 id="cc-t">JPMorgan Chase</h3><p id="cc-s">Global Finance &amp; Business Management analyst, New York</p></div>
-          <p class="small" id="cc-n">6 of 6</p>
+      <article class="feature rv" style="--d:2">
+        <div>
+          <p class="kick">Hot take</p>
+          <h2 id="hot-title">This sell-off isn't about AI. It's about a 5% risk-free rate.</h2>
+          <p class="dek" id="hot-dek"></p>
+          <p class="meta" id="hot-meta"></p>
+          <div class="ctas" style="justify-content:flex-start;margin-top:22px"><a class="pill" href="#a-rates">Read the take</a></div>
         </div>
-        <div class="fig" id="cc-fig" role="img" aria-label="Career path from a family store in Kerala to JPMorgan Chase, rising over six steps"></div>
-        <div class="range" id="cc-range" role="group" aria-label="Choose a point in my career"></div>
-      </div>
+        <div class="calc">
+          <p class="read" id="dc-out">$15.38</p>
+          <p class="cap" id="dc-cap">Value today of $1 of cash flow next year, growing 3% a year forever, at a 9.5% discount rate.</p>
+          <div class="fig" id="dc-fig" role="img" aria-label="Value of a growing cash flow falls as the discount rate rises from 6% to 12%"></div>
+          <div class="slide"><label for="dc-r">Discount rate</label><input id="dc-r" type="range" min="6" max="12" step="0.1" value="9.5"><output id="dc-v" for="dc-r">9.5%</output></div>
+          <p class="delta" id="dc-delta"></p>
+        </div>
+      </article>
     </div>
   </section>
 
   <section class="sec gut">
-    <div class="wrap letter">
-      <h2 class="rv">How I work.</h2>
-      <p class="rv">I started working at 14, behind the counter of my dad's store. Everything since, from a Wendy's register to an Amazon warehouse to five finance internships, taught me the same lesson: show the work.</p>
-      <p class="rv">I didn't come up through a target school or a family network, so I'd rather let the work speak. When I look at a company, I go end to end: how the business makes money, what the market might be missing, a model I build myself, and the risks that would prove me wrong.</p>
-      <p class="rv">I learn best by teaching. Explaining something to people who will check my numbers keeps the work honest, and it is the fastest way I know to understand an industry.</p>
-      <p class="rv sig">Joshuva</p>
+    <div class="wrap">
+      <div class="head rv"><h2>More thoughts.</h2></div>
+      <div class="segc rv" id="t-seg" role="group" aria-label="Filter posts by topic"><span class="ind"></span></div>
+      <div class="grid2" id="t-grid"></div>
     </div>
   </section>
+
+  <section class="sec gut" style="padding-top:0">
+    <div class="wrap">
+      <div class="banner rv">
+        <p>New takes go up on LinkedIn first.</p>
+        <a class="pill" href="https://www.linkedin.com/in/joshuvajohnson">Follow on LinkedIn</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= RESEARCH ================= -->
+<div id="v-research" class="view" hidden>
+  <header class="hero gut">
+    <div class="wrap">
+      <h1 class="rv">Research.</h1>
+      <p class="sub rv" style="--d:1">Stock pitches, deal breakdowns and industry notes, built from public filings and data.</p>
+      <div class="ctas rv" style="--d:2">
+        <button class="pill" type="button" data-go="r-lib">Browse the library</button>
+        <button class="textlink" type="button" data-go="r-method">How I build a pitch</button>
+      </div>
+    </div>
+  </header>
 
   <section class="gut">
     <div class="wrap">
-      <div class="stats">
-        <div class="stat rv" data-hook="count"><b data-to="5" data-dec="0">5</b><span>Internships across four firms</span></div>
-        <div class="stat rv" style="--d:1" data-hook="count"><b data-to="2" data-dec="0">2</b><span>Bachelor's degrees, Finance and Business Analytics</span></div>
-        <div class="stat rv" style="--d:2" data-hook="count"><b data-to="3.89" data-dec="2">3.89</b><span>GPA at Florida International University</span></div>
-        <div class="stat rv" style="--d:3" data-hook="count"><b data-to="3" data-dec="0">3</b><span>Certifications: Bloomberg, Alteryx, Tableau</span></div>
-      </div>
+      <article class="pro rv" style="--d:2">
+        <p class="kick">Stock pitch, diversified industrials</p>
+        <h2>Long Eaton.</h2>
+        <p class="sub">The market is pricing a slowdown the order book hasn't shown.</p>
+        <div class="stats4">
+          <div><b>Long</b><span>Rating</span></div>
+          <div><b>$407</b><span>12-month target</span></div>
+          <div><b>+19%</b><span>Upside to target</span></div>
+          <div><b>$341.72</b><span>Price, Nov 6, 2026 close</span></div>
+        </div>
+        <div class="ctas"><a class="pill light" href="#a-eaton">Read the pitch</a></div>
+      </article>
     </div>
   </section>
 
-  <section class="sec gut">
+  <section class="sec gut" id="r-lib">
     <div class="wrap">
-      <div class="head rv"><h2>Experience.</h2></div>
-      <div class="list rv">
-        <div class="xrow">
-          <div class="who"><h3>JPMorgan Chase</h3><p>Analyst, Global Finance &amp; Business Management. New York, 2026 to present.</p></div>
+      <div class="head rv"><h2>Library.</h2><p class="sub">Every pitch, deal breakdown and note in one place.</p></div>
+      <div class="segc rv" id="r-seg" role="group" aria-label="Filter research by type"><span class="ind"></span></div>
+      <div class="list rv" id="r-list"></div>
+    </div>
+  </section>
+
+  <section class="sec gut" id="r-method" style="padding-top:0">
+    <div class="wrap">
+      <div class="head rv"><h2>How I build a pitch.</h2><p class="sub">The same five steps for every company. Figures in these charts are illustrative.</p></div>
+      <div class="scrolly">
+        <div id="steps"></div>
+        <div class="stage" id="stage" aria-hidden="true"></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= ABOUT ================= -->
+<div id="v-about" class="view" hidden>
+  <header class="hero gut">
+    <div class="wrap">
+      <h1 class="rv">Joshuva Johnson.</h1>
+      <p class="sub rv" style="--d:1">I'm an analyst at JPMorgan Chase in New York, and I write about markets, companies and deals.</p>
+      <div class="ctas rv" style="--d:2"><a class="pill" href="https://www.linkedin.com/in/joshuvajohnson">Connect on LinkedIn</a></div>
+    </div>
+  </header>
+
+  <section class="gut" style="padding-bottom:clamp(64px,9vw,128px)">
+    <div class="spec">
+      <div class="srow rv">
+        <h2>This site</h2>
+        <div class="body">
+          <p>This is where I keep my work. Thoughts are short takes on what's moving markets right now. Research is slower: stock pitches, deal breakdowns and industry notes, each with the numbers and sources behind it.</p>
+          <p>Everything here uses public information, and the views are my own. If you find a mistake, tell me and I'll fix it.</p>
+        </div>
+      </div>
+      <div class="srow rv">
+        <h2>Work</h2>
+        <div class="body">
+          <div class="entry"><b>JPMorgan Chase</b><span>Analyst, Global Finance &amp; Business Management. New York, 2026 to present.</span></div>
           <ul>
-            <li>Prepare FR Y-14Q regulatory filings, including PPNR (Schedule G), and line-of-business analytics on the income statement and balance sheet.</li>
-            <li>Automated quarterly KPI tracking with an Alteryx workflow that feeds Tableau and sends variance alerts.</li>
-            <li>Built a dashboard that tracks Federal Reserve FAQ updates, using OCR extraction, Excel and Confluence.</li>
-            <li>Build quarterly decks on Fed submission results, and executive decks with data, variances and commentary for management.</li>
-          </ul>
-        </div>
-        <div class="xrow">
-          <div class="who"><h3>Internships</h3><p>Banking, corporate finance and wealth management.</p></div>
-          <ul class="intern">
-            <li><b>JPMorgan Chase, CIB</b><span>Planning and analysis</span></li>
-            <li><b>Frontier Airlines</b><span>Financial planning and analysis</span></li>
-            <li><b>JM Family, Southeast Financial</b><span>Securitization accounting; full-time offer</span></li>
-            <li><b>UBS</b><span>Wealth management, two internships</span></li>
+            <li>Regulatory reporting, including FR Y-14Q and PPNR, and line-of-business analytics.</li>
+            <li>Automation of quarterly KPI tracking and variance alerts with Alteryx and Tableau.</li>
+            <li>Quarterly and executive decks on results, variances and commentary.</li>
           </ul>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="gut">
-    <div class="wrap two">
-      <div class="tile rv">
-        <h3>Education</h3>
-        <ul class="edu">
-          <li><b>Florida International University, 2026</b><span>Bachelor's degrees in Finance and Business Analytics, 3.89 GPA. Certificate in Banking.</span></li>
-          <li><b>Before FIU</b><span>Two semesters at the University of Florida, then an associate degree.</span></li>
-          <li><b>Programs</b><span>SEO and MLT alum. Stock pitches and DCF models through SEO, Project Destined, Forage, Financial Edge and ALPFA.</span></li>
-        </ul>
+      <div class="srow rv">
+        <h2>Before</h2>
+        <div class="body">
+          <div class="entry"><b>JPMorgan Chase, Corporate &amp; Investment Bank</b><span>Planning and analysis intern</span></div>
+          <div class="entry"><b>Frontier Airlines</b><span>Financial planning and analysis intern</span></div>
+          <div class="entry"><b>JM Family, Southeast Financial</b><span>Securitization accounting intern</span></div>
+          <div class="entry"><b>UBS</b><span>Wealth management intern</span></div>
+        </div>
       </div>
-      <div class="tile rv" style="--d:1">
-        <h3>Skills</h3>
-        <ul class="tags">
-          <li>Three-statement modeling</li><li>DCF and trading comps</li><li>Bloomberg</li><li>Alteryx</li><li>Tableau</li><li>Regulatory reporting</li><li>Workflow automation</li><li>Executive decks</li>
-        </ul>
+      <div class="srow rv">
+        <h2>Education</h2>
+        <div class="body">
+          <div class="entry"><b>Florida International University</b><span>Bachelor's degrees in Finance and Business Analytics, 2026. Certificate in Banking.</span></div>
+          <div class="entry"><b>Programs</b><span>SEO and MLT.</span></div>
+        </div>
+      </div>
+      <div class="srow rv">
+        <h2>Certifications</h2>
+        <div class="body">
+          <ul class="tags"><li>Bloomberg</li><li>Alteryx</li><li>Tableau</li></ul>
+        </div>
+      </div>
+      <div class="srow rv">
+        <h2>Skills</h2>
+        <div class="body">
+          <ul class="tags"><li>Financial modeling</li><li>DCF and trading comps</li><li>Regulatory reporting</li><li>Excel</li><li>Alteryx</li><li>Tableau</li><li>PowerPoint</li></ul>
+        </div>
+      </div>
+      <div class="srow rv">
+        <h2>Contact</h2>
+        <div class="body">
+          <p>LinkedIn is the best way to reach me: <a class="textlink" href="https://www.linkedin.com/in/joshuvajohnson" style="min-height:0;display:inline">linkedin.com/in/joshuvajohnson</a></p>
+        </div>
       </div>
     </div>
   </section>
+</div>
 
-  <section class="sec gut center">
-    <div class="wrap">
-      <h2 class="rv">Let's talk.</h2>
-      <p class="sub rv" style="--d:1">About companies, deals and markets, or to compare notes on a career in finance.</p>
-      <div class="ctas rv" style="--d:2"><a class="pill" href="https://www.linkedin.com/in/joshuvajohnson">Connect on LinkedIn</a><span class="small">linkedin.com/in/joshuvajohnson</span></div>
-    </div>
-  </section>
+<!-- ================= ARTICLE ================= -->
+<div id="v-article" class="view" hidden>
+  <article class="artwrap gut" id="art"></article>
+</div>
 </main>
 
 <footer class="gut">
   <div class="wrap">
-    <p>Views are my own and do not represent my employer. Nothing on this site is investment advice.</p>
+    <div class="top">
+      <a class="mark" href="#thoughts">Joshuva Johnson</a>
+      <ul class="links">
+        <li><a href="#thoughts" data-nav="thoughts">Thoughts</a></li>
+        <li><a href="#research" data-nav="research">Research</a></li>
+        <li><a href="#about" data-nav="about">About</a></li>
+      </ul>
+    </div>
+    <p>Views are my own and do not represent my employer. Nothing on this site is investment advice. All analysis uses public information.</p>
     <p>© 2026 Joshuva Johnson</p>
   </div>
 </footer>
+
+<!-- ================= ARTICLE BODIES ================= -->
+
+<template id="t-a-rates">
+<div class="prose">
+<p>Here's the story you'll hear this weekend: the AI trade cracked. Nvidia's numbers were strong, the stocks fell anyway, so the boom must be over.</p>
+<p>I don't buy it. Not because AI stocks can't fall, but because the market is telling a simpler story, and it's written in the bond market.</p>
+<h2>The number that moved</h2>
+<p>The 10-year Treasury yield closed at about 5.05% on Thursday. At the end of February it was under 4%. That's more than a full percentage point added to the risk-free rate in nine months.</p>
+<p>The Fed is pushing the same way. It raised rates in September, held at 3.75% to 4.00% in October with two officials voting for another hike, and after the October jobs report futures priced roughly an 80% chance of a December increase.</p>
+<p>On Thursday the S&amp;P 500 fell for a sixth straight day, its longest losing streak in two and a half years, leaving it about 8% below its October high. The AP listed high interest rates right alongside AI worries as the cause.</p>
+<h2>Why the AI names fall first</h2>
+<p>Every stock is a claim on future cash flows, discounted back at some rate. A utility pays you mostly in the next few years. A company priced on what AI might earn in 2032 pays you mostly in the distant future. That's duration, the same idea bond traders use: the further out the cash, the more a change in the discount rate moves today's value.</p>
+<p>Run the simplest valuation there is: one dollar of cash flow next year, growing 3% a year forever. At an 8% discount rate it's worth $20. At 9.5% it's worth about $15.38. Nothing about the business changed. The value fell 23%.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Discount rate</th><th class="n">Value of $1, growing 3%</th><th class="n">Change vs 8%</th></tr></thead>
+<tbody>
+<tr><td>8.0%</td><td class="n">$20.00</td><td class="n">—</td></tr>
+<tr><td>9.0%</td><td class="n">$16.67</td><td class="n">−17%</td></tr>
+<tr><td>9.5%</td><td class="n">$15.38</td><td class="n">−23%</td></tr>
+<tr><td>10.0%</td><td class="n">$14.29</td><td class="n">−29%</td></tr>
+<tr><td>10.5%</td><td class="n">$13.33</td><td class="n">−33%</td></tr>
+</tbody></table></div>
+<p>And 9.5% isn't a scary hypothetical. Aswath Damodaran's implied equity risk premium was 4.20% on October 1, measured against a 5.29% Treasury rate. Add the two and the cost of equity for the average stock is right around 9.5%.</p>
+<h2>My take</h2>
+<p>The AI story didn't break this week. The price of waiting for it went up. That distinction matters, because it changes what you do about it. If the problem were AI demand, you'd sell everything that depends on it. If the problem is the discount rate, you look for businesses whose cash shows up sooner: real orders, real backlog, real free cash flow this year.</p>
+<p>That's why I'm more interested in the companies selling power equipment into data centers than in the ones promising what data centers will earn in five years. Same theme, shorter duration.</p>
+<div class="wim"><p class="kick">What would change my mind</p><p>If yields fall back below 4.5% and the AI names keep sliding anyway, this was never a rates story. And if analysts start cutting 2027 earnings estimates rather than multiples, the problem is the business, not the discount rate.</p></div>
+</div>
+<section class="sources"><h2>Sources</h2><ol>
+<li><a href="https://www.morningstar.com/news/dow-jones/202611198503/10-year-treasury-yield-falls-to-5051-data-talk">10-Year Treasury Yield Falls to 5.051%</a>, Dow Jones via Morningstar, Nov 19, 2026</li>
+<li><a href="https://www.wealthmanagement.com/fixed-income/fed-holds-rates-says-more-data-will-help-next-decision">Fed Holds Rates, Says More Data Will Help Next Decision</a>, WealthManagement.com, Oct 28, 2026</li>
+<li><a href="https://www.benzinga.com/node/63012338">Nasdaq 100 Has Worst Day Since 2020, Jobs Beat Keeps Fed Hike Alive</a>, Benzinga</li>
+<li><a href="https://www.nbcboston.com/news/national-international/wall-street-longest-losing-streak-since-2024/4052369/">Wall Street's longest losing streak</a>, Associated Press via NBC Boston</li>
+<li><a href="https://www.xtb.com/en/market-analysis/three-markets-to-watch-next-week-20-11-2026">Three Markets to Watch Next Week</a>, XTB, Nov 20, 2026</li>
+<li><a href="https://pages.stern.nyu.edu/~adamodar/New_Home_Page/home.htm">Damodaran Online, implied equity risk premium</a>, NYU Stern</li>
+</ol></section>
+</template>
+
+<template id="t-a-bottleneck">
+<div class="prose">
+<p>Buried in Microsoft's October earnings call was a line most people skipped. The company trimmed its calendar 2026 capital spending forecast to about $170 billion, down from $175 billion. Not because demand slowed. Because capacity it had contracted from third parties, GPU-as-a-service deals, slipped into the second half of its fiscal year.</p>
+<p>The September quarter tells the same story. Microsoft spent $45.2 billion on capex, about $6.5 billion less than analysts expected, and still roughly 30% more than a year earlier.</p>
+<p>Think about what that means. The richest buyer in the AI build-out had the money, the demand and the contracts. What it didn't have was finished capacity on time.</p>
+<h2>Follow the order book, not the headlines</h2>
+<p>If the bottleneck is physical, the companies selling into it should be swamped. They are. Eaton, which makes switchgear, power distribution gear, UPS systems and now liquid cooling, said its Electrical backlog topped $20 billion, up 46% from a year ago, and data-center sales in its Americas electrical business grew 54% in the quarter.</p>
+<p>Across the five biggest spenders, 2026 capex is now forecast at roughly $800 billion or more. Chips take most of it. But every chip needs a building, a grid connection and a power train, and those take longer to build than a GPU takes to ship.</p>
+<h2>The new bottleneck is political</h2>
+<p>Here's the twist. Once the constraint is physical, it becomes local. After the midterms, Texas's governor-elect pledged to halt new data-center approvals until new rules are in place, and power-equipment stocks sold off hard.</p>
+<p>So my read: AI demand isn't the main risk for the companies building the physical layer. Permits, power and politics are. That's a very different risk to underwrite. It moves slower, and it shows up in orders long before it shows up in revenue.</p>
+<div class="wim"><p class="kick">What would change my mind</p><p>If Microsoft's delayed capacity arrives on schedule and lead times on electrical equipment start getting shorter, the bottleneck is easing, and so is the pricing power of the companies that own it.</p></div>
+</div>
+<section class="sources"><h2>Sources</h2><ol>
+<li><a href="https://techspot.com/news/114382-microsoft-spends-65-billion-less-than-expected-ai.html">Microsoft spends $6.5 billion less than expected on AI</a>, TechSpot</li>
+<li><a href="https://letsdatascience.com/news/microsoft-cuts-2026-capex-forecast-to-170-billion-on-delayed-741510fe">Microsoft Cuts 2026 Capex Forecast to $170 Billion on Delayed Capacity</a>, Let's Data Science</li>
+<li><a href="https://www.marketbeat.com/instant-alerts/transcript-eaton-q3-earnings-call-highlights-2026-11-03/">Eaton Q3 earnings call highlights</a>, MarketBeat, Nov 3, 2026</li>
+<li><a href="https://www.hl.co.uk/news/ai-hyperscalers-are-expected-to-finish-the-year-spending-a-whopping-828-billion-on-capex">AI hyperscalers expected to spend up to $828 billion on capex</a>, Business Insider via Hargreaves Lansdown</li>
+<li><a href="https://www.tikr.com/blog/eaton-lost-23-in-a-month-rbc-sees-58-upside-from-here">Eaton Lost 23% in a Month</a>, TIKR</li>
+</ol></section>
+</template>
+
+<template id="t-a-private-credit">
+<div class="prose">
+<p>Fitch's U.S. private credit default rate was 6.2% for the twelve months through October, barely off September's 6.3%. It has stayed at or above 6% since April, when it first set a record.</p>
+<p>That sounds alarming. What's underneath it is more interesting.</p>
+<div class="kf"><div><b>6.2%</b><span>Fitch private credit default rate, 12 months to October</span></div><div><b>49%</b><span>Defaults from deferred or payment-in-kind interest</span></div><div><b>38%</b><span>Defaults from distressed maturity extensions</span></div><div><b>0.4%</b><span>Default rate counting only bankruptcies and restructurings</span></div></div>
+<p>Almost half of the default events came from interest deferrals or switching to payment-in-kind, where the borrower pays interest with more debt instead of cash. Another 38% were distressed maturity extensions. The rate that counts only bankruptcies, liquidations and restructurings? 0.4%.</p>
+<h2>Defaults without the drama</h2>
+<p>In the public bond market, a default is loud: a missed coupon, a price collapse, a court filing. In private credit it's quiet. Lender and borrower renegotiate behind closed doors, the coupon becomes an IOU, and the loan stays on the books.</p>
+<p>That's not fraud. It's often the rational move. But it means the losses aren't avoided. They're deferred, and they compound, because payment-in-kind interest grows the very debt the borrower couldn't service in cash.</p>
+<h2>Why the Fed matters here</h2>
+<p>Direct loans are almost all floating rate, so every Fed hike lands straight on borrowers' interest bills. The Fed hiked in September and the market expects another move in December. The borrowers already paying in kind now face higher cash costs on bigger balances.</p>
+<p>The industry knows it. In PwC's 2026 survey of credit portfolio managers, 64% named defaults and credit losses as a main driver of fund performance this year. PitchBook found non-accrual loans at business development companies growing faster than the BDC market itself. And Johnson Associates expects private credit to be the weakest corner of Wall Street pay this year.</p>
+<h2>My take</h2>
+<p>Stop watching the default rate. Watch the payment-in-kind share in BDC filings, and how many of those loans switch back to paying cash. If they do, this was a bridge. If they don't, the 0.4% bankruptcy rate is the number that moves next.</p>
+<div class="wim"><p class="kick">What would change my mind</p><p>Rising cure rates on payment-in-kind loans, and recoveries near par on the restructurings that do happen. That would mean lenders were right to be patient.</p></div>
+</div>
+<section class="sources"><h2>Sources</h2><ol>
+<li><a href="https://www.abfjournal.com/?p=174880">Fitch U.S. private credit default rate, October 2026</a>, ABF Journal, Nov 18, 2026</li>
+<li><a href="https://news.bloomberglaw.com/bankruptcy-law/us-private-credit-defaults-hit-new-record-of-6-in-april-fitch">US Private Credit Defaults Hit New Record of 6% in April</a>, Bloomberg Law, May 18, 2026</li>
+<li><a href="https://www.pwc.com/gx/en/industries/private-equity/private-credit-survey.html">Global Private Credit Survey 2026</a>, PwC</li>
+<li><a href="https://pitchbook.com/tag/private-credit">Private credit coverage</a>, PitchBook, Nov 12, 2026</li>
+<li><a href="https://www.efinancialcareers.com/news/2026-bonuses-finance">2026 bonuses in finance</a>, eFinancialCareers</li>
+</ol></section>
+</template>
+
+<template id="t-a-bonuses">
+<div class="prose">
+<p>Johnson Associates' latest forecast has Wall Street bonuses rising for a third straight year, with increases in 20 of the 21 job categories it tracks. Equity traders and underwriters lead, with jumps of 20% to 30% or more.</p>
+<p>It's earned. Global investment banking fees reached $99.4 billion in the first nine months of the year, up 9% and the best since 2021. First-half M&amp;A set a record at about $2.8 trillion of announced deals, nearly half of it in megadeals above $10 billion.</p>
+<h2>Bonuses look backward. Pipelines look forward.</h2>
+<p>A bonus pays for deals already done. The question for 2027 is what gets done next, and the backdrop changed fast: the 10-year Treasury is above 5%, the Fed is leaning toward a December hike, and the VIX touched 30 this week for the first time since late March.</p>
+<p>Not every deal reacts the same way. Strategic megadeals, often paid in stock and driven by boardroom conviction, can ride through higher rates. Leveraged buyouts can't. When debt costs more, sponsors pay less or don't bid. And the private credit funds that financed so many of those deals have problems of their own.</p>
+<h2>My take</h2>
+<p>This year's pay is real. The people who should worry are the ones counting on next year's. If fourth-quarter deal announcements hold near the first-half pace with yields above 5%, the cycle has legs. If they don't, 2026 will look like the peak, and at least one pay consultant is already saying it might be.</p>
+<div class="wim"><p class="kick">What would change my mind</p><p>Fourth-quarter announcements matching the first half, and leveraged loan issuance holding up despite 5% Treasury yields.</p></div>
+</div>
+<section class="sources"><h2>Sources</h2><ol>
+<li><a href="https://www.thewealthadvisor.com/article/wall-street-bonuses-are-soaring-again-one-pay-expert-thinks-peak">Wall Street Bonuses Are Soaring Again. One Pay Expert Thinks This Is The Peak.</a>, The Wealth Advisor, Nov 10, 2026</li>
+<li><a href="https://www.kitco.com/news/off-the-wire/2026-11-10/wall-street-bonuses-rise-third-consecutive-year-consultancy-says">Wall Street bonuses to rise for a third consecutive year</a>, Reuters via Kitco, Nov 10, 2026</li>
+<li><a href="https://cyprus-mail.com/2026/07/05/mega-deals-drive-global-dealmaking-to-all-time-record-highs">Global M&amp;A hits record $2.8 trillion in first half of 2026</a>, Reuters via Cyprus Mail</li>
+<li><a href="https://www.xtb.com/en/market-analysis/three-markets-to-watch-next-week-20-11-2026">Three Markets to Watch Next Week</a>, XTB, Nov 20, 2026</li>
+<li><a href="https://www.morningstar.com/news/dow-jones/202611198503/10-year-treasury-yield-falls-to-5051-data-talk">10-Year Treasury Yield Falls to 5.051%</a>, Dow Jones via Morningstar</li>
+</ol></section>
+</template>
+
+<template id="t-a-life-cycle">
+<div class="prose">
+<p>Aswath Damodaran's The Corporate Life Cycle came out in August 2024, along with a class he built on the same idea. The core argument fits on an index card, and it's useful enough that I keep coming back to it.</p>
+<h2>The idea</h2>
+<p>Businesses move through stages. An idea becomes a start-up, the start-up finds a product and grows fast, growth slows into maturity, and eventually the business declines. Each stage has its own financial signature: young companies burn cash and are valued on stories, mature ones throw off cash and are valued on numbers, and declining ones should be handing money back, not chasing growth.</p>
+<p>The payoff is in the mismatches. As I read him, the expensive mistakes come from companies that refuse to act their age: mature firms buying growth through acquisitions, declining firms reinvesting as if they were young. Investors make the mirror-image mistake when they value a young company with a mature-company tool, or an old company with a story.</p>
+<h2>Why it's useful right now</h2>
+<p>The AI build-out is pushing some of the most mature companies in the world to behave like young ones again. Meta's free cash flow turned negative after it raised the low end of its 2026 capex range to $135–145 billion. That's a high-growth spending pattern from a company most investors had filed under mature.</p>
+<p>Going the other way, Eaton, founded in 1911, just grew sales organically by 19% in a quarter. That's the profile of a much younger business.</p>
+<h2>Where I'd push back</h2>
+<p>The framework is at its best describing one company's arc. It's less clear about what happens when an entire industry's capital needs change at once. If every hyperscaler re-ages together, the question isn't whether one of them is acting its age. It's whether the stage itself moved.</p>
+<p>My bet: until the capex turns into visible free cash flow, the market will treat these giants like growth companies, with growth-company volatility to match. This week was a preview.</p>
+<div class="wim"><p class="kick">What would change my mind</p><p>If hyperscaler free cash flow recovers in 2027 without capex cuts, these are mature companies that could afford a growth project, and the life-cycle label never changed.</p></div>
+</div>
+<section class="sources"><h2>Sources</h2><ol>
+<li><a href="https://pages.stern.nyu.edu/~adamodar/New_Home_Page/home.htm">Damodaran Online: books and classes</a>, NYU Stern</li>
+<li><a href="https://www.tikr.com/blog/eaton-lost-23-in-a-month-rbc-sees-58-upside-from-here">Eaton Lost 23% in a Month</a>, TIKR (Meta capex and free cash flow)</li>
+<li><a href="https://www.sec.gov/Archives/edgar/data/0001551182/000155118226000037/etn09302026exhibit99.htm">Eaton third quarter 2026 results, Form 8-K Exhibit 99</a>, SEC</li>
+<li><a href="https://uk.finance.yahoo.com/quote/ETN">Eaton company profile</a>, Yahoo Finance</li>
+</ol></section>
+</template>
+
+<template id="t-a-eaton">
+<div class="kf dark"><div><b class="up">Long</b><span>Rating</span></div><div><b>$407</b><span>12-month target, 25x 2027E EPS</span></div><div><b>+19%</b><span>Upside to target</span></div><div><b>$341.72</b><span>Price at Nov 6, 2026 close</span></div></div>
+<div class="prose">
+<h2 style="margin-top:.6em">Summary</h2>
+<ul>
+<li>Eaton reported record third-quarter results on November 3 and raised guidance for the third time this year. The stock fell 9.9% the next day and 23% over the month to November 6.</li>
+<li>Demand indicators point the other way. Rolling 12-month organic orders rose 39% in Electrical Americas and 51% in Electrical Global, and Electrical backlog grew 46%.</li>
+<li>At about 22x forward earnings against a five-year average of 25x, the shares price in a slowdown that none of Eaton's reported numbers show yet. The target applies 25x to 2027 consensus EPS of $16.28.</li>
+</ul>
+<h2>The business</h2>
+<p>Eaton makes the equipment that moves electricity safely from the grid to the load: switchgear, power distribution, circuit protection, UPS systems and, since closing the $9.55 billion Boyd Thermal acquisition in March, liquid cooling for data centers. Smaller Aerospace and Mobility segments round it out.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Q3 2026 segment</th><th class="n">Sales</th><th class="n">Organic growth</th><th class="n">Margin</th></tr></thead>
+<tbody>
+<tr><td>Electrical Americas</td><td class="n">$4.2B</td><td class="n">+22%</td><td class="n">29.8%</td></tr>
+<tr><td>Electrical Global</td><td class="n">$2.7B</td><td class="n">+27%</td><td class="n">21.1%</td></tr>
+<tr><td>Aerospace</td><td class="n">$1.2B</td><td class="n">+6%</td><td class="n">24.9%</td></tr>
+<tr><td>Mobility</td><td class="n">$0.85B</td><td class="n">+9%</td><td class="n">17.2%</td></tr>
+<tr class="tot"><td>Total</td><td class="n">$8.9B</td><td class="n">+19%</td><td class="n">25.3%</td></tr>
+</tbody></table></div>
+<p>Electrical Americas is the engine: about 47% of sales and the highest margin in the company. Its data-center sales grew 54% in the quarter. Total sales rose 28%, of which 19 points were organic, 8 came from acquisitions and 1 from currency. Adjusted EPS of $3.68 beat the $3.54 consensus.</p>
+<h2>Thesis 1: Demand is still accelerating</h2>
+<p>In this business, orders lead revenue by quarters, sometimes years. Order dollars hit records in all three of the segments that report them, and total Electrical backlog topped $20 billion. Management raised 2026 organic growth guidance to 13–15% and adjusted EPS guidance to $13.70–13.80, above the $13.67 consensus going in.</p>
+<h2>Thesis 2: The constraint is capacity, and Eaton is adding it</h2>
+<p>The largest buyers of AI infrastructure are being slowed by physical capacity, not demand: Microsoft trimmed its 2026 capex forecast because contracted third-party capacity arrived late. That is deferred demand for exactly what Eaton sells. Eaton is spending to meet it, with $275 million of capex in the quarter and a €810 million (about $921 million) agreement to buy COL Group, an Italian maker of medium-voltage distribution equipment, to add European capacity.</p>
+<h2>Thesis 3: The multiple has already reset</h2>
+<p>The stock traded near 33x forward earnings at its April peak. It now trades near 22x, below its five-year average of 25x. The selloff came from outside the company: worries about Meta's capex and free cash flow, the midterm results and a Texas pledge to pause data-center approvals, and an AI-led market rout on November 5. None of those changed Eaton's reported orders.</p>
+<h2>Valuation</h2>
+<p>The base case applies Eaton's five-year average forward multiple of 25x to 2027 consensus EPS of $16.28, for a target of $407.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Case</th><th class="n">2027 EPS</th><th class="n">P/E</th><th class="n">Value</th><th class="n">vs $341.72</th><th class="n">Weight</th></tr></thead>
+<tbody>
+<tr><td>Bear</td><td class="n">$14.50</td><td class="n">18x</td><td class="n">$261</td><td class="n">−24%</td><td class="n">25%</td></tr>
+<tr><td>Base</td><td class="n">$16.28</td><td class="n">25x</td><td class="n">$407</td><td class="n">+19%</td><td class="n">50%</td></tr>
+<tr><td>Bull</td><td class="n">$17.00</td><td class="n">28x</td><td class="n">$476</td><td class="n">+39%</td><td class="n">25%</td></tr>
+<tr class="tot"><td>Probability-weighted</td><td class="n"></td><td class="n"></td><td class="n">$388</td><td class="n">+13%</td><td class="n"></td></tr>
+</tbody></table></div>
+<div class="chartbox rv"><p class="fh">Scenario values per share. Dashed line is the Nov 6 price, $341.72.</p>
+<div class="hb"><span>Bear</span><span class="tr"><i class="b q" style="--w:52.2%;--j:0"></i><i class="px" style="--p:68.34%"></i></span><span class="v">$261</span></div>
+<div class="hb"><span>Base</span><span class="tr"><i class="b" style="--w:81.4%;--j:1"></i><i class="px" style="--p:68.34%"></i></span><span class="v">$407</span></div>
+<div class="hb"><span>Bull</span><span class="tr"><i class="b q" style="--w:95.2%;--j:2"></i><i class="px" style="--p:68.34%"></i></span><span class="v">$476</span></div>
+<div class="axis"><span></span><span class="tk"><span style="left:0%">$0</span><span style="left:50%">$250</span><span style="left:100%">$500</span></span><span></span></div>
+</div>
+<p>The bear case assumes data-center orders roll over in 2027, EPS grows only about 5% from the 2026 guidance midpoint, and the multiple falls to 18x. The bull case assumes backlog conversion beats consensus by about 4% and the market pays 28x, still below April's peak. The Street's mean target was $484 as of November 4; this target is deliberately below it.</p>
+<h2>Risks</h2>
+<ul>
+<li><strong>Permitting and politics.</strong> Local pauses on new data centers could show up in 2027 orders.</li>
+<li><strong>Hyperscaler funding.</strong> If free cash flow pressure forces capex cuts, Eaton's orders follow with a lag.</li>
+<li><strong>Rates.</strong> With the 10-year Treasury above 5%, multiples across the market are under pressure, and 25x may prove too generous.</li>
+<li><strong>Execution.</strong> About $11 billion of acquisitions this year (Boyd Thermal and Ultra PCS) plus fast capacity additions raise integration risk.</li>
+<li><strong>Cyclical end markets.</strong> Outside data centers, industrial and commercial demand would soften in a slowdown.</li>
+</ul>
+<h2>Catalysts</h2>
+<ul>
+<li>Fourth-quarter results in February, where rolling orders and book-to-bill matter most.</li>
+<li>Microsoft's delayed third-party capacity coming online in the second half of its fiscal year.</li>
+<li>The COL Group acquisition, expected to close in the first quarter of 2027.</li>
+</ul>
+<div class="wim"><p class="kick">What would change the view</p><p>Rolling 12-month orders in Electrical Americas turning negative, or book-to-bill falling below 1. Either would mean the slowdown the market is pricing has started.</p></div>
+<p class="disc">Prices as of the November 6, 2026 close; the shares have been volatile since. Personal research based on public information, not investment advice.</p>
+</div>
+<section class="sources"><h2>Sources</h2><ol>
+<li><a href="https://www.sec.gov/Archives/edgar/data/0001551182/000155118226000037/etn09302026exhibit99.htm">Eaton third quarter 2026 results, Form 8-K Exhibit 99</a>, SEC, Nov 3, 2026</li>
+<li><a href="https://www.marketbeat.com/instant-alerts/transcript-eaton-q3-earnings-call-highlights-2026-11-03/">Eaton Q3 earnings call highlights</a>, MarketBeat</li>
+<li><a href="https://www.benzinga.com/node/62833997">Eaton Reports Record Orders As Data Center Demand Drives Growth</a>, Benzinga</li>
+<li><a href="https://www.tikr.com/blog/eaton-lost-23-in-a-month-rbc-sees-58-upside-from-here">Eaton Lost 23% in a Month. RBC Sees 58% Upside From Here</a>, TIKR</li>
+<li><a href="https://www.trefis.com/stock/etn/articles2/622872/what-are-eaton-stock-bulls-not-worried-about/2026-11-05">What Are Eaton Stock Bulls Not Worried About?</a>, Trefis, Nov 5, 2026</li>
+<li><a href="https://techspot.com/news/114382-microsoft-spends-65-billion-less-than-expected-ai.html">Microsoft spends $6.5 billion less than expected on AI</a>, TechSpot</li>
+</ol></section>
+</template>
+
+<template id="t-a-honeywell">
+<div class="kf"><div><b>3</b><span>Independent companies from one</span></div><div><b>Oct 30, 2025</b><span>Solstice Advanced Materials spun off</span></div><div><b>Jun 29, 2026</b><span>Honeywell Aerospace spun off</span></div><div><b>HON, HONA, SOLS</b><span>Tickers today</span></div></div>
+<div class="prose">
+<p>Honeywell's breakup is finished. What began as a plan announced in October 2024 to spin off its Advanced Materials business ended on June 29, 2026, when Honeywell Aerospace started trading on its own. The company left behind, renamed Honeywell Technologies, is now a pure-play automation business across buildings, process and industrial markets.</p>
+<h2>What happened, step by step</h2>
+<ul>
+<li><strong>October 2024.</strong> Honeywell announced plans to spin off Advanced Materials.</li>
+<li><strong>October 30, 2025.</strong> Solstice Advanced Materials began trading as SOLS. Shareholders received one Solstice share for every four Honeywell shares. Solstice had about $3.8 billion of net sales in 2024 and raised $1 billion of senior notes ahead of the spin.</li>
+<li><strong>June 29, 2026.</strong> Honeywell Aerospace began trading as HONA. Shareholders received one Aerospace share for every two Honeywell shares, and Honeywell Technologies completed a 1-for-2 reverse stock split. Honeywell Technologies kept the HON ticker.</li>
+</ul>
+<h2>Why companies split up</h2>
+<p>The case for a breakup rests on focus. A conglomerate makes its businesses compete for the same pool of capital and management attention, and investors who want one of them have to buy all of them. Standalone companies can set their own capital allocation, pay their managers on their own results, and attract shareholders who want that specific exposure. Honeywell's management framed it the same way: each company now has a distinct strategy and its own financial flexibility.</p>
+<h2>What it costs</h2>
+<p>Breakups aren't free. Each new company needs its own board, finance team and systems, and shared costs that used to be spread across three businesses have to be absorbed or cut. Debt has to be divided too, which is why Solstice raised its own notes before separating. These dis-synergies are real, and they are front-loaded.</p>
+<h2>How a spin-off works</h2>
+<p>The parent distributes shares of the new company to its own shareholders, usually tax-free, based on who owns the parent on a record date. Before the distribution, the parent's stock can trade two ways: with the right to receive the new shares, or "ex-distribution" without it. Honeywell's ex-distribution shares traded under a temporary ticker, HONIV, before the Solstice spin. Shareholders entitled to fractional shares receive cash instead.</p>
+<h2>How to judge whether it worked</h2>
+<p>The honest answer is that it's too early. The test is whether the three companies together end up worth more than Honeywell would have been, after the extra costs. That needs a full year of standalone results, and the first full-year reports arrive in early 2027. Until then, the useful checks are:</p>
+<ul>
+<li>Whether Honeywell Technologies delivers against the three-year targets it set at its June 11, 2026 investor day.</li>
+<li>Whether standalone margins at HONA and SOLS hold up once separation costs are behind them.</li>
+<li>Whether the pure-plays use their focus well, through reinvestment, buybacks, or by becoming acquirers or targets.</li>
+</ul>
+<div class="wim"><p class="kick">View</p><p>Neutral until the numbers come in. The structure now makes sense; the proof is in 2027 results, not the spin-off press releases.</p></div>
+</div>
+<section class="sources"><h2>Sources</h2><ol>
+<li><a href="https://investor.honeywell.com/news-releases/news-release-details/separation-8-k-supplemental-financial-information-newsletter">Honeywell Technologies Completes Spin-Off of Honeywell Aerospace</a>, Honeywell Investor Relations, Jun 29, 2026</li>
+<li><a href="https://www.barchart.com/story/news/3029306/honeywell-technologies-launches-as-independent-pure-play-automation-company-following-completion-of-honeywell-aerospace-spin-off">Honeywell Technologies launches as pure-play automation company</a>, PR Newswire via Barchart</li>
+<li><a href="https://nasdaq.com/articles/honeywell-stock-sinks-after-officially-completing-aerospace-spin">Honeywell Stock Sinks After Officially Completing Aerospace Spin-Off</a>, Nasdaq</li>
+<li><a href="https://tradearabia.com/News/464210/Honeywell-Technologies-launched-as-independent-automation-firm-after-aerospace-spin-off/IND">Honeywell Technologies launched as independent automation firm</a>, TradeArabia</li>
+<li><a href="https://www.honeywell.com/us/en/news/press-releases/2025/10/honeywell-completes-spin-off-of-solstice-advanced-materials">Honeywell Completes Spin-Off of Solstice Advanced Materials</a>, Honeywell, Oct 30, 2025</li>
+<li><a href="https://www.honeywell.com/us/en/press/2025/10/honeywell-board-of-directors-sets-record-date-and-announces-expected-timing-for-spin-off-of-solstice-advanced-materials">Record date and timing for the Solstice spin-off</a>, Honeywell, Oct 1, 2025</li>
+<li><a href="https://www.honeywell.com/us/en/press/2025/10/honeywell-board-of-directors-approves-spin-off-of-solstice-advanced-materials">Board approves spin-off of Solstice</a>, Honeywell</li>
+<li><a href="https://investor.honeywell.com/static-files/a02b0d61-502b-40b8-af61-cfeb039289c9">Letter to shareowners on the Solstice spin-off</a>, Honeywell, Oct 17, 2025</li>
+<li><a href="https://www.manufacturingdive.com/news/honeywell-solstice-advanced-materials-spinoff-refrigerant-electronics-/804271/">Honeywell finalizes Solstice spinoff</a>, Manufacturing Dive</li>
+</ol></section>
+</template>
+
+<template id="t-a-stress-test">
+<div class="kf"><div><b>32</b><span>Banks tested</span></div><div><b>$708B</b><span>Projected losses over nine quarters</span></div><div><b>$719B</b><span>Pre-provision net revenue</span></div><div><b>1.6 pts</b><span>Aggregate CET1 decline</span></div></div>
+<div class="prose">
+<p>The Federal Reserve's 2026 stress test ran 32 large banks through a severe global recession: unemployment peaking at 10%, house prices down 30% and commercial real estate prices down 39%. All 32 stayed above their minimum capital requirements.</p>
+<p>The headline everyone quotes is the capital ratio. The more useful number is how the losses were paid for.</p>
+<h2>The number that matters: PPNR</h2>
+<p>Pre-provision net revenue is what a bank earns before setting money aside for loan losses: net interest income plus fee income, minus operating expenses. In a stress test it's the first line of defense. Capital only gets touched once losses exceed it.</p>
+<p>This year, projected PPNR came to $719 billion, or 3.0% of average assets. Projected losses were $708 billion. Cumulative pre-tax income over the nine quarters was about $1.2 billion, essentially zero. In other words, in a severe recession the banks' earnings almost exactly paid for their losses.</p>
+<div class="chartbox rv"><p class="fh">Nine-quarter totals, severely adverse scenario, $ billions</p>
+<div class="hb"><span>PPNR</span><span class="tr"><i class="b" style="--w:95.9%;--j:0"></i></span><span class="v">$719B</span></div>
+<div class="hb"><span>Losses</span><span class="tr"><i class="b q" style="--w:94.4%;--j:1"></i></span><span class="v">$708B</span></div>
+</div>
+<p>The aggregate common equity tier 1 ratio started at 12.8%, fell to a minimum of 11.2%, and ended the horizon at 12.7%, a peak-to-trough decline of 1.6 percentage points.</p>
+<h2>What moved the result</h2>
+<p>The Fed named three factors. Higher loan losses, from bigger balances and harsher scenario variables, pushed capital down. Smaller hypothetical rate declines meant smaller unrealized gains on securities, which also pushed capital down. But higher projected interest income, reflecting recent performance and those same smaller rate declines, more than offset both.</p>
+<p>That last point deserves attention. The scenario's rate path is doing a lot of work. A recession with rates falling less means banks keep earning more on their assets, which props up PPNR.</p>
+<h2>Where the losses come from</h2>
+<p>Loans account for $625 billion of the $708 billion, about 89%. Trading and counterparty losses add $37 billion. Credit cards are the single biggest source: roughly $200 billion of losses at a 17.1% loss rate.</p>
+<div class="chartbox rv"><p class="fh">Projected loan loss rates by category</p>
+<div class="hb"><span>Credit cards</span><span class="tr"><i class="b" style="--w:95%;--j:0"></i></span><span class="v">17.1%</span></div>
+<div class="hb"><span>Commercial and industrial</span><span class="tr"><i class="b q" style="--w:50%;--j:1"></i></span><span class="v">9.0%</span></div>
+<div class="hb"><span>Commercial real estate</span><span class="tr"><i class="b q" style="--w:48.9%;--j:2"></i></span><span class="v">8.8%</span></div>
+<div class="hb"><span>Other consumer</span><span class="tr"><i class="b q" style="--w:40.6%;--j:3"></i></span><span class="v">7.3%</span></div>
+<div class="hb"><span>All loans</span><span class="tr"><i class="b q" style="--w:38.3%;--j:4"></i></span><span class="v">6.9%</span></div>
+<div class="hb"><span>First-lien mortgages</span><span class="tr"><i class="b q" style="--w:8.3%;--j:5"></i></span><span class="v">1.5%</span></div>
+</div>
+<h2>What it means</h2>
+<p>This year's results don't change capital requirements. The Fed had already voted in February to keep stress capital buffers at 2025 levels until 2027, when the test will use loss models revised after public feedback. It has also proposed averaging two years of results to make the buffers less volatile. The sample grew too, from 22 banks in 2025 to 32 this year, so year-over-year comparisons need care. Banks raised dividends and buybacks soon after the release.</p>
+<p>The Fed's Vice Chair for Supervision, Michelle Bowman, said the results underscore the strength of the banking system. That's fair. The caveat is that the margin of safety comes from revenue as much as from capital, and revenue depends on the scenario's assumptions.</p>
+<div class="wim"><p class="kick">What to watch</p><p>The revised loss models in 2027, how sensitive projected PPNR is to the rate path, and whether credit card loss rates keep rising from here.</p></div>
+</div>
+<section class="sources"><h2>Sources</h2><ol>
+<li><a href="https://www.federalreserve.gov/newsevents/pressreleases/bcreg20260624a.htm">Annual bank stress test confirms large banks are well positioned</a>, Federal Reserve, Jun 24, 2026</li>
+<li><a href="https://www.federalreserve.gov/publications/2026-june-dodd-frank-act-stress-test-results.htm">2026 stress test results under the severely adverse scenario</a>, Federal Reserve</li>
+<li><a href="https://www.federalreserve.gov/publications/2026-june-dodd-frank-act-stress-test-introduction.htm">2026 stress test introduction</a>, Federal Reserve</li>
+<li><a href="https://www.federalreserve.gov/publications/2026-june-stress-test-results-accessibility-tables.htm">2026 stress test accessibility tables</a>, Federal Reserve</li>
+<li><a href="https://live.theasianbanker.com/video/all-32-us-banks-pass-fed-stress-test-as-higher-rate-assumptions-offset-growing-credit-losses">All 32 US banks pass Fed stress test</a>, The Asian Banker</li>
+<li><a href="https://news.bloomberglaw.com/banking-law/big-banks-pass-fed-stress-test-paving-way-for-payouts">Big Banks Pass Fed Stress Test, Quickly Boost Payouts</a>, Bloomberg Law</li>
+</ol></section>
+</template>
+
+<template id="t-a-copper">
+<div class="kf"><div><b>~$14,875</b><span>LME record per tonne, Sept 10, 2026</span></div><div><b>$13,210</b><span>Low on Nov 16, the weakest since July</span></div><div><b>$0</b><span>2026 benchmark smelting charge per tonne</span></div><div><b>~600kt</b><span>ING's 2026 refined deficit estimate</span></div></div>
+<div class="prose">
+<p>Copper set a record of about $14,875 a tonne on the London Metal Exchange on September 10. By November 16, three-month copper had slipped to $13,210, the lowest since early July and about 10% off the high. Two days later it fell 4.6% in a day, its steepest drop in eight months, as the AI sell-off, a stronger dollar and worries about Chinese demand piled up.</p>
+<p>The demand scare is real. But the reasons copper set records in the first place haven't gone anywhere.</p>
+<h2>Driver 1: mine supply can't keep up</h2>
+<p>New supply is coming mostly from expanding existing mines rather than building new ones, which is slower and smaller. Sucden Financial expects the market deficit to deepen beyond 2027 for exactly that reason.</p>
+<h2>Driver 2: smelters are being squeezed to zero</h2>
+<p>Miners pay smelters a treatment and refining charge to turn concentrate into metal. When concentrate is plentiful, that fee is high. In 2026 the benchmark charge fell to $0 a tonne, the lowest on record, and spot charges turned negative as smelters competed for scarce concentrate. Chile's Antofagasta agreed a zero fee with a Chinese smelter for 2026. A fee of zero is the clearest sign you'll get that mined supply is tight.</p>
+<h2>Driver 3: trade distortions</h2>
+<p>U.S. tariff policy pulled copper into America. COMEX inventories climbed to a record near 700,000 tonnes, while LME and Shanghai warehouses together held barely 300,000. Refined copper was ultimately exempted from tariffs, but the risk of new ones keeps U.S. prices at a premium and metal parked where the rest of the world can't easily use it.</p>
+<h2>Demand</h2>
+<p>Grids, electric vehicles and data centers all need copper. In China alone, one estimate has State Grid investment rising more than 10% in 2026, adding roughly 320,000 tonnes of demand. The physical market there tightened even as prices fell this month: the Yangshan premium buyers pay for imported copper rose to a record of about $290 a tonne.</p>
+<h2>The balance</h2>
+<p>ING estimates a refined copper deficit of about 600,000 tonnes in 2026, after roughly 200,000 tonnes in 2025. Other forecasts are smaller, ranging down to around 150,000 tonnes, but most point to a tighter market.</p>
+<div class="wim"><p class="kick">View</p><p>Near term, copper trades with the macro mood: the dollar, rates and AI sentiment. Medium term, supply sets the floor. The signals worth watching are smelting charges, the COMEX-LME spread and the Yangshan premium. If smelting charges recover meaningfully, the supply story is loosening.</p></div>
+</div>
+<section class="sources"><h2>Sources</h2><ol>
+<li><a href="https://www.latintimes.com/copper-plunges-ai-trade-peru-mining-pipeline-601563">Copper's November slide</a>, Latin Times</li>
+<li><a href="https://news.metal.com/newscontent/HPSJFB5W7OIYMM4YPU4ZEOJU7MTVWGRUBNTCQ2A-lme-copper-hits-four-month-low-as-ai-selloff-and-china-weakness-weigh">LME copper hits four-month low as AI selloff and China weakness weigh</a>, SMM, Nov 17, 2026</li>
+<li><a href="https://www.skillings.net/?p=118680">Copper price and the Yangshan premium</a>, Skillings Mining Review</li>
+<li><a href="https://oilprice.com/Metals/Commodities/Copper-Hits-Record-Highs-While-Smelters-Lose-Money-on-Every-Ton.html">Copper Hits Record Highs While Smelters Lose Money on Every Ton</a>, OilPrice.com</li>
+<li><a href="https://www.brecorder.com/news/amp/40398693">Antofagasta and Chinese smelter agree zero processing fee</a>, Reuters via Business Recorder</li>
+<li><a href="https://think.ing.com/articles/copper-upside-building-on-tight-supply/">Copper upside building on tight supply</a>, ING Think</li>
+<li><a href="https://www.skillings.net/copper-price-forecast-2026-record-highs-test-supply-limits/">Copper price forecast 2026</a>, Skillings Mining Review</li>
+<li><a href="https://www.hellenicshippingnews.com/lme-week-copper-supply-struggles-to-keep-pace-with-electrification-demand/">LME Week: Copper supply struggles to keep pace with electrification demand</a>, S&amp;P Global via Hellenic Shipping News</li>
+<li><a href="https://www.caixinglobal.com/2026-09-10/copper-near-record-high-as-us-tariff-fears-and-ai-demand-tighten-market-102483357.html">Copper near record high as US tariff fears and AI demand tighten market</a>, Caixin</li>
+</ol></section>
+</template>
+
+<template id="t-a-abs">
+<div class="kf"><div><b>$127B</b><span>U.S. auto ABS issued in 2025, a record</span></div><div><b>6.90%</b><span>Record subprime 60+ day delinquency, Jan 2026</span></div><div><b>5.80%</b><span>Subprime 60+ day delinquency, mid-2026</span></div><div><b>81.5%</b><span>Share of delinquencies from the riskiest 37% of balances</span></div></div>
+<div class="prose">
+<p>Securitization turns thousands of monthly car payments into rated bonds. It's one of the quieter corners of finance and one of the most important: U.S. auto loan ABS issuance reached a record $127 billion in 2025, the second record year in a row. Here's how the machine works, and where this year's stress is showing up.</p>
+<h2>How a car loan becomes a bond</h2>
+<ol>
+<li><strong>Originate.</strong> A lender, often a carmaker's finance arm, a bank or a specialty lender, makes thousands of auto loans.</li>
+<li><strong>Pool.</strong> It groups loans with similar characteristics into a pool.</li>
+<li><strong>Sell to a trust.</strong> The pool is sold to a special purpose entity designed to be bankruptcy-remote, so investors are exposed to the loans rather than to the lender.</li>
+<li><strong>Issue tranches.</strong> The trust issues bonds in layers. Senior tranches get paid first and earn the least; subordinate tranches absorb losses first and earn more.</li>
+<li><strong>Add credit enhancement.</strong> Subordination, overcollateralization (more loans than bonds), a cash reserve account and excess spread (borrowers pay more interest than the bonds cost) all sit between losses and the senior bonds.</li>
+<li><strong>Run the waterfall.</strong> Each month, collections flow down a fixed order of payments. A servicer collects payments and reports delinquencies, losses and prepayments.</li>
+<li><strong>Watch the triggers.</strong> If losses or delinquencies cross set thresholds, cash gets redirected to protect the senior bonds.</li>
+</ol>
+<h2>The accounting side</h2>
+<p>Having worked in securitization accounting, the part people skip is the balance sheet question. Whether a transfer counts as a sale or stays on the lender's books as a secured borrowing depends on control and on whether the lender has to consolidate the trust under the variable-interest-entity rules. Many captive auto lenders keep their securitizations on balance sheet, so the loans and the bonds both stay visible in their financial statements.</p>
+<h2>Where 2026's stress is</h2>
+<p>Subprime auto delinquencies hit a record. Fitch's subprime 60+ day delinquency index reached 6.90% in January, the highest in data going back to the early 1990s. It eased to 5.80% by mid-year, still above the 5.60% a year earlier, while prime delinquencies sat at 0.48%. Subprime annualized net losses ended 2025 at 9.63%.</p>
+<p>The stress is concentrated. KBRA found that weaker borrower groups made up 37.4% of outstanding loan balances in 2026 but 81.5% of the 60+ day delinquency burden. Pool averages hide that.</p>
+<div class="wim"><p class="kick">View</p><p>The structure is working as designed: senior tranches have deep protection, and the losses land on the subordinate tranches and the weakest pools, which is where they're supposed to land. The things to watch are trigger breaches in recent subprime deals and whether stress starts spreading from stretched borrowers into stable ones.</p></div>
+</div>
+<section class="sources"><h2>Sources</h2><ol>
+<li><a href="https://www.autoremarketing.com/?p=82346">Auto ABS volume generates another record in 2025</a>, Auto Remarketing (S&amp;P Global Ratings data)</li>
+<li><a href="https://tradingeconomics.com/united-states/car-loan-delinquency">United States car loan delinquency</a>, Trading Economics (Fitch Auto ABS Indices)</li>
+<li><a href="https://www.autoremarketing.com/?p=130785">Fitch watches tax-refund boost on securitizations fade</a>, Auto Remarketing</li>
+<li><a href="https://autoremarketing.com/subprime/fitch-continues-dialogue-about-affordability-delinquency">Fitch on affordability and delinquency in subprime auto securitizations</a>, Auto Remarketing</li>
+<li><a href="https://www.kbra.com/publications/mHcxCFSy/kbra-releases-research-auto-loan-abs-why-borrower-pockets-matter-more-than-pool-averages">Auto Loan ABS: Why Borrower Pockets Matter More Than Pool Averages</a>, KBRA, Jul 27, 2026</li>
+</ol></section>
+</template>
+
+<template id="t-a-industrials">
+<div class="prose">
+<p>Diversified industrials are hard to read from the income statement alone. They sell into dozens of end markets, take orders months or years before they ship, and buy and sell businesses constantly. Here are the eight numbers that do most of the work, using Eaton's third quarter of 2026 as the worked example.</p>
+<h2>1. Organic growth</h2>
+<p>Strip out acquisitions and currency to see what the existing business did. Eaton's sales rose 28% in the quarter, but only 19 points were organic. Eight came from acquisitions and one from currency. The organic number is the one that tells you about demand.</p>
+<h2>2. Orders, on a rolling 12-month basis</h2>
+<p>Orders are the leading indicator. Big projects make single quarters lumpy, so industrials often report a rolling 12-month average. Eaton's rose 39% organically in Electrical Americas and 51% in Electrical Global.</p>
+<h2>3. Backlog</h2>
+<p>Orders not yet shipped. Eaton's Electrical backlog topped $20 billion, up 46%. Rising backlog means revenue visibility, but also execution risk if capacity can't keep up.</p>
+<h2>4. Book-to-bill</h2>
+<p>Orders divided by sales. Above 1, backlog is growing; below 1, the business is eating into it. It's the simplest early warning sign in the sector.</p>
+<h2>5. Segment margin</h2>
+<p>Profit at the business-unit level, before corporate costs. Eaton's segment margin hit a record 25.3%, with Electrical Americas at 29.8%. Comparing segments tells you where the value in the company sits.</p>
+<h2>6. Incremental margin</h2>
+<p>The change in profit divided by the change in sales. It shows how much of each new dollar of revenue drops to the bottom line, and whether pricing and volume are outrunning costs. Strong incrementals are why industrials re-rate in upcycles.</p>
+<h2>7. Free cash flow</h2>
+<p>Earnings are an opinion; cash is a fact. Eaton generated $1.31 billion of operating cash flow and $1.03 billion of free cash flow after $275 million of capex. Free cash flow conversion, free cash flow divided by net income, shows whether earnings turn into cash or get stuck in inventory and receivables.</p>
+<h2>8. Adjusted versus GAAP earnings</h2>
+<p>Acquisitive companies report a lot of adjustments, so check what's excluded. Eaton's adjusted EPS was $3.68 against GAAP EPS of $2.77. Most of the gap was $0.62 of intangible amortization and $0.30 of acquisition and divestiture costs. Amortization is a reasonable exclusion; recurring deal costs at a serial acquirer deserve more skepticism.</p>
+<h2>Two more things to know</h2>
+<ul>
+<li><strong>Short cycle versus long cycle.</strong> Short-cycle products ship in weeks and react to the economy quickly. Long-cycle projects, like grid equipment and aerospace, are booked far ahead and turn slowly in both directions.</li>
+<li><strong>Portfolio moves.</strong> Industrials constantly reshape themselves through acquisitions and breakups. Honeywell's three-way split is the latest example, and it's why organic growth and segment data matter more than headline totals.</li>
+</ul>
+</div>
+<section class="sources"><h2>Sources</h2><ol>
+<li><a href="https://www.sec.gov/Archives/edgar/data/0001551182/000155118226000037/etn09302026exhibit99.htm">Eaton third quarter 2026 results, Form 8-K Exhibit 99</a>, SEC</li>
+<li><a href="https://www.marketbeat.com/instant-alerts/transcript-eaton-q3-earnings-call-highlights-2026-11-03/">Eaton Q3 earnings call highlights</a>, MarketBeat</li>
+<li><a href="https://www.earningswhispers.com/article/ETN/2611034211">Eaton Corporation plc third quarter results</a>, Earnings Whispers</li>
+<li><a href="https://investor.honeywell.com/news-releases/news-release-details/separation-8-k-supplemental-financial-information-newsletter">Honeywell Technologies Completes Spin-Off of Honeywell Aerospace</a>, Honeywell</li>
+</ol></section>
+</template>
 
 <script>
 {
@@ -242,83 +821,165 @@ footer p{max-width:80ch}
   const hasIO = 'IntersectionObserver' in window;
   const reduce = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
   const animate = hasIO && !reduce;
+  if (hasIO) document.documentElement.classList.add('io');
   if (animate) document.documentElement.classList.add('js');
-  const seeded = str => { let s = 7; for (const c of str) s = (s * 31 + c.charCodeAt(0)) % 2147483647; s = s || 7; return () => (s = s * 16807 % 2147483647) / 2147483647; };
 
-  const hooks = {};
+  // ---------- Reveal on scroll ----------
   const io = animate ? new IntersectionObserver(entries => {
-    for (const e of entries) {
-      if (!e.isIntersecting) continue;
-      e.target.classList.add('in');
-      io.unobserve(e.target);
-      const h = e.target.dataset.hook;
-      if (h && hooks[h]) hooks[h](e.target);
-    }
+    for (const e of entries) { if (!e.isIntersecting) continue; e.target.classList.add('in'); io.unobserve(e.target); }
   }, {rootMargin: '0px 0px -6% 0px', threshold: 0}) : null;
-  for (const el of $$('.rv')) { if (io) io.observe(el); else el.classList.add('in'); }
+  const watch = root => { for (const el of $$('.rv:not(.in)', root)) { if (io) io.observe(el); else el.classList.add('in'); } };
 
-  // Career chart
-  const career = [
-    {p: 'Store', t: "Dad's store", s: 'Sales counter in Kerala, ages 14 to 16', y: 0.1},
-    {p: "Wendy's", t: "Wendy's", s: 'Cashier, senior year of high school', y: 0.2},
-    {p: 'Amazon', t: 'Amazon', s: 'Fulfillment associate, 2020', y: 0.3},
-    {p: 'College', t: 'College', s: 'UF, an associate degree, then FIU, class of 2026', y: 0.5},
-    {p: 'Internships', t: 'Five internships', s: 'UBS twice, JM Family, Frontier Airlines, JPMorgan CIB', y: 0.72},
-    {p: 'Now', t: 'JPMorgan Chase', s: 'Global Finance & Business Management analyst, New York', y: 0.93}
+  // ---------- Articles ----------
+  const ARTS = [
+    {id: 'a-rates', sec: 'thoughts', kick: 'Hot take', topic: 'Markets', title: "This sell-off isn't about AI. It's about a 5% risk-free rate.", dek: 'Everyone is blaming the AI trade. Look at the 10-year instead: when the risk-free rate goes up, the longest-dated stocks get repriced first.', date: 'Nov 21, 2026'},
+    {id: 'a-bottleneck', sec: 'thoughts', kick: 'Thought', topic: 'Companies', title: 'Microsoft just told you where the AI bottleneck is', dek: "It isn't chips. When the biggest buyer of AI capacity can't spend money fast enough, the constraint is buildings, power and the gear in between.", date: 'Nov 21, 2026'},
+    {id: 'a-private-credit', sec: 'thoughts', kick: 'Thought', topic: 'Credit', title: "Private credit's scariest number isn't the default rate", dek: "Fitch's default rate has sat above 6% since April. Half of those defaults never reach a courtroom. The borrowers just stop paying cash.", date: 'Nov 21, 2026'},
+    {id: 'a-bonuses', sec: 'thoughts', kick: 'Thought', topic: 'Deals', title: 'Wall Street is about to get paid for a market that just changed', dek: "Bonuses are set to rise for a third straight year. They're paying for the first half of 2026, not the 5% world we're in now.", date: 'Nov 21, 2026'},
+    {id: 'a-life-cycle', sec: 'thoughts', kick: 'Thought', topic: 'Reading notes', title: "Reading notes: Damodaran's The Corporate Life Cycle", dek: 'Companies age like people, and the right way to value one changes as it does. A useful lens for a market where giants are acting young again.', date: 'Nov 21, 2026'},
+    {id: 'a-eaton', sec: 'research', kind: 'pitch', kick: 'Stock pitch', topic: 'Diversified industrials', title: "Long Eaton: The market is pricing a slowdown the order book hasn't shown", dek: 'Record orders, a third guidance raise, and a stock down 23% in a month. The multiple now sits below its five-year average on numbers that are still going up.', date: 'Nov 21, 2026'},
+    {id: 'a-honeywell', sec: 'research', kind: 'deal', kick: 'Deal breakdown', topic: 'M&A', title: 'Honeywell, in three pieces: what the breakup did and what to watch', dek: 'The separation is done. The verdict comes with the first full year of standalone numbers for Honeywell Technologies, Honeywell Aerospace and Solstice.', date: 'Nov 21, 2026'},
+    {id: 'a-stress-test', sec: 'research', kind: 'note', kick: 'Market note', topic: 'Banks', title: 'The 2026 stress test in one number: revenue nearly paid for the losses', dek: 'Thirty-two banks, $708 billion of hypothetical losses and $719 billion of pre-provision net revenue to absorb them. How to read the results.', date: 'Nov 21, 2026'},
+    {id: 'a-copper', sec: 'research', kind: 'industry', kick: 'Industry note', topic: 'Commodities', title: 'Copper: a supply story that just met a demand scare', dek: "Records in September on mine disruptions and zero smelting fees. November's sell-off knocked prices back. The supply problem didn't go anywhere.", date: 'Nov 21, 2026'},
+    {id: 'a-abs', sec: 'research', kind: 'industry', kick: 'Industry note', topic: 'Structured credit', title: 'How a car loan becomes a bond: an auto ABS primer', dek: "Securitization turns thousands of monthly car payments into rated bonds. How the machine works, and where 2026's stress is showing up.", date: 'Nov 21, 2026'},
+    {id: 'a-industrials', sec: 'research', kind: 'industry', kick: 'Industry note', topic: 'Diversified industrials', title: 'How to read a diversified industrial in eight numbers', dek: "Orders, backlog, organic growth, margins and cash. A field guide to the sector, worked through with Eaton's latest quarter.", date: 'Nov 21, 2026'}
   ];
-  let ci = career.length - 1, autoplay = null, cGeom = null;
-  const cFig = $('#cc-fig'), cRange = $('#cc-range');
-  cRange.innerHTML = career.map((c, i) => `<button type="button" data-i="${i}" aria-pressed="${i === ci}">${c.p}</button>`).join('');
-  const pad = {l: 10, r: 10, t: 18, b: 18};
-  const place = () => {
-    if (!cGeom) return;
-    const gx = $('#cc-x'), gp = $('#cc-p'); if (!gx) return;
-    const x = cGeom.X(ci).toFixed(1), y = cGeom.Y(career[ci].y).toFixed(1);
+  const byId = Object.fromEntries(ARTS.map(a => [a.id, a]));
+  const readMins = a => { const t = document.getElementById('t-' + a.id); const p = t && t.content.querySelector('.prose'); const words = p ? p.textContent.trim().split(/\s+/).length : 600; return Math.max(2, Math.round(words / 230)); };
+  const lc = s => /^[A-Z][a-z]/.test(s) ? s.charAt(0).toLowerCase() + s.slice(1) : s;
+  for (const a of ARTS) a.mins = readMins(a);
+
+  // ---------- Segmented controls ----------
+  const segInd = seg => {
+    const ind = $('.ind', seg), b = $('button[aria-pressed=true]', seg);
+    if (!ind || !b || !b.offsetWidth) return;
+    ind.style.width = b.offsetWidth + 'px';
+    ind.style.transform = `translateX(${b.offsetLeft}px)`;
+  };
+  const makeSeg = (seg, opts, onPick) => {
+    seg.insertAdjacentHTML('beforeend', opts.map(([k, label], i) => `<button type="button" data-k="${k}" aria-pressed="${i === 0}">${label}</button>`).join(''));
+    seg.addEventListener('click', e => {
+      const b = e.target.closest('button'); if (!b) return;
+      for (const x of $$('button', seg)) x.setAttribute('aria-pressed', String(x === b));
+      segInd(seg); onPick(b.dataset.k);
+    });
+  };
+
+  // ---------- Thoughts landing ----------
+  const hot = byId['a-rates'];
+  $('#hot-dek').textContent = hot.dek;
+  $('#hot-meta').innerHTML = `<span>${hot.topic}</span><span>${hot.date}</span><span>${hot.mins} min read</span>`;
+  const posts = ARTS.filter(a => a.sec === 'thoughts' && a.id !== hot.id);
+  const tGrid = $('#t-grid'), tSeg = $('#t-seg');
+  const renderPosts = topic => {
+    tGrid.innerHTML = posts.filter(p => !topic || p.topic === topic).map((p, i) => `<a class="cardlink rv" style="--d:${i % 2}" href="#${p.id}"><div class="card"><p class="kick">${p.topic}</p><h3>${p.title}</h3><p class="dek">${p.dek}</p><p class="meta"><span>${p.date}</span><span>${p.mins} min read</span></p></div></a>`).join('');
+    watch(tGrid);
+  };
+  makeSeg(tSeg, [['', 'All'], ...[...new Set(posts.map(p => p.topic))].map(t => [t, t])], renderPosts);
+
+  // Discount-rate calculator: value of a growing perpetuity, 1 / (r - g)
+  const g = 0.03, r0 = 0.06, r1 = 0.12;
+  let rate = 0.095, dGeom = null;
+  const val = r => 1 / (r - g);
+  const pct = r => (r * 100).toFixed(1) + '%';
+  const dFig = $('#dc-fig'), dIn = $('#dc-r');
+  const dPad = {l: 6, r: 6, t: 14, b: 28};
+  const placeDC = () => {
+    if (!dGeom) return;
+    const gx = $('#dc-x'), gp = $('#dc-p'); if (!gx) return;
+    const x = dGeom.X(rate).toFixed(1), y = dGeom.Y(val(rate)).toFixed(1);
     gx.style.transform = `translate(${x}px,0)`;
     gp.style.transform = `translate(${x}px,${y}px)`;
-    for (const m of $$('.mdot', cFig)) m.style.opacity = +m.dataset.i === ci ? '0' : '1';
   };
-  const draw = () => {
-    const W = cFig.clientWidth, H = cFig.clientHeight; if (!W) return;
-    const n = career.length, step = (W - pad.l - pad.r) / (n - 1);
-    const X = i => pad.l + i * step, Y = v => pad.t + (1 - v) * (H - pad.t - pad.b);
-    cGeom = {X, Y};
-    const rnd = seeded('joshuva-johnson');
-    let d = `M${X(0).toFixed(1)} ${Y(career[0].y).toFixed(1)}`;
-    for (let i = 0; i < n - 1; i++) for (let k = 1; k <= 16; k++) {
-      const f = k / 16, v = career[i].y + (career[i + 1].y - career[i].y) * f + (k < 16 ? (rnd() - 0.5) * 0.06 : 0);
-      d += `L${(X(i) + f * step).toFixed(1)} ${Y(v).toFixed(1)}`;
-    }
-    const x = X(ci).toFixed(1), y = Y(career[ci].y).toFixed(1);
-    cFig.innerHTML = `<svg aria-hidden="true"><defs><linearGradient id="ccg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="currentColor" stop-opacity=".2"/><stop offset="1" stop-color="currentColor" stop-opacity="0"/></linearGradient></defs>
-      <path d="${d} L${X(n - 1).toFixed(1)} ${H} L${X(0).toFixed(1)} ${H}Z" fill="url(#ccg)"/>
+  const drawDC = () => {
+    const W = dFig.clientWidth, H = dFig.clientHeight; if (!W) return;
+    const X = r => dPad.l + (r - r0) / (r1 - r0) * (W - dPad.l - dPad.r);
+    const yMax = val(r0) * 1.04;
+    const Y = v => dPad.t + (1 - v / yMax) * (H - dPad.t - dPad.b);
+    dGeom = {X, Y};
+    let d = '';
+    for (let i = 0; i <= 120; i++) { const r = r0 + (r1 - r0) * i / 120; d += (i ? 'L' : 'M') + X(r).toFixed(1) + ' ' + Y(val(r)).toFixed(1); }
+    const x = X(rate).toFixed(1), y = Y(val(rate)).toFixed(1);
+    const ticks = [0.06, 0.08, 0.10, 0.12].filter((t, i) => W > 360 || i % 2 === 0);
+    dFig.innerHTML = `<svg aria-hidden="true"><defs><linearGradient id="dcg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="currentColor" stop-opacity=".22"/><stop offset="1" stop-color="currentColor" stop-opacity="0"/></linearGradient></defs>
+      <path d="${d} L${X(r1).toFixed(1)} ${H - dPad.b} L${X(r0).toFixed(1)} ${H - dPad.b}Z" fill="url(#dcg)"/>
       <path class="ln" pathLength="1" d="${d}"/>
-      ${career.map((c, i) => `<circle class="mdot" data-i="${i}" cx="${X(i).toFixed(1)}" cy="${Y(c.y).toFixed(1)}" r="4.5"${i === ci ? ' style="opacity:0"' : ''}/>`).join('')}
-      <g id="cc-x" class="mv" style="transform:translate(${x}px,0)"><line class="xh" x1="0" x2="0" y1="0" y2="${H}"/></g>
-      <g id="cc-p" class="mv" style="transform:translate(${x}px,${y}px)"><circle class="halo" r="16"/><circle class="dot" r="7"/></g></svg>`;
+      ${ticks.map(t => `<text class="tick" x="${X(t).toFixed(1)}" y="${H - 6}" text-anchor="${t === r0 ? 'start' : t === r1 ? 'end' : 'middle'}">${Math.round(t * 100)}%</text>`).join('')}
+      <g id="dc-x" class="mv" style="transform:translate(${x}px,0)"><line class="xh" x1="0" x2="0" y1="${dPad.t}" y2="${H - dPad.b}"/></g>
+      <g id="dc-p" class="mv" style="transform:translate(${x}px,${y}px)"><circle class="halo" r="14"/><circle class="dot" r="6"/></g></svg>`;
   };
-  const set = i => {
-    ci = Math.max(0, Math.min(career.length - 1, i));
-    $('#cc-t').textContent = career[ci].t;
-    $('#cc-s').textContent = career[ci].s;
-    $('#cc-n').textContent = `${ci + 1} of ${career.length}`;
-    for (const b of $$('button', cRange)) b.setAttribute('aria-pressed', String(+b.dataset.i === ci));
-    place();
+  const setRate = r => {
+    rate = Math.min(r1, Math.max(r0, Math.round(r * 1000) / 1000));
+    $('#dc-out').textContent = '$' + val(rate).toFixed(2);
+    $('#dc-cap').textContent = `Value today of $1 of cash flow next year, growing 3% a year forever, at a ${pct(rate)} discount rate.`;
+    $('#dc-v').textContent = pct(rate);
+    $('#dc-delta').textContent = `One point higher, at ${pct(rate + 0.01)}, cuts the value by ${Math.round((1 - val(rate + 0.01) / val(rate)) * 100)}%.`;
+    dIn.value = (rate * 100).toFixed(1);
+    dIn.setAttribute('aria-valuetext', `${pct(rate)}, value $${val(rate).toFixed(2)}`);
+    placeDC();
   };
-  const stopAuto = () => { if (autoplay) { clearInterval(autoplay); autoplay = null; } };
-  cFig.addEventListener('pointermove', e => { stopAuto(); const b = cFig.getBoundingClientRect(); const i = Math.round((e.clientX - b.left - pad.l) / ((b.width - pad.l - pad.r) / (career.length - 1))); if (i !== ci) set(i); });
-  cRange.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; stopAuto(); set(+b.dataset.i); });
-  hooks.career = () => { let i = 0; set(0); autoplay = setInterval(() => { i++; set(i); if (i >= career.length - 1) stopAuto(); }, 380); };
+  const scrubDC = e => { const b = dFig.getBoundingClientRect(); setRate(r0 + (e.clientX - b.left - dPad.l) / (b.width - dPad.l - dPad.r) * (r1 - r0)); };
+  dFig.addEventListener('pointermove', scrubDC);
+  dFig.addEventListener('pointerdown', scrubDC);
+  dIn.addEventListener('input', () => setRate(+dIn.value / 100));
 
-  // Count-up stats
-  hooks.count = el => {
-    const b = $('b', el), to = +b.dataset.to, dec = +b.dataset.dec, t0 = performance.now(), dur = 1400;
-    const tick = now => { const p = Math.min(1, (now - t0) / dur), e = 1 - (1 - p) ** 3; b.textContent = (to * e).toFixed(dec); if (p < 1) requestAnimationFrame(tick); };
-    requestAnimationFrame(tick);
+  // ---------- Research landing ----------
+  const pieces = ARTS.filter(a => a.sec === 'research');
+  const rList = $('#r-list'), rSeg = $('#r-seg');
+  const renderPieces = k => {
+    rList.innerHTML = pieces.filter(p => !k || p.kind === k).map(p => `<a class="lrow" href="#${p.id}"><p class="kick">${p.kick}</p><div><h3>${p.title}</h3><p>${p.dek}</p></div><p class="tp">${p.topic}</p></a>`).join('');
+  };
+  makeSeg(rSeg, [['', 'All'], ['pitch', 'Stock pitches'], ['deal', 'Deals'], ['industry', 'Industry notes'], ['note', 'Market notes']], renderPieces);
+
+  // Pitch method visuals (illustrative figures)
+  const hrow = (label, l, w, v, j, extra = '', quiet = false) => `<div class="hb"><span>${label}</span><span class="tr"><i class="b${quiet ? ' q' : ''}" style="--l:${l}%;--w:${w}%;--j:${j}"></i>${extra}</span><span class="v">${v}</span></div>`;
+  const ff = {min: 50, max: 120, price: 76, rows: [['52-week range', 62, 88], ['Trading comps', 70, 95], ['Precedent deals', 78, 104], ['DCF, base case', 84, 112], ['Analyst targets', 80, 100]]};
+  const pos = v => (v - ff.min) / (ff.max - ff.min) * 100;
+  const sc = [['Bear, 25%', 60, 0.25], ['Base, 50%', 94, 0.5], ['Bull, 25%', 120, 0.25]];
+  const weighted = sc.reduce((t, [, v, p]) => t + v * p, 0);
+  const viz = [
+    () => `<p class="fh">Market share</p>` + [['Leader', 28], ['Second', 19], ['Third', 14], ['Rest of market', 39]].map(([l, v], j) => hrow(l, 0, v / 40 * 100, v + '%', j, '', j === 3)).join(''),
+    () => `<p class="fh">Revenue by segment</p><div class="mix"><i class="sg" style="flex:46;--j:0"></i><i class="sg s2" style="flex:32;--j:1"></i><i class="sg s3" style="flex:22;--j:2"></i></div><div class="legend"><span><b>46%</b>Products</span><span><b>32%</b>Services</span><span><b>22%</b>Software</span></div>`,
+    () => `<p class="fh">How the statements link</p><div class="chain"><span class="box">Income statement</span><span class="arr"></span><span class="box">Cash flow</span><span class="arr"></span><span class="box">Balance sheet</span></div><ul class="checks"><li>Net income flows into cash flow and retained earnings</li><li>Ending cash ties to the balance sheet</li><li>Assets equal liabilities plus equity, every year</li></ul>`,
+    () => `<p class="fh">Valuation summary, dollars per share</p>` + ff.rows.map(([l, a, b], j) => hrow(l, pos(a).toFixed(2), (pos(b) - pos(a)).toFixed(2), `$${a} to $${b}`, j, `<i class="px" style="--p:${pos(ff.price).toFixed(2)}%"></i>`, !l.startsWith('DCF'))).join('') +
+      `<div class="axis"><span></span><span class="tk">${[50, 70, 90, 110].map(t => `<span style="left:${pos(t).toFixed(2)}%">$${t}</span>`).join('')}</span><span></span></div><p class="fnote">Dashed line: current price, $${ff.price}.</p>`,
+    () => `<p class="fh">Scenario values per share</p>` + sc.map(([l, v], j) => hrow(l, 0, v / 130 * 100, '$' + v, j, '', !l.startsWith('Base'))).join('') +
+      `<p class="fnote">Probability-weighted value <b>$${weighted.toFixed(0)}</b>, ${Math.round((weighted / ff.price - 1) * 100)}% above the $${ff.price} price.</p>`
+  ];
+  const stepsTxt = [
+    ['Map the industry', 'Who sells what to whom, how big the market is, how fast it grows, and where the profit pools sit.'],
+    ['Understand the business', 'Segments, unit economics, customers, and the few numbers that actually drive results.'],
+    ['Build the model', 'A three-statement model from the filings, with drivers I can defend line by line.'],
+    ['Value it three ways', 'Trading comps, precedent transactions and a DCF, cross-checked against where the stock trades.'],
+    ['Write the risks first', 'What would make me wrong, how likely it is, and what it would cost. Bear, base and bull cases.']
+  ];
+  $('#steps').innerHTML = stepsTxt.map(([h, p], i) => `<article class="st${i ? '' : ' on'}" data-i="${i}"><p class="kick">Step ${i + 1} of 5</p><h3>${h}</h3><p>${p}</p><div class="inviz rv">${viz[i]()}</div></article>`).join('');
+  $('#stage').innerHTML = viz.map((f, i) => `<figure class="frame${i ? '' : ' on'}" data-i="${i}">${f()}</figure>`).join('');
+  const steps = $$('.st'), frames = $$('.frame');
+  const setStep = i => { steps.forEach((s, k) => s.classList.toggle('on', k === i)); frames.forEach((f, k) => f.classList.toggle('on', k === i)); };
+  if (hasIO) {
+    const stepIO = new IntersectionObserver(es => { for (const e of es) if (e.isIntersecting) setStep(+e.target.dataset.i); }, {rootMargin: '-45% 0px -45% 0px'});
+    steps.forEach(s => stepIO.observe(s));
+  }
+
+  // ---------- Article view ----------
+  const artEl = $('#art');
+  const renderArticle = id => {
+    const a = byId[id], t = document.getElementById('t-' + id);
+    const sib = ARTS.filter(x => x.sec === a.sec);
+    const next = sib[(sib.indexOf(a) + 1) % sib.length];
+    const backLabel = a.sec === 'thoughts' ? 'All thoughts' : 'All research';
+    artEl.innerHTML = `<a class="textlink back" href="#${a.sec}">${backLabel}</a>
+      <p class="kick">${a.kick}, ${lc(a.topic)}</p>
+      <h1>${a.title}</h1>
+      <p class="dek">${a.dek}</p>
+      <p class="byline"><b>Joshuva Johnson</b><span>${a.date}</span><span>${a.mins} min read</span></p>`;
+    artEl.appendChild(t.content.cloneNode(true));
+    artEl.insertAdjacentHTML('beforeend', `<a class="nextup" href="#${next.id}"><p class="kick">Read next</p><h3>${next.title}</h3></a>`);
   };
 
-  // Hover light
-  const glowSel = '.tile,.ctile,.list';
+  // ---------- Hover light ----------
+  const glowSel = '.feature,.card,.pro,.list,.banner,.frame,.nextup';
   const rootEl = document.documentElement;
   let lastMove = null, moveQueued = false;
   const applyMove = () => {
@@ -337,9 +998,36 @@ footer p{max-width:80ch}
   }, {passive: true});
   rootEl.addEventListener('mouseleave', () => rootEl.classList.remove('hovering'));
 
-  if ('ResizeObserver' in window) { const sizeRO = new ResizeObserver(draw); sizeRO.observe(cFig); }
-  else addEventListener('resize', draw);
-  draw();
+  // ---------- Router ----------
+  const views = ['thoughts', 'research', 'about'];
+  const segs = [tSeg, rSeg];
+  const show = () => {
+    const h = location.hash.slice(1);
+    const isArt = !!byId[h];
+    const v = isArt ? 'article' : (views.includes(h) ? h : 'thoughts');
+    for (const id of [...views, 'article']) $('#v-' + id).hidden = id !== v;
+    const navKey = isArt ? byId[h].sec : v;
+    for (const a of $$('[data-nav]')) { if (a.dataset.nav === navKey) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); }
+    if (isArt) renderArticle(h);
+    window.scrollTo(0, 0);
+    watch($('#v-' + v));
+    requestAnimationFrame(() => { segs.forEach(segInd); drawDC(); });
+  };
+  addEventListener('hashchange', show);
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-go]'); if (!b) return;
+    const t = document.getElementById(b.dataset.go);
+    if (t) t.scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block: 'start'});
+  });
+  if ('ResizeObserver' in window) {
+    const sizeRO = new ResizeObserver(() => { drawDC(); segs.forEach(segInd); });
+    [dFig, tSeg, rSeg].forEach(el => sizeRO.observe(el));
+  } else addEventListener('resize', () => { drawDC(); segs.forEach(segInd); });
+
+  renderPosts('');
+  renderPieces('');
+  setRate(0.095);
+  show();
 }
 </script>
 </body>
