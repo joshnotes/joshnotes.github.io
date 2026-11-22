@@ -105,6 +105,13 @@ button{font:inherit;color:inherit}
 .center{text-align:center}
 .center .sub{max-width:34ch;margin:18px auto 0}
 
+/* Hover light: a soft green gradient follows the pointer across the page and inside each tile */
+.ambient{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:0;transition:opacity .8s ease;background:radial-gradient(720px circle at var(--ax,50%) var(--ay,0%),color-mix(in srgb,var(--up) 9%,transparent),transparent 65%)}
+html.hovering .ambient{opacity:1}
+.tile,.ctile,.list{position:relative;isolation:isolate}
+.tile::before,.ctile::before,.list::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .45s ease;background:radial-gradient(440px circle at var(--mx,50%) var(--my,50%),color-mix(in srgb,var(--up) 16%,transparent),transparent 62%)}
+.tile:hover::before,.ctile:hover::before,.list:hover::before{opacity:1}
+
 footer{background:var(--tile);color:var(--ink2);font-size:13px;padding-block:28px 40px}
 footer .wrap{display:grid;gap:10px}
 footer p{max-width:80ch}
@@ -115,6 +122,7 @@ footer p{max-width:80ch}
 </style>
 </head>
 <body>
+<div class="ambient" aria-hidden="true"></div>
 
 <nav class="nav gut" aria-label="Main">
   <div class="wrap">
@@ -222,7 +230,7 @@ footer p{max-width:80ch}
 
 <footer class="gut">
   <div class="wrap">
-    <p>Views are my own and do not represent JPMorgan Chase &amp; Co. Nothing on this site is investment advice.</p>
+    <p>Views are my own and do not represent my employer. Nothing on this site is investment advice.</p>
     <p>© 2026 Joshuva Johnson</p>
   </div>
 </footer>
@@ -308,6 +316,26 @@ footer p{max-width:80ch}
     const tick = now => { const p = Math.min(1, (now - t0) / dur), e = 1 - (1 - p) ** 3; b.textContent = (to * e).toFixed(dec); if (p < 1) requestAnimationFrame(tick); };
     requestAnimationFrame(tick);
   };
+
+  // Hover light
+  const glowSel = '.tile,.ctile,.list';
+  const rootEl = document.documentElement;
+  let lastMove = null, moveQueued = false;
+  const applyMove = () => {
+    moveQueued = false;
+    const e = lastMove; if (!e) return;
+    rootEl.style.setProperty('--ax', e.clientX + 'px');
+    rootEl.style.setProperty('--ay', e.clientY + 'px');
+    const t = e.target instanceof Element ? e.target.closest(glowSel) : null;
+    if (t) { const r = t.getBoundingClientRect(); t.style.setProperty('--mx', (e.clientX - r.left) + 'px'); t.style.setProperty('--my', (e.clientY - r.top) + 'px'); }
+  };
+  document.addEventListener('pointermove', e => {
+    if (e.pointerType !== 'mouse') return;
+    rootEl.classList.add('hovering');
+    lastMove = e;
+    if (!moveQueued) { moveQueued = true; requestAnimationFrame(applyMove); }
+  }, {passive: true});
+  rootEl.addEventListener('mouseleave', () => rootEl.classList.remove('hovering'));
 
   if ('ResizeObserver' in window) { const sizeRO = new ResizeObserver(draw); sizeRO.observe(cFig); }
   else addEventListener('resize', draw);
