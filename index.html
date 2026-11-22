@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Joshuva Johnson</title>
+<meta name="description" content="Joshuva Johnson, analyst at JPMorgan Chase in New York. Background, experience and how I work.">
+<meta property="og:title" content="Joshuva Johnson">
+<meta property="og:description" content="Analyst at JPMorgan Chase in New York. Background, experience and how I work.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231d1d1f'/%3E%3Cpath d='M14 44 L26 34 L36 39 L50 20' fill='none' stroke='%2300c805' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE quiet, exact, product-grade: content first, nothing decorative
+   IDEA a product page for a person: Apple-style reveals and tiles, a Robinhood-style chart you can scrub
+   PICTURE a career line from a family store to JPMorgan, drawn as you arrive
+   COLOUR white and #f5f5f7 tiles, ink #1d1d1f, grey #6e6e73, one green #00c805 for chart marks; night is black
+   TYPE system SF Pro where available, Inter elsewhere; 700 headlines tracked tight, 17px body
+   LAYOUT centered hero, then left-aligned sections of rounded tiles; phone: one column, chart full width */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#000000);--tile:light-dark(#f5f5f7,#161617);--tile2:light-dark(#ffffff,#2c2c2e);--ink:light-dark(#1d1d1f,#f5f5f7);--ink2:light-dark(#6e6e73,#a1a1a6);--rule:light-dark(#d2d2d7,#38383a);--up:light-dark(#00c805,#00d60b);--upink:light-dark(#0a7d24,#30d158);--quiet:light-dark(#c7c7cc,#48484a);--nav:light-dark(rgba(255,255,255,.76),rgba(22,22,23,.76));--r:28px;--gut:max(5vw,20px);--ease:cubic-bezier(.2,.8,.2,1)}
+:root[data-theme=light]{color-scheme:light}
+:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 -apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:clip}
+h1,h2,h3{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Inter,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-weight:700;letter-spacing:-.03em;line-height:1.05;margin:0;text-wrap:balance}
+h1{font-size:clamp(52px,8vw,96px);letter-spacing:-.04em}
+h2{font-size:clamp(34px,4.6vw,56px)}
+h3{font-size:24px;font-weight:600;letter-spacing:-.02em;line-height:1.15}
+p,ul{margin:0}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--up);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1180px;margin-inline:auto}
+.gut{padding-left:max(var(--gut),env(safe-area-inset-left,0px));padding-right:max(var(--gut),env(safe-area-inset-right,0px))}
+.sec{padding-block:clamp(64px,9vw,128px)}
+.sub{font-size:clamp(19px,2vw,24px);line-height:1.35;color:var(--ink2);font-weight:500;letter-spacing:-.01em;text-wrap:balance}
+.small{font-size:14px;color:var(--ink2)}
+.head{display:grid;gap:14px;margin-bottom:40px;max-width:760px}
+
+.nav{position:sticky;top:0;z-index:30;background:var(--nav);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid color-mix(in srgb,var(--rule) 60%,transparent)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:52px}
+.mark{font-weight:600;font-size:17px;letter-spacing:-.01em;text-decoration:none;display:inline-flex;align-items:center;min-height:44px}
+.navlink{font-size:15px;color:var(--ink2);text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
+.navlink:hover{color:var(--ink)}
+
+.hero{text-align:center;padding-top:clamp(88px,13vw,160px);padding-bottom:clamp(40px,6vw,72px)}
+.hero .sub{max-width:30ch;margin:20px auto 0}
+.ctas{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 20px;margin-top:32px;align-items:center}
+.pill{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 22px;border-radius:980px;background:var(--ink);color:var(--bg);font-size:17px;font-weight:500;text-decoration:none;transition:transform .3s var(--ease),opacity .2s}
+.pill:hover{opacity:.86}
+.pill:active{transform:scale(.97)}
+
+.js .rv{opacity:0;transform:translateY(36px) scale(.985);transition:opacity 1s var(--ease) calc(var(--d,0)*90ms),transform 1.1s var(--ease) calc(var(--d,0)*90ms)}
+.js .rv.in{opacity:1;transform:none}
+.ln{fill:none;stroke:currentColor;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.js .rv .ln{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 2.2s cubic-bezier(.4,.1,.2,1) .2s}
+.js .rv.in .ln{stroke-dashoffset:0}
+.fig{position:relative;color:var(--up);touch-action:pan-y;cursor:crosshair}
+.fig>svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.xh{stroke:var(--ink2);stroke-width:1;stroke-dasharray:3 4}
+.dot{fill:var(--up);stroke:var(--tile);stroke-width:3}
+.halo{fill:var(--up);opacity:.18}
+.mdot{fill:var(--tile);stroke:var(--quiet);stroke-width:2;transition:opacity .3s}
+.mv{transition:transform .5s var(--ease)}
+@media(prefers-reduced-motion:reduce){.mv{transition:none}}
+
+.ctile{background:var(--tile);border-radius:36px;padding:clamp(26px,4vw,48px)}
+.ctop{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:8px 24px;min-height:96px}
+.ctop h3{font-size:clamp(30px,3.4vw,44px);font-weight:700;letter-spacing:-.035em}
+.ctop p{color:var(--ink2);font-size:17px;margin-top:6px}
+.ctile .fig{height:clamp(200px,26vw,320px);margin:24px 0 12px}
+.range{display:flex;flex-wrap:wrap;gap:4px}
+.range button{border:0;background:none;min-height:44px;padding:0 14px;border-radius:980px;font-size:15px;font-weight:600;color:var(--ink2);cursor:pointer;transition:background .3s,color .3s}
+.range button:hover{color:var(--ink)}
+.range button[aria-pressed=true]{color:var(--upink);background:color-mix(in srgb,var(--up) 14%,transparent)}
+
+.letter{max-width:760px}
+.letter h2{margin-bottom:28px}
+.letter p{font-size:clamp(19px,1.9vw,23px);line-height:1.5;letter-spacing:-.01em;margin-bottom:20px}
+.letter p.sig{font-weight:600}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;border-top:1px solid var(--rule);padding-top:36px}
+.stat b{display:block;font-size:clamp(52px,6vw,80px);font-weight:700;letter-spacing:-.045em;line-height:1;font-variant-numeric:tabular-nums}
+.stat span{display:block;color:var(--ink2);margin-top:10px;max-width:18ch}
+.list{background:var(--tile);border-radius:var(--r);padding:4px 28px}
+.xrow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.7fr);gap:8px 40px;padding:28px 0;border-top:1px solid var(--rule)}
+.xrow:first-child{border-top:0}
+.xrow h3{font-size:22px}
+.xrow .who p{color:var(--ink2);font-size:15px;margin-top:4px}
+.xrow ul{padding-left:1.1em;display:grid;gap:10px}
+.xrow li::marker{color:var(--up)}
+.xrow ul.intern{list-style:none;padding:0;gap:0}
+.intern li{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:4px 24px;padding:12px 0;border-top:1px solid var(--rule)}
+.intern li:first-child{border-top:0;padding-top:0}
+.intern span{color:var(--ink2)}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.tile{background:var(--tile);border-radius:var(--r);padding:clamp(26px,3vw,40px);display:flex;flex-direction:column;gap:18px}
+.tile h3{font-size:clamp(24px,2.4vw,30px);font-weight:700;letter-spacing:-.03em}
+.edu{list-style:none;padding:0;display:grid;gap:16px}
+.edu b{display:block}
+.edu span{color:var(--ink2)}
+.tags{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0}
+.tags li{padding:8px 14px;background:var(--tile2);border-radius:980px;font-size:15px}
+.center{text-align:center}
+.center .sub{max-width:34ch;margin:18px auto 0}
+
+footer{background:var(--tile);color:var(--ink2);font-size:13px;padding-block:28px 40px}
+footer .wrap{display:grid;gap:10px}
+footer p{max-width:80ch}
+
+@media(max-width:1000px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:900px){.xrow{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:640px){body{font-size:16px}.two{grid-template-columns:minmax(0,1fr)}.list{padding:4px 20px}.intern li{grid-template-columns:minmax(0,1fr)}}
+</style>
+</head>
+<body>
+
+<nav class="nav gut" aria-label="Main">
+  <div class="wrap">
+    <a class="mark" href="#top">Joshuva Johnson</a>
+    <a class="navlink" href="https://www.linkedin.com/in/joshuvajohnson">LinkedIn</a>
+  </div>
+</nav>
+
+<main id="top">
+  <header class="hero gut">
+    <div class="wrap">
+      <h1 class="rv">Joshuva Johnson.</h1>
+      <p class="sub rv" style="--d:1">Analyst at JPMorgan Chase in New York. First in my family to graduate from college.</p>
+      <div class="ctas rv" style="--d:2"><a class="pill" href="https://www.linkedin.com/in/joshuvajohnson">Connect on LinkedIn</a></div>
+    </div>
+  </header>
+
+  <section class="gut">
+    <div class="wrap">
+      <div class="ctile rv" data-hook="career" style="--d:2">
+        <div class="ctop">
+          <div><h3 id="cc-t">JPMorgan Chase</h3><p id="cc-s">Global Finance &amp; Business Management analyst, New York</p></div>
+          <p class="small" id="cc-n">6 of 6</p>
+        </div>
+        <div class="fig" id="cc-fig" role="img" aria-label="Career path from a family store in Kerala to JPMorgan Chase, rising over six steps"></div>
+        <div class="range" id="cc-range" role="group" aria-label="Choose a point in my career"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec gut">
+    <div class="wrap letter">
+      <h2 class="rv">How I work.</h2>
+      <p class="rv">I started working at 14, behind the counter of my dad's store. Everything since, from a Wendy's register to an Amazon warehouse to five finance internships, taught me the same lesson: show the work.</p>
+      <p class="rv">I didn't come up through a target school or a family network, so I'd rather let the work speak. When I look at a company, I go end to end: how the business makes money, what the market might be missing, a model I build myself, and the risks that would prove me wrong.</p>
+      <p class="rv">I learn best by teaching. Explaining something to people who will check my numbers keeps the work honest, and it is the fastest way I know to understand an industry.</p>
+      <p class="rv sig">Joshuva</p>
+    </div>
+  </section>
+
+  <section class="gut">
+    <div class="wrap">
+      <div class="stats">
+        <div class="stat rv" data-hook="count"><b data-to="5" data-dec="0">5</b><span>Internships across four firms</span></div>
+        <div class="stat rv" style="--d:1" data-hook="count"><b data-to="2" data-dec="0">2</b><span>Bachelor's degrees, Finance and Business Analytics</span></div>
+        <div class="stat rv" style="--d:2" data-hook="count"><b data-to="3.89" data-dec="2">3.89</b><span>GPA at Florida International University</span></div>
+        <div class="stat rv" style="--d:3" data-hook="count"><b data-to="3" data-dec="0">3</b><span>Certifications: Bloomberg, Alteryx, Tableau</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec gut">
+    <div class="wrap">
+      <div class="head rv"><h2>Experience.</h2></div>
+      <div class="list rv">
+        <div class="xrow">
+          <div class="who"><h3>JPMorgan Chase</h3><p>Analyst, Global Finance &amp; Business Management. New York, 2026 to present.</p></div>
+          <ul>
+            <li>Prepare FR Y-14Q regulatory filings, including PPNR (Schedule G), and line-of-business analytics on the income statement and balance sheet.</li>
+            <li>Automated quarterly KPI tracking with an Alteryx workflow that feeds Tableau and sends variance alerts.</li>
+            <li>Built a dashboard that tracks Federal Reserve FAQ updates, using OCR extraction, Excel and Confluence.</li>
+            <li>Build quarterly decks on Fed submission results, and executive decks with data, variances and commentary for management.</li>
+          </ul>
+        </div>
+        <div class="xrow">
+          <div class="who"><h3>Internships</h3><p>Banking, corporate finance and wealth management.</p></div>
+          <ul class="intern">
+            <li><b>JPMorgan Chase, CIB</b><span>Planning and analysis</span></li>
+            <li><b>Frontier Airlines</b><span>Financial planning and analysis</span></li>
+            <li><b>JM Family, Southeast Financial</b><span>Securitization accounting; full-time offer</span></li>
+            <li><b>UBS</b><span>Wealth management, two internships</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="gut">
+    <div class="wrap two">
+      <div class="tile rv">
+        <h3>Education</h3>
+        <ul class="edu">
+          <li><b>Florida International University, 2026</b><span>Bachelor's degrees in Finance and Business Analytics, 3.89 GPA. Certificate in Banking.</span></li>
+          <li><b>Before FIU</b><span>Two semesters at the University of Florida, then an associate degree.</span></li>
+          <li><b>Programs</b><span>SEO and MLT alum. Stock pitches and DCF models through SEO, Project Destined, Forage, Financial Edge and ALPFA.</span></li>
+        </ul>
+      </div>
+      <div class="tile rv" style="--d:1">
+        <h3>Skills</h3>
+        <ul class="tags">
+          <li>Three-statement modeling</li><li>DCF and trading comps</li><li>Bloomberg</li><li>Alteryx</li><li>Tableau</li><li>Regulatory reporting</li><li>Workflow automation</li><li>Executive decks</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec gut center">
+    <div class="wrap">
+      <h2 class="rv">Let's talk.</h2>
+      <p class="sub rv" style="--d:1">About companies, deals and markets, or to compare notes on a career in finance.</p>
+      <div class="ctas rv" style="--d:2"><a class="pill" href="https://www.linkedin.com/in/joshuvajohnson">Connect on LinkedIn</a><span class="small">linkedin.com/in/joshuvajohnson</span></div>
+    </div>
+  </section>
+</main>
+
+<footer class="gut">
+  <div class="wrap">
+    <p>Views are my own and do not represent JPMorgan Chase &amp; Co. Nothing on this site is investment advice.</p>
+    <p>© 2026 Joshuva Johnson</p>
+  </div>
+</footer>
+
+<script>
+{
+  const $ = (s, el = document) => el.querySelector(s);
+  const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+  const hasIO = 'IntersectionObserver' in window;
+  const reduce = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const animate = hasIO && !reduce;
+  if (animate) document.documentElement.classList.add('js');
+  const seeded = str => { let s = 7; for (const c of str) s = (s * 31 + c.charCodeAt(0)) % 2147483647; s = s || 7; return () => (s = s * 16807 % 2147483647) / 2147483647; };
+
+  const hooks = {};
+  const io = animate ? new IntersectionObserver(entries => {
+    for (const e of entries) {
+      if (!e.isIntersecting) continue;
+      e.target.classList.add('in');
+      io.unobserve(e.target);
+      const h = e.target.dataset.hook;
+      if (h && hooks[h]) hooks[h](e.target);
+    }
+  }, {rootMargin: '0px 0px -6% 0px', threshold: 0}) : null;
+  for (const el of $$('.rv')) { if (io) io.observe(el); else el.classList.add('in'); }
+
+  // Career chart
+  const career = [
+    {p: 'Store', t: "Dad's store", s: 'Sales counter in Kerala, ages 14 to 16', y: 0.1},
+    {p: "Wendy's", t: "Wendy's", s: 'Cashier, senior year of high school', y: 0.2},
+    {p: 'Amazon', t: 'Amazon', s: 'Fulfillment associate, 2020', y: 0.3},
+    {p: 'College', t: 'College', s: 'UF, an associate degree, then FIU, class of 2026', y: 0.5},
+    {p: 'Internships', t: 'Five internships', s: 'UBS twice, JM Family, Frontier Airlines, JPMorgan CIB', y: 0.72},
+    {p: 'Now', t: 'JPMorgan Chase', s: 'Global Finance & Business Management analyst, New York', y: 0.93}
+  ];
+  let ci = career.length - 1, autoplay = null, cGeom = null;
+  const cFig = $('#cc-fig'), cRange = $('#cc-range');
+  cRange.innerHTML = career.map((c, i) => `<button type="button" data-i="${i}" aria-pressed="${i === ci}">${c.p}</button>`).join('');
+  const pad = {l: 10, r: 10, t: 18, b: 18};
+  const place = () => {
+    if (!cGeom) return;
+    const gx = $('#cc-x'), gp = $('#cc-p'); if (!gx) return;
+    const x = cGeom.X(ci).toFixed(1), y = cGeom.Y(career[ci].y).toFixed(1);
+    gx.style.transform = `translate(${x}px,0)`;
+    gp.style.transform = `translate(${x}px,${y}px)`;
+    for (const m of $$('.mdot', cFig)) m.style.opacity = +m.dataset.i === ci ? '0' : '1';
+  };
+  const draw = () => {
+    const W = cFig.clientWidth, H = cFig.clientHeight; if (!W) return;
+    const n = career.length, step = (W - pad.l - pad.r) / (n - 1);
+    const X = i => pad.l + i * step, Y = v => pad.t + (1 - v) * (H - pad.t - pad.b);
+    cGeom = {X, Y};
+    const rnd = seeded('joshuva-johnson');
+    let d = `M${X(0).toFixed(1)} ${Y(career[0].y).toFixed(1)}`;
+    for (let i = 0; i < n - 1; i++) for (let k = 1; k <= 16; k++) {
+      const f = k / 16, v = career[i].y + (career[i + 1].y - career[i].y) * f + (k < 16 ? (rnd() - 0.5) * 0.06 : 0);
+      d += `L${(X(i) + f * step).toFixed(1)} ${Y(v).toFixed(1)}`;
+    }
+    const x = X(ci).toFixed(1), y = Y(career[ci].y).toFixed(1);
+    cFig.innerHTML = `<svg aria-hidden="true"><defs><linearGradient id="ccg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="currentColor" stop-opacity=".2"/><stop offset="1" stop-color="currentColor" stop-opacity="0"/></linearGradient></defs>
+      <path d="${d} L${X(n - 1).toFixed(1)} ${H} L${X(0).toFixed(1)} ${H}Z" fill="url(#ccg)"/>
+      <path class="ln" pathLength="1" d="${d}"/>
+      ${career.map((c, i) => `<circle class="mdot" data-i="${i}" cx="${X(i).toFixed(1)}" cy="${Y(c.y).toFixed(1)}" r="4.5"${i === ci ? ' style="opacity:0"' : ''}/>`).join('')}
+      <g id="cc-x" class="mv" style="transform:translate(${x}px,0)"><line class="xh" x1="0" x2="0" y1="0" y2="${H}"/></g>
+      <g id="cc-p" class="mv" style="transform:translate(${x}px,${y}px)"><circle class="halo" r="16"/><circle class="dot" r="7"/></g></svg>`;
+  };
+  const set = i => {
+    ci = Math.max(0, Math.min(career.length - 1, i));
+    $('#cc-t').textContent = career[ci].t;
+    $('#cc-s').textContent = career[ci].s;
+    $('#cc-n').textContent = `${ci + 1} of ${career.length}`;
+    for (const b of $$('button', cRange)) b.setAttribute('aria-pressed', String(+b.dataset.i === ci));
+    place();
+  };
+  const stopAuto = () => { if (autoplay) { clearInterval(autoplay); autoplay = null; } };
+  cFig.addEventListener('pointermove', e => { stopAuto(); const b = cFig.getBoundingClientRect(); const i = Math.round((e.clientX - b.left - pad.l) / ((b.width - pad.l - pad.r) / (career.length - 1))); if (i !== ci) set(i); });
+  cRange.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; stopAuto(); set(+b.dataset.i); });
+  hooks.career = () => { let i = 0; set(0); autoplay = setInterval(() => { i++; set(i); if (i >= career.length - 1) stopAuto(); }, 380); };
+
+  // Count-up stats
+  hooks.count = el => {
+    const b = $('b', el), to = +b.dataset.to, dec = +b.dataset.dec, t0 = performance.now(), dur = 1400;
+    const tick = now => { const p = Math.min(1, (now - t0) / dur), e = 1 - (1 - p) ** 3; b.textContent = (to * e).toFixed(dec); if (p < 1) requestAnimationFrame(tick); };
+    requestAnimationFrame(tick);
+  };
+
+  if ('ResizeObserver' in window) { const sizeRO = new ResizeObserver(draw); sizeRO.observe(cFig); }
+  else addEventListener('resize', draw);
+  draw();
+}
+</script>
+</body>
+</html>
