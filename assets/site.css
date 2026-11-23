@@ -60,8 +60,8 @@ main>section:last-child,main>.sec:last-child{padding-bottom:112px}
 /* ---------- Header ---------- */
 .nav{position:sticky;top:0;z-index:30;background:var(--bg);border-bottom:1px solid var(--rule)}
 .nav .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0 32px;min-height:72px}
-.mark{font-size:18px;line-height:24px;font-weight:400;letter-spacing:.04em;text-transform:uppercase;text-decoration:none;display:inline-flex;align-items:center;min-height:44px;white-space:nowrap}
-.mark::after{content:"_";content:"_"/"";margin-left:1px}
+.mark{font-size:20px;line-height:24px;font-weight:500;letter-spacing:-.01em;text-decoration:none;display:inline-flex;align-items:center;min-height:44px;white-space:nowrap}
+.mark::after{content:".";content:"."/"";margin-left:.5px}
 .links{display:flex;flex-wrap:wrap;gap:0 32px;list-style:none;padding:0}
 .links a{display:inline-flex;align-items:center;min-height:44px;font:400 13px/16px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink);text-decoration:none;text-underline-offset:7px;text-decoration-thickness:1px}
 .links a:hover,.links a[aria-current=page]{text-decoration:underline}
@@ -80,11 +80,12 @@ main>section:last-child,main>.sec:last-child{padding-bottom:112px}
 @supports not (offset-path:path("M0 0")){.atom i{display:none}}
 @media(prefers-reduced-motion:reduce){.atom i{animation:none}.atom i:nth-of-type(1){offset-distance:15%}.atom i:nth-of-type(2){offset-distance:62%}.atom i:nth-of-type(3){offset-distance:38%}}
 @media(min-width:641px) and (max-width:900px){.links{gap:0 24px}}
-@media(max-width:640px){.nav .wrap{min-height:64px;padding-block:6px}.mark{font-size:16px}.links{gap:0 20px}
+@media(max-width:640px){.nav .wrap{min-height:64px;padding-block:6px}.mark{font-size:18px}.links{gap:0 20px}
   /* Phones: the door sits on the name's row, the four sections on the row below. */
   .nav .wrap{justify-content:flex-start;column-gap:20px}.nav .links{display:contents}.nav .links li{order:2}.nav .links .door{order:1;margin-left:auto}
+  .nav .wrap::after{content:"";order:1;flex-basis:100%;height:0} /* a forced line break, so all four sections share the second row */
   .nav .links a.dose{font-size:17px}}
-@media(max-width:400px){.nav .wrap{column-gap:10px}.nav .mark{font-size:15px}.nav .links a.dose{font-size:16px}.atom{transform:scale(.8);transform-origin:0 50%;margin-right:calc(5px - 22px*.2)}}
+@media(max-width:400px){.nav .wrap{column-gap:10px}.nav .mark{font-size:17px}.nav .links a.dose{font-size:16px}.atom{transform:scale(.8);transform-origin:0 50%;margin-right:calc(5px - 22px*.2)}}
 /* Going through that door: black, with a rim of light, opens from where you clicked. */
 .portal-out{position:fixed;z-index:200;left:var(--x);top:var(--y);width:300vmax;height:300vmax;margin:-150vmax 0 0 -150vmax;border-radius:50%;pointer-events:none;
   background:radial-gradient(closest-side,#000 0 96%,rgba(255,236,205,.8) 97.6%,rgba(243,181,98,.45) 98.6%,rgba(243,181,98,0) 100%);transform:scale(0);animation:portal-out .55s cubic-bezier(.7,0,.25,1) forwards}
@@ -94,7 +95,7 @@ main>section:last-child,main>.sec:last-child{padding-bottom:112px}
 footer{--ink:var(--bone);--ink2:#A29D97;--rule:#2E2B28;background:light-dark(var(--black),#141312);color:var(--ink2);font-size:14px;line-height:21px;padding-block:56px 64px}
 footer .wrap{display:grid;gap:12px}
 footer .top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 32px;padding-bottom:20px;margin-bottom:8px;border-bottom:1px solid var(--rule)}
-footer .mark{color:var(--ink);font-size:16px}
+footer .mark{color:var(--ink);font-size:18px}
 footer .links a{color:var(--ink)}
 footer .links a[aria-current=page]{text-decoration:none}
 footer p{max-width:72ch}

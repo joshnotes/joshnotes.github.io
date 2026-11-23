@@ -98,8 +98,8 @@ def bar(d, x, y, fill=BLACK):
     d.rectangle([x * S, y * S, (x + 120) * S, (y + 8) * S], fill=fill)
 
 
-def wordmark(d, x, y, text='Joshuva Johnson', size=24, fill=BLACK):
-    tracked(d, x, y, text.upper() + '_', sans(size, 400), fill, 0.04)
+def wordmark(d, x, y, text='joshnotes', size=27, fill=BLACK):
+    tracked(d, x, y, text + '.', sans(size, 500), fill, -0.01)
 
 
 def save(im, key):

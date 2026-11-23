@@ -13,7 +13,7 @@ import re
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC = ROOT / 'src'
-SITE = 'https://joshuvajohnson.github.io'
+SITE = 'https://joshnotes.github.io'
 TEMPLATE = (SRC / 'templates' / 'base.html').read_text()
 
 
@@ -73,7 +73,7 @@ def page(meta, content, nav='', og_type='website', og_extra='', body_class=''):
     cur = ' aria-current="page"'
     out = TEMPLATE
     for key, val in {
-        '{{TITLE}}': esc(meta.get('page_title') or f"{meta['title']} | Joshuva Johnson"),
+        '{{TITLE}}': esc(meta.get('page_title') or f"{meta['title']} | joshnotes"),
         '{{OG_TITLE}}': esc(meta['title']),
         '{{DESCRIPTION}}': esc(meta['dek']),
         '{{CANONICAL}}': canonical,
@@ -445,7 +445,7 @@ def main():
     # The notes used to live under /thoughts/. Forward old links, keeping any #anchor.
     def forward(old, new, title):
         return ('<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">'
-                f'<title>{esc(title)} | Joshuva Johnson</title><link rel="canonical" href="{SITE}{new}">'
+                f'<title>{esc(title)} | joshnotes</title><link rel="canonical" href="{SITE}{new}">'
                 f'<meta name="robots" content="noindex"><meta http-equiv="refresh" content="0; url={new}">'
                 f'<script>location.replace("{new}"+location.hash)</script></head>'
                 f'<body><p>This page moved to <a href="{new}">{esc(title)}</a>.</p></body></html>\n')
