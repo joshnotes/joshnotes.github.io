@@ -206,7 +206,7 @@ def logo_tiles(items):
         cover = ''
         if o.get('url'):
             what = o['roles'][0][0] if o.get('roles') else o['name']
-            label = what if what.lower().startswith(o['name'].lower()) else f'{o["name"]} {what}'
+            label = what if o['name'].lower() in what.lower() else f'{o["name"]} {what}'
             cover = (f'<a class="lg-cover" href="{esc(o["url"])}" target="_blank" rel="noopener" '
                      f'aria-label="{esc(label)}: view the credential (opens in a new tab)">'
                      '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M5.5 4.5h6v6"/></svg></a>')
