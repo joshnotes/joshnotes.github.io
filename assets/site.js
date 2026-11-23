@@ -40,7 +40,7 @@
   for (const fig of $$('.photo')) {
     fig.addEventListener('click', e => { if (e.pointerType !== 'mouse' && !e.target.closest('a')) fig.classList.toggle('on'); });
     // A mouse over the photo, or over the page header it sits in (the About name), shows the colour.
-    const zone = fig.closest('.split') || fig;
+    const zone = fig.closest('.me') || fig;
     zone.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse' || e.pointerType === 'pen') fig.classList.add('hov'); });
     zone.addEventListener('pointerleave', () => fig.classList.remove('hov'));
   }
