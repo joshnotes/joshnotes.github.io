@@ -307,7 +307,7 @@ def watch_map(watch, pieces):
         return f'<a href="{url}">{esc(text)}</a>' if url else esc(text)
 
     # Captions: one per sector, one per link, and the default.
-    caps = ['<p class="wc wc-0">Hover or tap a sector. Filled dots have a pitch or note behind them.</p>']
+    caps = ['<p class="wc wc-0">Interactive visual</p>']
     for s in sectors:
         names = [link(c[1], c[2] if len(c) > 2 else '') for c in s['companies']]
         names = [link(b['name'], b.get('url', '')) for b in near[s['id']] if b.get('ticker')] + names

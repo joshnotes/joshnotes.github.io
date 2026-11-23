@@ -152,6 +152,15 @@ footer ::selection{background:var(--bone);color:var(--black)}
 @media(max-width:980px){.front{grid-template-columns:minmax(0,1fr)}.front-side{grid-template-columns:repeat(2,minmax(0,1fr));gap:40px 48px}}
 @media(max-width:760px){.cols2,.front-side{grid-template-columns:minmax(0,1fr)}.cols2{gap:56px}.hl a{font-size:18px;line-height:25px}}
 
+/* A red chalk circle round "tracking", as if drawn on by hand; it draws itself once on load. */
+.chalk{position:relative;display:inline-block;white-space:nowrap}
+.chalk svg{position:absolute;left:-16px;top:-10px;width:96px;max-width:none;height:36px;overflow:visible;pointer-events:none}
+.chalk path{fill:none;stroke:#FF3B2E;stroke-width:3.3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1}
+.chalk .p2{stroke-width:1.6;opacity:.6}
+.js .chalk path{animation:chalk-draw .85s cubic-bezier(.45,.05,.35,1) .45s backwards}
+.js .chalk .p2{animation-delay:.75s;animation-duration:.7s}
+@keyframes chalk-draw{from{stroke-dashoffset:1}}
+
 /* The ratings, narrow enough for the side column. */
 .rt{width:100%;border-collapse:collapse;font-size:15px;line-height:22px}
 .rt th,.rt td{padding:12px 12px 12px 0;border-bottom:1px solid var(--rule);text-align:left;vertical-align:baseline;font-weight:400}
