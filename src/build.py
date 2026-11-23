@@ -166,7 +166,7 @@ def pitches(research):
         if len(cells) < 4:
             continue
         (rating, _), (value, _), (gap, _), (price, price_label) = cells[:4]
-        company = meta['title'].split(':')[0].split(' after ')[0]
+        company = meta.get('company') or meta['title'].split(':')[0].split(' after ')[0]  # set "company" in the pitch's meta
         out.append({'meta': meta, 'company': company, 'ticker': ticker(company, body), 'rating': rating, 'value': value,
                     'gap': gap, 'price': price, 'as_of': re.sub(r'^Price (at )?', '', price_label)})
     return out
