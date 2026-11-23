@@ -12,30 +12,36 @@
 }
 -->
 <div class="wz-portal" aria-hidden="true"><i></i><b></b></div>
+<div class="wz-sky" aria-hidden="true"><i></i><i></i><i></i></div>
 <section class="wz gut" data-state="idle" aria-labelledby="wz-title">
-  <h1 class="wz-name" id="wz-title">Daily Dose of Wisdom</h1>
+  <h1 class="wz-title" id="wz-title">daily dose of wisdom</h1>
   <p class="wz-pre">Get your daily dose of wisdom here.</p>
   <div class="wz-stage">
-    <div class="wz-wheel">
-      <div class="wz-orbit" aria-hidden="true"><div class="wz-comet"><i></i></div></div>
-      <ul class="wz-shows" aria-label="The seven shows on the wheel">
+    <div class="wz-tilt">
+      <div class="wz-wheel">
+        <div class="wz-ring">
+          <div class="wz-orbit" aria-hidden="true"><div class="wz-comet"><i></i></div></div>
+          <ul class="wz-shows" aria-label="The seven shows on the wheel">
 {{WZ_TILES}}
-      </ul>
-      <div class="wz-hub">
-        <button class="wz-spin" type="button"><span>Get My Daily Dose of Wisdom</span></button>
-        <p class="wz-ticker" aria-hidden="true"></p>
-        <img class="wz-hub-cover" alt="" width="300" height="300" hidden>
+          </ul>
+        </div>
+        <div class="wz-hub">
+          <span class="wz-shock" aria-hidden="true"></span>
+          <button class="wz-spin" type="button"><span class="wz-spin-a">Get my</span><span class="wz-spin-b">daily dose of wisdom</span></button>
+          <p class="wz-ticker" aria-hidden="true"></p>
+          <img class="wz-hub-cover" alt="" width="300" height="300" hidden>
+        </div>
       </div>
+      <article class="wz-card" aria-labelledby="wz-ep" hidden>
+        <div class="wz-head">
+          <img class="wz-cover" alt="" width="112" height="112">
+          <div><p class="wz-show-name"></p><p class="wz-meta"></p></div>
+        </div>
+        <h2 class="wz-ep" id="wz-ep" tabindex="-1"></h2>
+        <audio class="wz-audio" controls preload="none"></audio>
+        <div class="wz-actions"><button class="wz-again" type="button">Spin again</button><a class="wz-apple" href="https://podcasts.apple.com/">Open in Apple Podcasts</a></div>
+      </article>
     </div>
-    <article class="wz-card" aria-labelledby="wz-ep" hidden>
-      <div class="wz-head">
-        <img class="wz-cover" alt="" width="112" height="112">
-        <div><p class="wz-show-name"></p><p class="wz-meta"></p></div>
-      </div>
-      <h2 class="wz-ep" id="wz-ep" tabindex="-1"></h2>
-      <audio class="wz-audio" controls preload="none"></audio>
-      <div class="wz-actions"><button class="wz-again" type="button">Spin again</button><a class="wz-apple" href="https://podcasts.apple.com/">Open in Apple Podcasts</a></div>
-    </article>
   </div>
   <p class="wz-live" aria-live="polite"></p>
   <p class="wz-credit">Episodes, cover art and audio come from each show's listing on Apple Podcasts.</p>

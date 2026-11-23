@@ -1,4 +1,4 @@
-// Daily Dose of Wisdom: a light runs round seven podcasts, slows down, and stops on one.
+// daily dose of wisdom: a light runs round seven podcasts, slows down, and stops on one.
 // While it turns, the page asks Apple Podcasts for that show's recent episodes and picks one at random.
 (() => {
   const root = document.querySelector('.wz');
@@ -11,6 +11,7 @@
   const $ = s => root.querySelector(s);
   const tiles = [...root.querySelectorAll('.wz-show')];
   const comet = $('.wz-comet'), spinBtn = $('.wz-spin'), ticker = $('.wz-ticker'), hubCover = $('.wz-hub-cover');
+  const shock = $('.wz-shock'), stage = $('.wz-stage'), tilt = $('.wz-tilt');
   const card = $('.wz-card'), cover = $('.wz-cover'), showName = $('.wz-show-name'), meta = $('.wz-meta');
   const title = $('.wz-ep'), audio = $('.wz-audio'), again = $('.wz-again'), apple = $('.wz-apple'), live = $('.wz-live');
 
@@ -47,7 +48,7 @@
 
   const light = i => tiles.forEach((t, k) => t.classList.toggle('on', k === i));
   const setState = s => { root.dataset.state = s; };
-  let pos = 0, spinning = false, lastEpisode = '';
+  let pos = 0, spinning = false, lastEpisode = '', level = () => {};
 
   function spin() {
     if (spinning) return;
@@ -83,8 +84,11 @@
     requestAnimationFrame(frame);
   }
 
+  const replay = (el, cls) => { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); };
   function land(show, list) {
-    light(shows.indexOf(show));
+    const i = shows.indexOf(show);
+    light(i);
+    if (!reduce) { replay(tiles[i], 'burst'); replay(shock, 'go'); }
     ticker.textContent = 'Tuning in…';
     setState('loading');
     list.then(eps => {
@@ -113,6 +117,7 @@
       live.textContent = `${show.name}. The episode list didn’t load.`;
     }
     setState('landed');
+    level();
     card.hidden = false;
     void card.offsetWidth; card.classList.add('in');
     spinning = false; spinBtn.disabled = false; again.disabled = false;
@@ -122,6 +127,26 @@
       const r = card.getBoundingClientRect();
       if (r.bottom > innerHeight || r.top < 0) card.scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block: 'center'});
     }
+  }
+
+  // The wheel leans a few degrees toward the pointer, eased so it drifts rather than snaps.
+  if (!reduce && window.matchMedia && matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    let tx = 0, ty = 0, x = 0, y = 0, raf = 0;
+    const step = () => {
+      x += (tx - x) * 0.08; y += (ty - y) * 0.08;
+      tilt.style.transform = `rotateX(${(-y * 7).toFixed(2)}deg) rotateY(${(x * 7).toFixed(2)}deg)`;
+      raf = Math.abs(tx - x) + Math.abs(ty - y) > 0.001 ? requestAnimationFrame(step) : 0;
+    };
+    const go = () => { if (!raf) raf = requestAnimationFrame(step); };
+    root.addEventListener('pointermove', e => {
+      if (e.pointerType !== 'mouse' || root.dataset.state === 'landed') return; // level while you read
+      const r = stage.getBoundingClientRect();
+      tx = Math.max(-1, Math.min(1, (e.clientX - r.left) / r.width * 2 - 1));
+      ty = Math.max(-1, Math.min(1, (e.clientY - r.top) / r.height * 2 - 1));
+      go();
+    });
+    root.addEventListener('pointerleave', () => { tx = 0; ty = 0; go(); });
+    level = () => { tx = 0; ty = 0; go(); };
   }
 
   spinBtn.addEventListener('click', spin);

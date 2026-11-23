@@ -415,7 +415,7 @@ def main():
     for i, s in enumerate(shows):  # evenly round the wheel, the first at 12 o'clock
         a = math.radians(-90 + i * 360 / len(shows))
         tiles.append(f'        <li class="wz-show" style="left:{50 + 43 * math.cos(a):.2f}%;top:{50 + 43 * math.sin(a):.2f}%">'
-                     f'<img src="{esc(s["art"])}/300x300bb.jpg" alt="{esc(s["name"])}" width="300" height="300" decoding="async"></li>')
+                     f'<span class="wz-up"><img src="{esc(s["art"])}/300x300bb.jpg" alt="{esc(s["name"])}" width="300" height="300" decoding="async"></span></li>')
     data = json.dumps([{k: s[k] for k in ('id', 'name', 'host', 'art', 'apple')} for s in shows],
                       separators=(',', ':'), ensure_ascii=False).replace('</', '<\\/')
     head = ('<link rel="preload" href="/assets/fonts/instrument-serif-latin-400-italic.woff2" as="font" type="font/woff2" crossorigin>\n'
