@@ -142,6 +142,13 @@ footer ::selection{background:var(--bone);color:var(--black)}
 .lbl-row .lbl{border-top:0}
 .lbl-row a{display:inline-flex;align-items:center;min-height:44px;font:400 12px/16px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);text-decoration:none;text-underline-offset:5px}
 .lbl-row a:hover{color:var(--ink);text-decoration:underline}
+/* "See all": a small square with an arrow, outlined like the site's buttons; it fills in when pointed at. */
+.lbl-row a.go{width:44px;min-height:44px;justify-content:center;color:var(--ink);text-decoration:none}
+.go svg{width:34px;height:34px;padding:9px;border:1px solid var(--ink);fill:none;stroke:currentColor;stroke-width:1.25;stroke-linecap:square;transition:background-color .15s,color .15s}
+.go svg path{transition:transform .2s ease}
+.lbl-row a.go:hover{text-decoration:none}
+.go:hover svg,.go:focus-visible svg{background:var(--ink);color:var(--bg)}
+.go:hover svg path{transform:translateX(1.5px)}
 .latest{display:block;font-size:20px;line-height:27px;letter-spacing:-.01em;text-decoration:none;padding-top:2px}
 .latest:hover,.hl a:hover,.rt tbody th a:hover{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:5px}
 .cols2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:56px 72px}

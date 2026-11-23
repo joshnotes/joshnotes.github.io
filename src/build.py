@@ -407,8 +407,8 @@ def main():
                .replace('{{LEAD_URL}}', lead['path'])
                .replace('{{WATCH_MAP}}', map_html)
                .replace('{{RATINGS}}', ratings_compact(research))
-               .replace('{{NOTES_HEADLINES}}', heads(m for m, _ in notes[1:]))
-               .replace('{{RESEARCH_HEADLINES}}', heads(m for m, _ in research if m.get('kind') != 'pitch')))
+               .replace('{{NOTES_HEADLINES}}', heads([m for m, _ in notes[1:]][:3]))  # three each; the arrow leads to the rest
+               .replace('{{RESEARCH_HEADLINES}}', heads([m for m, _ in research if m.get('kind') != 'pitch'][:3])))
     # Old single-page links looked like /#a-eaton. Send them to the new pages.
     legacy = {'research': '/research/', 'about': '/about/', 'r-method': '/research/method/', 'library': '/research/', 'thoughts': '/notes/'}
     legacy.update({m['legacy']: m['path'] for m, _ in notes + research if m.get('legacy')})
