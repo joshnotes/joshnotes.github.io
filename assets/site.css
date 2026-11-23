@@ -151,6 +151,17 @@ footer ::selection{background:var(--bone);color:var(--black)}
 
 /* ---------- Home: a front page ---------- */
 .front-hero h1{max-width:15em}
+/* The drawing in the hero's empty corner: two columns only, the tree's roots on the Ratings rule (the hero's bottom edge). */
+.tree-art{display:none}
+@media(min-width:981px){
+  .front-hero .wrap{position:relative}
+  .front-hero h1{max-width:min(15em,calc(100% - 372px))}
+  .tree-art{display:block;position:absolute;right:0;bottom:-56px;width:270px;aspect-ratio:810/557;margin:0;pointer-events:none}
+  .tree-lines,.tree-art img{position:absolute;inset:0;width:100%;height:100%}
+  .tree-lines{background:var(--ink);
+    -webkit-mask:url(/assets/img/art/girl-tree-lines.webp?v=888638a5) 0 0/100% 100% no-repeat;
+    mask:url(/assets/img/art/girl-tree-lines.webp?v=888638a5) 0 0/100% 100% no-repeat}
+}
 .front{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:56px 72px;align-items:start}
 .front-side{display:grid;gap:56px}
 .lbl{font:400 12px/16px var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:14px 0;border-top:1px solid var(--ink)}
