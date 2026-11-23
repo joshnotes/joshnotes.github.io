@@ -91,9 +91,10 @@
       const skip = () => { running = false; html.classList.add('portal-skip'); done(); };
       portal.addEventListener('pointerdown', skip, {once: true});
       addEventListener('keydown', function k(e) { if (!portal.isConnected) return removeEventListener('keydown', k); if (!e.metaKey && !e.ctrlKey && !e.altKey) skip(); });
-      // Take the overlay away when its fade ends (or after 3 s if the browser can't say).
+      // Take the overlay away when its fade ends; if the browser can't say, or the fade is cancelled, after a few seconds anyway.
       const finish = () => { running = false; done(); };
-      if (fade && fade.finished) fade.finished.then(finish, () => {}); else setTimeout(finish, 3000);
+      if (fade && fade.finished) fade.finished.then(finish, finish);
+      setTimeout(finish, fade && fade.finished ? 6000 : 3000);
     }
   }
 
