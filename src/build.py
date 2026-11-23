@@ -48,6 +48,24 @@ def share_image(path, alt):
             f'<meta property="og:image:alt" content="{esc(alt)}">\n<meta name="twitter:card" content="summary_large_image">\n')
 
 
+import hashlib
+
+
+def asset_version(name):
+    """A short fingerprint of an asset's content, so browsers fetch it again whenever it changes."""
+    return hashlib.md5((ROOT / 'assets' / name).read_bytes()).hexdigest()[:8]
+
+
+ASSETS = ('site.css', 'site.js', 'wisdom.css', 'wisdom.js')
+
+
+def versioned(html_text):
+    for name in ASSETS:
+        if (ROOT / 'assets' / name).exists():
+            html_text = html_text.replace(f'/assets/{name}"', f'/assets/{name}?v={asset_version(name)}"')
+    return html_text
+
+
 def page(meta, content, nav='', og_type='website', og_extra='', body_class=''):
     path = meta['path']
     canonical = SITE + (path if path != '/404.html' else '/')
@@ -70,7 +88,7 @@ def page(meta, content, nav='', og_type='website', og_extra='', body_class=''):
         '{{CONTENT}}': content,
     }.items():
         out = out.replace(key, val)
-    return out
+    return versioned(out)
 
 
 def write(rel_path, text):
