@@ -89,11 +89,11 @@
   // Coming back with the Back button: clear the door so the page isn't left dark.
   addEventListener('pageshow', e => { if (e.persisted) for (const o of $$('.portal-out')) o.remove(); });
 
-  // ---------- About: tiles take their colour under a mouse, or on a tap ----------
+  // ---------- About: logos show their colours under a mouse, or on a tap ----------
   for (const lg of $$('.lg')) {
     lg.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse' || e.pointerType === 'pen') lg.classList.add('hov'); });
     lg.addEventListener('pointerleave', () => lg.classList.remove('hov'));
-    lg.addEventListener('click', e => { if (e.pointerType !== 'mouse') lg.classList.toggle('on'); });
+    lg.addEventListener('click', e => { if (e.pointerType !== 'mouse' && !e.target.closest('a')) lg.classList.toggle('on'); });
   }
 
   // ---------- Keep drawn pieces sized to their boxes ----------

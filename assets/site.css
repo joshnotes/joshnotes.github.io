@@ -325,22 +325,37 @@ footer ::selection{background:var(--bone);color:var(--black)}
 /* ---------- About ---------- */
 .spec{max-width:var(--container);margin-inline:auto}
 
-/* Where I've worked and what I've learned: a wall of names, grey until you point at one (or tap it),
-   then the tile takes that organisation's colour. A logo file, if one is added, stays black and white until then. */
+/* Where I've worked, studied and trained: a wall of logos in black and white. Point at one (or tap it) and it
+   shows in its own colours. On a dark screen the black-and-white version is turned light, and the tile turns bone
+   while it shows its colours, so dark logos stay visible. A tile without a logo file shows the name instead. */
 .lbl-gap{margin-top:72px}
 .logos{list-style:none;padding:0;margin:0;display:grid;gap:1px;background:var(--rule);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
 .logos-5{grid-template-columns:repeat(5,minmax(0,1fr))}
-.logos-6{grid-template-columns:repeat(6,minmax(0,1fr))}
-.lg{background:var(--bg);min-height:156px;padding:22px 20px 20px;display:flex;flex-direction:column;justify-content:space-between;gap:18px;
+.logos-1{grid-template-columns:minmax(0,1fr)}
+.lg{background:var(--bg);min-height:148px;padding:24px 20px 20px;display:flex;flex-direction:column;justify-content:space-between;gap:18px;
   transition:background-color .35s ease;-webkit-tap-highlight-color:transparent}
-.lg-mark{font:600 23px/1.08 var(--font);letter-spacing:-.035em;color:var(--ink2);transition:color .35s ease;text-wrap:balance}
-.lg-note{font-size:13px;line-height:18px;color:var(--ink2);transition:color .35s ease}
-.lg:is(.hov,.on):not(.has-img){background:var(--c)}
-.lg:is(.hov,.on):not(.has-img) :is(.lg-mark,.lg-note){color:var(--f)}
-.lg-mark img{display:block;max-width:100%;max-height:44px;width:auto;filter:grayscale(1) contrast(.9);opacity:.7;transition:filter .35s,opacity .35s}
-.lg.has-img:is(.hov,.on) img{filter:none;opacity:1}
-@media(max-width:980px){.logos-5,.logos-6{grid-template-columns:repeat(3,minmax(0,1fr))}.logos-5 .lg:last-child{grid-column:span 2}}
-@media(max-width:640px){.logos-5,.logos-6{grid-template-columns:repeat(2,minmax(0,1fr))}.logos-5 .lg:last-child{grid-column:span 2}.lg{min-height:128px;padding:18px 16px}.lg-mark{font-size:20px}.lbl-gap{margin-top:56px}}
+.logos-1 .lg{min-height:0;flex-direction:row;align-items:center;justify-content:flex-start;gap:16px 40px;padding-block:28px}
+.lg-mark{display:flex;align-items:center;min-height:44px}
+.lg-mark img{display:block;height:var(--h,38px);width:auto;max-width:100%;object-fit:contain;object-position:left center;
+  filter:grayscale(1) contrast(1.15);opacity:.62;transition:filter .35s ease,opacity .35s ease}
+.lg.no-img .lg-mark{font:600 22px/1.08 var(--font);letter-spacing:-.035em;color:var(--ink2);transition:color .35s ease;text-wrap:balance}
+.lg-note{font-size:13px;line-height:18px;color:var(--ink2)}
+.lg-link{color:var(--ink);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;white-space:nowrap}
+.lg:is(.hov,.on) .lg-mark img{filter:none;opacity:1}
+.lg.no-img:is(.hov,.on) .lg-mark{color:var(--ink)}
+.logo-note{margin-top:20px;font-size:13px;line-height:19px;color:var(--ink2)}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme=light]) .lg-mark img{filter:grayscale(1) invert(1) contrast(.95);opacity:.7}
+  :root:not([data-theme=light]) .lg.has-img:is(.hov,.on){background:#E3DED9;--ink2:#55514C;--ink:#000}
+  :root:not([data-theme=light]) .lg.has-img:is(.hov,.on) .lg-mark img{filter:none;opacity:1}
+}
+:root[data-theme=dark] .lg-mark img{filter:grayscale(1) invert(1) contrast(.95);opacity:.7}
+:root[data-theme=dark] .lg.has-img:is(.hov,.on){background:#E3DED9;--ink2:#55514C;--ink:#000}
+:root[data-theme=dark] .lg.has-img:is(.hov,.on) .lg-mark img{filter:none;opacity:1}
+@media(max-width:980px){.logos-5{grid-template-columns:repeat(3,minmax(0,1fr))}.logos-5 .lg:last-child{grid-column:span 2}}
+@media(max-width:640px){.logos-5{grid-template-columns:repeat(2,minmax(0,1fr))}.logos-5 .lg:last-child{grid-column:span 2}
+  .lg{min-height:124px;padding:20px 16px}.lg-mark img{height:calc(var(--h,38px)*.8)}.lg.no-img .lg-mark{font-size:19px}.lbl-gap{margin-top:56px}
+  .logos-1 .lg{flex-direction:column;align-items:flex-start}}
 
 /* ---------- Method page: five steps, each with a real exhibit ---------- */
 .st{display:grid;grid-template-columns:280px minmax(0,1fr);gap:16px 48px;padding:40px 0;border-top:1px solid var(--rule);align-items:start}
