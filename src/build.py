@@ -13,7 +13,7 @@ import re
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC = ROOT / 'src'
-SITE = 'https://joshnotes.github.io'
+SITE = 'https://joshuvajohnson.github.io'
 TEMPLATE = (SRC / 'templates' / 'base.html').read_text()
 
 
