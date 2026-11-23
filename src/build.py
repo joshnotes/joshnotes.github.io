@@ -198,7 +198,7 @@ def logo_tiles(items):
         size = f' style="--h:{o["h"]}px"' if o.get('h') else ''  # per-logo height, so marks look about the same size
         mark = (f'<img src="{logo}" alt="{esc(o["name"])}"{size} loading="lazy" decoding="async">' if logo else esc(o['name']))
         lines = "<br>".join(esc(x) for x in o['note'].split('|')) if o.get('note') else ''  # | breaks a line
-        verify = f' <a class="lg-link" href="{esc(o["url"])}" rel="noopener">Verify</a>' if o.get('url') else ''
+        verify = f' <a class="lg-link" href="{esc(o["url"])}" target="_blank" rel="noopener">Verify</a>' if o.get('url') else ''
         note = f'<span class="lg-note">{lines}{verify}</span>' if lines or verify else ''
         out.append(f'      <li class="lg{" has-img" if logo else " no-img"}"><span class="lg-mark">{mark}</span>{note}</li>')
     return '\n'.join(out)
