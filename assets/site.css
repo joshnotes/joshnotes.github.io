@@ -442,5 +442,20 @@ footer ::selection{background:var(--bone);color:var(--black)}
 .notfound span{color:var(--ink2)}
 
 /* ---------- Motion and print ---------- */
+/* ---------- Arriving on a page: small and quick, so the site feels responsive rather than animated ----------
+   The headline rises a few pixels and its bar draws in; the first rows follow a beat apart. All done in under half a second.
+   Plain CSS, so it starts with the first paint (no flash); transforms and opacity only, so nothing shifts. */
+@keyframes enter{from{opacity:0;transform:translateY(8px)}}
+@keyframes bar-in{from{transform:scaleX(0)}}
+.hero h1,.me-in>div,.me-pic{animation:enter .28s cubic-bezier(.2,.8,.2,1) backwards}
+.me-pic{animation-delay:.05s}
+.hero h1::after,.me .pagetitle::after{transform-origin:0 50%;animation:bar-in .4s cubic-bezier(.3,.7,.2,1) .08s backwards}
+:is(.grid2>.cardlink,.list>.lrow,.ratings tbody tr,.logos>.lg){animation:enter .28s cubic-bezier(.2,.8,.2,1) .2s backwards}
+:is(.grid2>.cardlink,.list>.lrow,.ratings tbody tr,.logos>.lg):nth-child(1){animation-delay:.05s}
+:is(.grid2>.cardlink,.list>.lrow,.ratings tbody tr,.logos>.lg):nth-child(2){animation-delay:.08s}
+:is(.grid2>.cardlink,.list>.lrow,.ratings tbody tr,.logos>.lg):nth-child(3){animation-delay:.11s}
+:is(.grid2>.cardlink,.list>.lrow,.ratings tbody tr,.logos>.lg):nth-child(4){animation-delay:.14s}
+:is(.grid2>.cardlink,.list>.lrow,.ratings tbody tr,.logos>.lg):nth-child(5){animation-delay:.17s}
+
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
 @media print{.nav,footer,.segc,.pager,.me-pic{display:none}body{background:#fff;color:#000;font-size:12pt;line-height:1.5}.chartbox,.tablewrap{break-inside:avoid}}
