@@ -200,8 +200,14 @@ def logo_tiles(items):
         size = f' style="--h:{o["h"]}px"' if o.get('h') else ''  # per-logo height, so marks look about the same size
         mark = (f'<img src="/assets/{path}?v={asset_version(path)}" alt="{esc(o["name"])}"{size} loading="lazy" decoding="async">'
                 if path else esc(o['name']))
-        roles = ''.join(f'<span class="lg-pos"><b>{esc(title)}</b>' + (f'<span><span class="nw">{esc(when)}</span></span>' if when else '') + '</span>'
-                        for title, when in o.get('roles', []))
+        arrow = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M5.5 4.5h6v6"/></svg>'
+
+        def role(r):
+            title, when, url = (list(r) + ['', ''])[:3]
+            head = (f'<a class="lg-rl" href="{esc(url)}" target="_blank" rel="noopener" aria-label="{esc(o["name"])} {esc(title)}: view the credential '
+                    f'(opens in a new tab)"><b>{esc(title)}</b>{arrow}</a>') if url else f'<b>{esc(title)}</b>'
+            return f'<span class="lg-pos">{head}' + (f'<span><span class="nw">{esc(when)}</span></span>' if when else '') + '</span>'
+        roles = ''.join(role(r) for r in o.get('roles', []))  # a role with its own link: [title, years, url]
         # A credential link makes the whole tile clickable (opens in a new tab), with a small arrow shown on hover.
         cover = ''
         if o.get('url'):
