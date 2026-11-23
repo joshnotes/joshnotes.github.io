@@ -213,6 +213,42 @@ def piece_label(url, pieces):
     return f'Stock pitch: {p["rating"]}' if p.get('rating') else p.get('title', 'Read it')
 
 
+def side_of(deg):
+    """Which side of a company's dot its ticker goes on, from the angle it fans out at."""
+    c, s = math.cos(math.radians(deg)), math.sin(math.radians(deg))
+    return 'e' if c > 0.42 else 'w' if c < -0.42 else ('s' if s > 0 else 'n')
+
+
+def label_at(x, y, side, gap, F):
+    """Where a label's baseline starts, and its anchor, for a dot at (x, y) and text of size F."""
+    d = gap * 0.75  # diagonal sides sit a little closer
+    return {'n': (x, y - gap, 'middle'), 's': (x, y + gap + 0.75 * F, 'middle'),
+            'e': (x + gap, y + 0.35 * F, 'start'), 'w': (x - gap, y + 0.35 * F, 'end'),
+            'ne': (x + d, y - d, 'start'), 'nw': (x - d, y - d, 'end'),
+            'se': (x + d, y + d + 0.75 * F, 'start'), 'sw': (x - d, y + d + 0.75 * F, 'end')}[side]
+
+
+def map_geometry(watch, lay):
+    """Every line, dot and label of the map in one layout. src/og.py draws the share image from this."""
+    R, F = lay['r'], lay['font']
+    pos = {k: (x, y) for k, (x, y, _) in lay['at'].items()}
+    g = {'links': [], 'spokes': [], 'companies': [], 'sectors': []}
+    for s in watch['sectors']:
+        x, y = pos[s['id']]
+        for c, deg in zip(s['companies'], lay['fan'][s['id']]):
+            cx, cy = x + R * math.cos(math.radians(deg)), y + R * math.sin(math.radians(deg))
+            g['spokes'].append((x, y, cx, cy))
+            g['companies'].append({'x': cx, 'y': cy, 'piece': len(c) > 2, 'label': (*label_at(cx, cy, side_of(deg), 10, F), c[0])})
+        g['sectors'].append({'x': x, 'y': y, 'label': (*label_at(x, y, lay['at'][s['id']][2], 16, F), s['name'].upper())})
+    for b in watch['bridges']:
+        (x1, y1), (x2, y2) = (pos[x] for x in b['between'])
+        mx, my = (x1 + x2) / 2, (y1 + y2) / 2
+        text = b.get('ticker') or b['label'].upper()
+        g['links'].append({'line': (x1, y1, x2, y2), 'x': mx, 'y': my, 'piece': bool(b.get('url')), 'ticker': bool(b.get('ticker')),
+                           'label': (*label_at(mx, my, lay['side'][b['id']], 12, F), text)})
+    return g
+
+
 def watch_map(watch, pieces):
     """The connection map: an SVG for wide screens, one for phones, and the captions they share.
     Returns (html, css). The css lights up whatever belongs to the sector or link under the pointer."""
@@ -253,16 +289,8 @@ def watch_map(watch, pieces):
         lines, nodes, under = [], {}, []
 
         def label(x, y, side, text, cls, gap=10):
-            d = gap * 0.75  # diagonal sides sit a little closer
-            tx, ty, anchor = {'n': (x, y - gap, 'middle'), 's': (x, y + gap + 0.75 * F, 'middle'),
-                              'e': (x + gap, y + 0.35 * F, 'start'), 'w': (x - gap, y + 0.35 * F, 'end'),
-                              'ne': (x + d, y - d, 'start'), 'nw': (x - d, y - d, 'end'),
-                              'se': (x + d, y + d + 0.75 * F, 'start'), 'sw': (x - d, y + d + 0.75 * F, 'end')}[side]
+            tx, ty, anchor = label_at(x, y, side, gap, F)
             return f'<text class="{cls}" x="{tx:.0f}" y="{ty:.0f}" text-anchor="{anchor}">{esc(text)}</text>'
-
-        def side_of(deg):
-            c, s = math.cos(math.radians(deg)), math.sin(math.radians(deg))
-            return 'e' if c > 0.42 else 'w' if c < -0.42 else ('s' if s > 0 else 'n')
 
         for s in sectors:
             x, y = pos[s['id']]

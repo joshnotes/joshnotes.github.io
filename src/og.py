@@ -16,7 +16,7 @@ from fontTools.ttLib import TTFont
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-from build import ROOT, load_articles, nice_date  # noqa: E402
+from build import MAP_LAYOUTS, ROOT, SRC, load_articles, map_geometry, nice_date, read_doc  # noqa: E402
 
 W, H, S = 1200, 627, 2          # final size, drawn at 2x and scaled down
 M = 72                          # outer margin
@@ -176,13 +176,64 @@ def article_image(meta, body):
     return im
 
 
+def text_at(d, x, y, anchor, text, font, fill, track=0.0):
+    """Text placed by its baseline, anchored start, middle or end, as SVG does it."""
+    w = tracked_width(text, font, track)
+    x -= {'start': 0, 'middle': w / 2, 'end': w}[anchor]
+    x, y = x * S, y * S
+    for ch in text:
+        d.text((x, y), ch, font=font, fill=fill, anchor='ls')
+        x += font.getlength(ch) + track * font.size
+
+
+def draw_map(d, watch, x0, y0, scale):
+    """The home page's map, light on black, from the same geometry as the page."""
+    lay = MAP_LAYOUTS['tall']
+    g = map_geometry(watch, lay)
+    F = lay['font']
+    P = lambda x, y: ((x0 + x * scale) * S, (y0 + y * scale) * S)  # noqa: E731
+    rule, quiet = (74, 70, 66), INK2_DARK
+    for x1, y1, x2, y2 in g['spokes']:
+        d.line([P(x1, y1), P(x2, y2)], fill=rule, width=2)
+    for ln in g['links']:
+        x1, y1, x2, y2 = ln['line']
+        d.line([P(x1, y1), P(x2, y2)], fill=BONE, width=3)
+
+    def dot(x, y, r, filled):
+        (cx, cy), rr = P(x, y), r * scale * S
+        d.ellipse([cx - rr, cy - rr, cx + rr, cy + rr], fill=BONE if filled else BLACK, outline=BONE if filled else quiet, width=3)
+
+    def label(lab, font, fill, track=0.0):
+        tx, ty, anchor, text = lab
+        text_at(d, x0 + tx * scale, y0 + ty * scale, anchor, text, font, fill, track)
+
+    tk, tk_mono, sec_mono = sans(F * scale, 500), mono((F - 2) * scale), mono((F - 1) * scale)
+    for c in g['companies']:
+        dot(c['x'], c['y'], 4.5, c['piece'])
+        label(c['label'], tk, BONE if c['piece'] else quiet)
+    for ln in g['links']:
+        (cx, cy), rr = P(ln['x'], ln['y']), 9 * scale * S
+        d.ellipse([cx - rr, cy - rr, cx + rr, cy + rr], fill=BLACK)
+        dot(ln['x'], ln['y'], 5.5 if ln['ticker'] else 4.5, ln['piece'])
+        label(ln['label'], tk if ln['ticker'] else tk_mono, BONE if ln['ticker'] else quiet, 0 if ln['ticker'] else 0.06)
+    for s in g['sectors']:
+        (cx, cy), h = P(s['x'], s['y']), 7 * scale * S
+        d.rectangle([cx - h, cy - h, cx + h, cy + h], fill=BONE)
+        label(s['label'], sec_mono, BONE, 0.06)
+
+
 def home_image(meta):
+    """Home: the site's one line on bone, and the map of what I follow on black."""
     im, d = canvas()
-    half = W // 2
-    tracked(d, M, 270, 'JOSHUVA JOHNSON_', sans(40, 400), BLACK, 0.03)
-    if not photo_panel(im, ROOT / 'assets' / 'img' / 'facade-1280.webp', half):
-        d.rectangle([half * S, 0, W * S, H * S], fill=BLACK)
-    wordmark(d, M, M - 8, size=20)
+    panel = 520
+    wordmark(d, M, M - 8)
+    title_block(d, 'A place to stash my work and thoughts as they come.', None, M, 168, W - panel - 2 * M,
+                sizes=(64, 58, 52), max_lines=3)
+    x0 = W - panel
+    d.rectangle([x0 * S, 0, W * S, H * S], fill=BLACK)
+    lay = MAP_LAYOUTS['tall']
+    scale = min((panel - 80) / lay['w'], (H - 80) / lay['h'])
+    draw_map(d, meta['watchlist'], x0 + (panel - lay['w'] * scale) / 2, (H - lay['h'] * scale) / 2, scale)
     return im
 
 
@@ -213,7 +264,7 @@ def main():
     notes, research = load_articles('notes'), load_articles('research')
     for meta, body in notes + research:
         made.append(save(article_image(meta, body), key_for(meta['path'])))
-    made.append(save(home_image(None), 'home'))
+    made.append(save(home_image(read_doc(SRC / 'content' / 'pages' / 'home.html')[0]), 'home'))
     rows = []
     for meta, body in research:
         figs = key_figures(body) if meta.get('kind') == 'pitch' else []
