@@ -266,19 +266,18 @@ def serif_italic(size):
 def wisdom_image():
     """daily dose of wisdom: the name in the page's serif on midnight, and the wheel with its light."""
     import math
-    NIGHT, STAR, MIST, LAMP = (5, 7, 15), (233, 228, 218), (140, 147, 173), (243, 181, 98)
+    NIGHT, STAR, MIST, LAMP = (0, 0, 0), (233, 228, 218), (162, 157, 151), (243, 181, 98)
     im = Image.new('RGB', (W * S, H * S), NIGHT)
-    # Warm glow behind the wheel and indigo haze top left, drawn soft.
+    # Warm glow behind the wheel, drawn soft.
     glow = Image.new('RGB', (W * S, H * S), NIGHT)
     g = ImageDraw.Draw(glow)
     cx, cy, R = 885, 313, 214
     g.ellipse([(cx - 260) * S, (cy - 260) * S, (cx + 260) * S, (cy + 260) * S], fill=(40, 32, 26))
-    g.ellipse([-260 * S, -300 * S, 420 * S, 240 * S], fill=(18, 24, 58))
     im = Image.blend(im, glow.filter(ImageFilter.GaussianBlur(120 * S)), 1.0)
     d = ImageDraw.Draw(im)
     for i, (x, y) in enumerate([(130, 520), (520, 90), (610, 560), (1150, 70), (700, 300), (60, 300), (1160, 590), (400, 420)]):
         r = (1.6 if i % 3 else 2.2) * S
-        d.ellipse([x * S - r, y * S - r, x * S + r, y * S + r], fill=(200, 205, 230))
+        d.ellipse([x * S - r, y * S - r, x * S + r, y * S + r], fill=(235, 230, 220))
     tracked(d, M, M - 8, 'JOSHUVA JOHNSON_', sans(24, 400), STAR, 0.04)
     f = serif_italic(92)
     for k, line in enumerate(['daily dose', 'of wisdom']):
@@ -286,7 +285,7 @@ def wisdom_image():
     d.text((M * S, 432 * S), 'Spin for a random episode', font=sans(24), fill=MIST)
     d.text((M * S, 466 * S), 'from seven podcasts.', font=sans(24), fill=MIST)
     # Orbit, then the light running round it (a soft copy underneath for the glow).
-    d.ellipse([(cx - R) * S, (cy - R) * S, (cx + R) * S, (cy + R) * S], outline=(30, 36, 62), width=2)
+    d.ellipse([(cx - R) * S, (cy - R) * S, (cx + R) * S, (cy + R) * S], outline=(42, 40, 37), width=2)
     arc = Image.new('RGBA', (W * S, H * S), (0, 0, 0, 0))
     a = ImageDraw.Draw(arc)
     box = [(cx - R) * S, (cy - R) * S, (cx + R) * S, (cy + R) * S]
@@ -309,10 +308,10 @@ def wisdom_image():
             im.paste(halo, (0, 0), halo)
             d = ImageDraw.Draw(im)
         d.rounded_rectangle([(x - h) * S, (y - h) * S, (x + h) * S, (y + h) * S], 12 * S,
-                            fill=(26, 33, 64) if not lit else (58, 52, 40), outline=LAMP if lit else (52, 60, 96), width=3 if lit else 2)
+                            fill=(26, 25, 23) if not lit else (58, 52, 40), outline=LAMP if lit else (66, 63, 58), width=3 if lit else 2)
     # The hub and its lamp-light ring.
     hr = 128
-    d.ellipse([(cx - hr) * S, (cy - hr) * S, (cx + hr) * S, (cy + hr) * S], fill=(12, 17, 38), outline=(28, 34, 60), width=2)
+    d.ellipse([(cx - hr) * S, (cy - hr) * S, (cx + hr) * S, (cy + hr) * S], fill=(14, 13, 12), outline=(40, 38, 35), width=2)
     rr = 102
     ring = Image.new('RGBA', (W * S, H * S), (0, 0, 0, 0))
     ImageDraw.Draw(ring).ellipse([(cx - rr) * S, (cy - rr) * S, (cx + rr) * S, (cy + rr) * S], outline=LAMP + (255,), width=3)

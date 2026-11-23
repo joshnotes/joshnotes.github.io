@@ -15,9 +15,131 @@
   const card = $('.wz-card'), cover = $('.wz-cover'), showName = $('.wz-show-name'), meta = $('.wz-meta');
   const title = $('.wz-ep'), audio = $('.wz-audio'), again = $('.wz-again'), apple = $('.wz-apple'), live = $('.wz-live');
 
-  // The entrance is pure CSS; take the overlay away once it has played so it never sits over the page.
+  const html = document.documentElement;
+  const rnd = (a, b) => a + Math.random() * (b - a);
+
+  // ---------- The way in: light spirals into the black hole, timed off the CSS animation of its centre ----------
   const portal = document.querySelector('.wz-portal');
-  if (portal) setTimeout(() => portal.remove(), reduce ? 0 : 1600);
+  if (portal) {
+    const done = () => { if (portal.isConnected) portal.remove(); };
+    if (reduce || !html.classList.contains('portal')) done();
+    else {
+      const core = portal.querySelector('.bh-core'), cv = portal.querySelector('.wz-infall'), c = cv.getContext && cv.getContext('2d');
+      const coreAnim = core.getAnimations ? core.getAnimations()[0] : null;
+      const t0 = performance.now();
+      const clock = () => (coreAnim && coreAnim.currentTime != null ? coreAnim.currentTime : performance.now() - t0) / 1000;
+      let running = !!c;
+      if (c) {
+        const D = Math.min(1.5, devicePixelRatio || 1), W = innerWidth, H = innerHeight, cx = W / 2, cy = H / 2;
+        cv.width = W * D; cv.height = H * D; c.setTransform(D, 0, 0, D, 0, 0);
+        const rMax = Math.hypot(W, H) / 2 * 1.05, horizon = Math.min(W, H) * 0.14; // the CSS centre is 28vmin across
+        const coreR = t => { // follows the bh-core keyframes closely enough to swallow the light at the rim
+          const k = t / 2.4;
+          if (k < 0.28) return horizon * Math.sin(k / 0.28 * Math.PI / 2);
+          if (k < 0.6) return horizon * (1 + 0.08 * (k - 0.28) / 0.32);
+          return horizon * (1.08 + 12.92 * Math.pow(Math.min(1, (k - 0.6) / 0.32), 2.2));
+        };
+        const tones = ['255,246,230', '255,232,196', '243,181,98', '255,214,160'];
+        const n = Math.min(420, Math.round(W * H / 3200));
+        const spawn = (p, outer) => {
+          p.a = rnd(0, Math.PI * 2); p.r = outer ? rMax * rnd(0.9, 1.1) : rMax * rnd(0.25, 1.1);
+          p.w = rnd(0.5, 1.7); p.v = rnd(0.6, 1.4); p.tone = tones[Math.floor(Math.random() * tones.length)]; p.age = 0;
+          return p;
+        };
+        const ps = Array.from({length: n}, () => spawn({}, false));
+        let last = clock();
+        const frame = () => {
+          if (!running) return;
+          const t = clock(), dt = Math.min(0.05, Math.max(0, t - last)); last = t;
+          c.fillStyle = 'rgba(0,0,0,0.24)'; c.fillRect(0, 0, W, H); // short trails
+          const rc = coreR(t);
+          c.lineCap = 'round';
+          for (const p of ps) {
+            if (p.dead) continue;
+            const x0 = cx + Math.cos(p.a) * p.r, y0 = cy + Math.sin(p.a) * p.r;
+            const pull = (0.35 + 2.6 * Math.pow(rMax / Math.max(p.r, 1), 0.9)) * p.v * (0.6 + t * 0.9);
+            p.r -= p.r * pull * dt * 0.55;
+            p.a += pull * dt * 0.9; // the closer it gets, the faster it turns
+            p.age += dt;
+            if (p.r <= rc * 1.02) { if (t < 1.55) spawn(p, true); else p.dead = true; continue; }
+            const x1 = cx + Math.cos(p.a) * p.r, y1 = cy + Math.sin(p.a) * p.r;
+            const alpha = Math.min(1, p.age * 3) * Math.min(1, 0.25 + 1.4 * (1 - p.r / rMax));
+            c.strokeStyle = `rgba(${p.tone},${alpha.toFixed(3)})`; c.lineWidth = p.w;
+            c.beginPath(); c.moveTo(x0, y0); c.lineTo(x1, y1); c.stroke();
+          }
+          if (t < 2.4) requestAnimationFrame(frame); else running = false;
+        };
+        requestAnimationFrame(frame);
+      }
+      const skip = () => { running = false; html.classList.add('portal-skip'); done(); };
+      portal.addEventListener('pointerdown', skip, {once: true});
+      addEventListener('keydown', function k(e) { if (!portal.isConnected) return removeEventListener('keydown', k); if (!e.metaKey && !e.ctrlKey && !e.altKey) skip(); });
+      setTimeout(() => { running = false; done(); }, 3000);
+    }
+  }
+
+  // ---------- The sky: every star keeps its own time, some flare at random, and now and then one falls ----------
+  const sky = document.querySelector('.wz-sky');
+  const ctx = sky && sky.getContext && sky.getContext('2d');
+  if (ctx) {
+    const tones = ['255,250,240', '255,238,212', '233,228,218', '255,214,160'];
+    let W = 0, H = 0, stars = [], meteors = [], nextMeteor = performance.now() + rnd(2500, 5000), lastDraw = 0;
+    const build = () => {
+      const D = Math.min(1.5, devicePixelRatio || 1);
+      W = innerWidth; H = innerHeight; sky.width = W * D; sky.height = H * D; ctx.setTransform(D, 0, 0, D, 0, 0);
+      stars = Array.from({length: Math.min(260, Math.round(W * H / 6500))}, () => ({
+        x: Math.random() * W, y: Math.random() * H, r: Math.random() < 0.86 ? rnd(0.35, 0.95) : rnd(1.05, 1.7),
+        a: rnd(0.12, 0.6), s: rnd(0.25, 1.4), p: rnd(0, 6.283), c: tones[Math.floor(Math.random() * tones.length)], f: 0, fd: 0}));
+    };
+    const draw = now => {
+      ctx.clearRect(0, 0, W, H);
+      for (const s of stars) {
+        let k = 0;
+        if (!s.f && Math.random() < 0.0009) { s.f = now; s.fd = rnd(700, 1600); } // a random star flares
+        if (s.f) { const q = (now - s.f) / s.fd; if (q >= 1) s.f = 0; else k = Math.sin(Math.PI * q); }
+        const tw = s.a * (0.55 + 0.45 * Math.sin(now / 1000 * s.s + s.p));
+        const al = Math.min(1, tw + k * 0.95), r = s.r * (1 + k * 0.9);
+        ctx.fillStyle = `rgba(${s.c},${al.toFixed(3)})`;
+        ctx.beginPath(); ctx.arc(s.x, s.y, r, 0, 6.283); ctx.fill();
+        if (k > 0.25) { // the glint of a flaring star
+          const g = r * 7 * k;
+          ctx.strokeStyle = `rgba(${s.c},${(k * 0.55).toFixed(3)})`; ctx.lineWidth = 0.7;
+          ctx.beginPath(); ctx.moveTo(s.x - g, s.y); ctx.lineTo(s.x + g, s.y); ctx.moveTo(s.x, s.y - g); ctx.lineTo(s.x, s.y + g); ctx.stroke();
+        }
+      }
+      if (now > nextMeteor) { // a shooting star, from the top half, slanting down either way
+        const dir = Math.random() < 0.5 ? -1 : 1, ang = rnd(0.32, 0.62), sp = rnd(800, 1300);
+        meteors.push({x: rnd(W * 0.15, W * 0.85), y: rnd(-20, H * 0.35), vx: Math.cos(ang) * sp * dir, vy: Math.sin(ang) * sp, len: rnd(140, 280), t0: now, life: rnd(700, 1100)});
+        nextMeteor = now + rnd(2500, 7000);
+      }
+      meteors = meteors.filter(m => now - m.t0 < m.life);
+      for (const m of meteors) {
+        const e = (now - m.t0) / 1000, q = (now - m.t0) / m.life, al = Math.sin(Math.PI * q);
+        const hx = m.x + m.vx * e, hy = m.y + m.vy * e, sp = Math.hypot(m.vx, m.vy), L = m.len * Math.min(1, q * 3);
+        const tx = hx - m.vx / sp * L, ty = hy - m.vy / sp * L;
+        const gr = ctx.createLinearGradient(tx, ty, hx, hy);
+        gr.addColorStop(0, 'rgba(255,236,205,0)'); gr.addColorStop(1, `rgba(255,246,228,${al.toFixed(3)})`);
+        ctx.strokeStyle = gr; ctx.lineWidth = 1.6; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(tx, ty); ctx.lineTo(hx, hy); ctx.stroke();
+        ctx.fillStyle = `rgba(255,248,235,${al.toFixed(3)})`; ctx.beginPath(); ctx.arc(hx, hy, 1.6, 0, 6.283); ctx.fill();
+      }
+    };
+    build();
+    if (reduce) draw(0); // a still sky
+    else {
+      const loop = now => {
+        // Full rate while a star is falling, half rate otherwise (it only twinkles),
+        // and the sky holds still while the wheel spins so the spin gets every frame.
+        const busy = root.dataset.state === 'spinning';
+        if (busy) nextMeteor = Math.max(nextMeteor, now + 1500);
+        if (meteors.length || (!busy && now - lastDraw > 32)) { draw(now); lastDraw = now; }
+        requestAnimationFrame(loop);
+      };
+      requestAnimationFrame(loop);
+    }
+    let rt = 0;
+    addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { build(); if (reduce) draw(0); }, 150); });
+  }
 
   const art = (s, px) => `${s.art}/${px}x${px}bb.jpg`;
   const rand = n => { const a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] % n; };

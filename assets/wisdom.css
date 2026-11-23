@@ -1,41 +1,34 @@
 /* daily dose of wisdom: a different room from the rest of the site.
-   Midnight, starlight text, and one warm lamp-light colour for whatever is lit.
+   Black, starlight text, and one warm lamp-light colour for whatever is lit.
    The name is always set in lowercase Instrument Serif italic; Geist and Geist Mono for everything you press.
    Everything that moves is transform or opacity, so the GPU does the work. */
 
 @font-face{font-family:"Instrument Serif";font-style:italic;font-weight:400;font-display:swap;src:url(/assets/fonts/instrument-serif-latin-400-italic.woff2) format("woff2")}
 @font-face{font-family:"Instrument Serif";font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/instrument-serif-latin-400-normal.woff2) format("woff2")}
 
-:root:has(body.wisdom){color-scheme:dark;background:#05070F}
+:root:has(body.wisdom){color-scheme:dark;background:#000}
 body.wisdom{
-  --night:#05070F;
-  --navy:#0B1022;
+  --night:#000;
+  --navy:#121110;
   --star:#E9E4DA;
-  --mist:#8C93AD;
+  --mist:#A29D97;
   --lamp:#F3B562;
   --lamp-rgb:243,181,98;
   --serif:"Instrument Serif",Georgia,"Times New Roman",serif;
   --orbit:240s;
-  --bg:var(--night);--ink:var(--star);--ink2:var(--mist);--rule:#1A2140;--surface:var(--navy);--quiet:#3A4266;--panel:var(--night);
-  color-scheme:dark;background:var(--night);color:var(--star)
+  --bg:var(--night);--ink:var(--star);--ink2:var(--mist);--rule:#2E2B28;--surface:#141312;--quiet:#4A4642;--panel:var(--night);
+  color-scheme:dark;background:none;color:var(--star) /* the black lives on the root, so the sky can sit behind the page */
 }
 .wisdom ::selection{background:var(--lamp);color:var(--night)}
 .wisdom :focus-visible{outline-color:var(--lamp)}
 .wisdom main{position:relative;overflow:hidden}
+.wisdom footer{background:#000;border-top:1px solid #1C1A18}
 
-/* ---------- The sky: lamp glow behind the wheel, indigo haze that drifts, stars that twinkle ---------- */
-.wisdom main::before{content:"";position:fixed;inset:-10%;z-index:-2;pointer-events:none;background:
-  radial-gradient(40% 36% at 50% 56%,rgba(var(--lamp-rgb),.11),transparent 70%),
-  radial-gradient(60% 50% at 18% 2%,rgba(72,88,180,.26),transparent 70%),
-  radial-gradient(55% 45% at 92% 98%,rgba(96,66,170,.2),transparent 70%);
-  animation:wz-drift 38s ease-in-out infinite alternate}
-@keyframes wz-drift{to{transform:translate3d(-3%,2%,0) scale(1.06)}}
-.wz-sky{position:fixed;inset:0;z-index:-1;pointer-events:none}
-.wz-sky i{position:absolute;inset:0;animation:wz-twinkle 6s ease-in-out infinite alternate}
-.wz-sky i:nth-child(1){background:radial-gradient(1px 1px at 23px 41px,#fff,transparent),radial-gradient(1px 1px at 131px 97px,#cfd6ff,transparent);background-size:211px 199px,263px 241px;opacity:.55}
-.wz-sky i:nth-child(2){background:radial-gradient(1.5px 1.5px at 71px 163px,#fff,transparent),radial-gradient(1px 1px at 197px 19px,#ffe9c7,transparent);background-size:317px 283px,379px 331px;animation-duration:8.5s;animation-delay:-3s}
-.wz-sky i:nth-child(3){background:radial-gradient(2px 2px at 150px 90px,rgba(255,240,215,.9),transparent),radial-gradient(1.5px 1.5px at 40px 260px,#dfe4ff,transparent);background-size:523px 467px,601px 557px;animation-duration:11s;animation-delay:-6s}
-@keyframes wz-twinkle{0%{opacity:.15}100%{opacity:.85}}
+/* ---------- The sky: black, a faint lamp glow behind the wheel, and a canvas of stars drawn by the script ---------- */
+/* The lamp glow sits behind the wheel itself, so it costs nothing per frame. */
+.wz-stage::before{content:"";position:absolute;left:50%;top:50%;width:150%;aspect-ratio:1;transform:translate(-50%,-50%);z-index:-1;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(var(--lamp-rgb),.12),rgba(var(--lamp-rgb),.04) 55%,transparent 75%)}
+.wz-sky{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
 
 /* ---------- Title ---------- */
 .wz{text-align:center;padding-block:40px 88px}
@@ -82,7 +75,7 @@ body.wisdom{
 
 /* ---------- The hub: idle, it is the button; spinning, it calls out each show as the light passes ---------- */
 .wz-hub{position:absolute;left:50%;top:50%;width:62%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
-  background:radial-gradient(circle at 50% 38%,#141C3A 0,#0A0F22 55%,#070A17 100%);
+  background:radial-gradient(circle at 50% 38%,#1B1A18 0,#0D0C0B 55%,#050505 100%);
   box-shadow:0 0 0 1px rgba(233,228,218,.08),inset 0 0 60px rgba(0,0,0,.6),0 30px 80px -30px #000;display:grid;place-items:center}
 .wz-hub>*{grid-area:1/1}
 .wz-shock{position:absolute;inset:0;border-radius:50%;border:1px solid rgba(var(--lamp-rgb),.9);opacity:0;pointer-events:none}
@@ -131,7 +124,7 @@ body.wisdom{
   .wz-hub-cover{display:none}
 }
 @container wz (max-width:589px){
-  .wz-card{margin:28px auto 0;max-width:440px;padding:20px;border-radius:16px;background:linear-gradient(180deg,rgba(20,28,58,.85),rgba(10,15,34,.85));
+  .wz-card{margin:28px auto 0;max-width:440px;padding:20px;border-radius:16px;background:linear-gradient(180deg,rgba(28,27,25,.9),rgba(12,12,11,.9));
     box-shadow:0 0 0 1px rgba(233,228,218,.08),0 0 40px -10px rgba(var(--lamp-rgb),.25)}
   .wz-show{border-radius:10px}
   .wz-spin{gap:4px}
@@ -140,25 +133,45 @@ body.wisdom{
 }
 @media(max-width:640px){.wz{padding-block:32px 72px}.wz-pre{font-size:16px;line-height:24px}.wz-stage{margin-top:24px}.wz-credit{margin-top:40px}}
 
-/* ---------- The way in: a point of light opens into the room, and the page comes through it ---------- */
+/* ---------- The way in: a black hole ----------
+   Light spirals in, a disc of it spins round a black centre with a thin bright rim, then the black swallows the
+   screen, there is a flash, and the page comes out the other side. About 2.5 s; a click or key skips it. */
 .wz-portal{display:none}
-.portal .wz-portal{display:block;position:fixed;inset:0;z-index:100;pointer-events:none;background:var(--night,#05070F);
-  animation:wz-portal-fade .6s ease-out .75s forwards}
-/* Both layers are drawn at full size and grown from a point, so the ring stays a fine line as it opens. */
-.wz-portal i,.wz-portal b{position:absolute;left:50%;top:50%;width:260vmax;height:260vmax;margin:-130vmax 0 0 -130vmax;border-radius:50%;will-change:transform,opacity}
-.wz-portal i{background:radial-gradient(closest-side,#FFF4E0 0,rgba(var(--lamp-rgb),.7) 8%,rgba(var(--lamp-rgb),.18) 30%,rgba(var(--lamp-rgb),0) 60%);animation:wz-bloom 1.2s cubic-bezier(.55,0,.15,1) both}
-.wz-portal b{background:radial-gradient(closest-side,transparent calc(100% - 14px),rgba(var(--lamp-rgb),.25) calc(100% - 7px),rgba(255,232,196,.95) calc(100% - 2px),transparent 100%);animation:wz-ring 1.15s cubic-bezier(.3,0,.1,1) .06s both}
-@keyframes wz-bloom{0%{transform:scale(0);opacity:0}25%{transform:scale(.04);opacity:1}100%{transform:scale(1);opacity:0}}
-@keyframes wz-ring{0%{transform:scale(0);opacity:0}12%{opacity:1}100%{transform:scale(.62);opacity:0}}
-@keyframes wz-portal-fade{to{opacity:0;visibility:hidden}}
-.portal .wz{animation:wz-warp 1.05s cubic-bezier(.16,.84,.24,1) .5s both}
-@keyframes wz-warp{from{opacity:0;transform:scale(1.07);filter:blur(12px)}}
+.portal .wz-portal{display:block;position:fixed;inset:0;z-index:100;background:#000;overflow:hidden;cursor:pointer;
+  animation:wz-portal-out .55s ease-out 2.25s forwards}
+@keyframes wz-portal-out{to{opacity:0;visibility:hidden}}
+.portal-skip .wz-portal{display:none}
+.wz-infall{position:absolute;inset:0;width:100%;height:100%}
+.bh{position:absolute;left:50%;top:50%;border-radius:50%;pointer-events:none;will-change:transform,opacity}
+.bh-glow{width:130vmin;height:130vmin;margin:-65vmin 0 0 -65vmin;
+  background:radial-gradient(closest-side,rgba(var(--lamp-rgb),.32),rgba(var(--lamp-rgb),.1) 42%,transparent 72%);animation:bh-glow 2.4s ease-in-out both}
+@keyframes bh-glow{0%{opacity:0;transform:scale(.25)}35%{opacity:1;transform:scale(1)}70%{opacity:1;transform:scale(1.08)}100%{opacity:0;transform:scale(2.6)}}
+/* The disc: the outer box grows, falls past you and fades; the inner ring spins. */
+.bh-disk{width:66vmin;height:66vmin;margin:-33vmin 0 0 -33vmin;animation:bh-disk 2.4s cubic-bezier(.5,0,.35,1) both}
+.bh-disk i{position:absolute;inset:0;border-radius:50%;
+  background:conic-gradient(rgba(var(--lamp-rgb),0),#FFEBCB 7%,rgba(var(--lamp-rgb),.75) 16%,rgba(var(--lamp-rgb),.06) 30%,rgba(255,226,180,.85) 44%,rgba(var(--lamp-rgb),.3) 58%,rgba(var(--lamp-rgb),0) 70%,rgba(255,240,215,.9) 85%,rgba(var(--lamp-rgb),0));
+  -webkit-mask:radial-gradient(closest-side,transparent 41%,#000 46%,rgba(0,0,0,.55) 64%,transparent 100%);
+  mask:radial-gradient(closest-side,transparent 41%,#000 46%,rgba(0,0,0,.55) 64%,transparent 100%);
+  animation:wz-turn .9s linear infinite}
+@keyframes bh-disk{0%{opacity:0;transform:scale(.12) rotate(-60deg)}30%{opacity:1;transform:scale(1) rotate(0)}62%{opacity:1;transform:scale(1.05)}90%{opacity:.85;transform:scale(5)}100%{opacity:0;transform:scale(6.5)}}
+/* The event horizon: black, edged with a fine ring of light; at the end it grows until it is all you can see. */
+.bh-core{width:28vmin;height:28vmin;margin:-14vmin 0 0 -14vmin;
+  background:radial-gradient(closest-side,#000 0 92.5%,#FFF2DC 95%,rgba(var(--lamp-rgb),.55) 97%,transparent 100%);animation:bh-core 2.4s cubic-bezier(.62,0,.38,1) both}
+@keyframes bh-core{0%{transform:scale(0)}28%{transform:scale(1)}60%{transform:scale(1.08)}92%,100%{transform:scale(14)}}
+.bh-flash{position:absolute;inset:0;opacity:0;pointer-events:none;
+  background:radial-gradient(circle at 50% 50%,rgba(255,246,228,.95),rgba(var(--lamp-rgb),.4) 34%,transparent 72%);animation:bh-flash .6s ease-out 2.05s both}
+@keyframes bh-flash{0%{opacity:0}30%{opacity:1}100%{opacity:0}}
+/* Out the other side: the page untwists and comes into focus. */
+.portal .wz{animation:wz-warp 1.05s cubic-bezier(.16,.84,.24,1) 2.15s both}
+.portal-skip .wz{animation:none}
+@keyframes wz-warp{from{opacity:0;transform:scale(1.32) rotate(-9deg);filter:blur(18px)}}
 /* Then lamp light runs once along the name. */
-.wz-title{animation:wz-sheen 1.8s cubic-bezier(.4,0,.2,1) 1.3s both}
+.wz-title{animation:wz-sheen 1.8s cubic-bezier(.4,0,.2,1) 3.1s both}
+.portal-skip .wz-title{animation-delay:.3s}
 @keyframes wz-sheen{from{background-position:100% 0}to{background-position:0 0}}
 
 @media(prefers-reduced-motion:reduce){
   .portal .wz-portal{display:none}
-  .wz-card.in,.wz-title,.wisdom main::before,.wz-sky i,.wz-ring,.wz-up,.wz-spin::after{animation:none}
+  .wz-card.in,.wz-title,.wz-ring,.wz-up,.wz-spin::after{animation:none}
   .wz-title{background-position:0 0}
 }

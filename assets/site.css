@@ -73,9 +73,9 @@ main>section:last-child,main>.sec:last-child{padding-bottom:112px}
   .nav .wrap{justify-content:flex-start;column-gap:20px}.nav .links{display:contents}.nav .links li{order:2}.nav .links .door{order:1;margin-left:auto}
   .nav .links a.dose{font-size:17px}}
 @media(max-width:400px){.nav .wrap{column-gap:12px}.nav .mark{font-size:15px}.nav .links a.dose{font-size:16px}.links a.dose::before{margin-right:6px}}
-/* Going through that door: midnight opens from where you clicked. */
+/* Going through that door: black, with a rim of light, opens from where you clicked. */
 .portal-out{position:fixed;z-index:200;left:var(--x);top:var(--y);width:300vmax;height:300vmax;margin:-150vmax 0 0 -150vmax;border-radius:50%;pointer-events:none;
-  background:radial-gradient(closest-side,#05070F 0 96%,rgba(243,181,98,.55) 98.5%,rgba(243,181,98,0) 100%);transform:scale(0);animation:portal-out .55s cubic-bezier(.7,0,.25,1) forwards}
+  background:radial-gradient(closest-side,#000 0 96%,rgba(255,236,205,.8) 97.6%,rgba(243,181,98,.45) 98.6%,rgba(243,181,98,0) 100%);transform:scale(0);animation:portal-out .55s cubic-bezier(.7,0,.25,1) forwards}
 @keyframes portal-out{to{transform:scale(1)}}
 
 /* ---------- Footer: always ends on black ---------- */
