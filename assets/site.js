@@ -37,7 +37,13 @@
   }
 
   // ---------- Photos: black and white until hovered; on touch screens a tap turns colour on and off ----------
-  for (const fig of $$('.photo')) fig.addEventListener('click', e => { if (!e.target.closest('a')) fig.classList.toggle('on'); });
+  for (const fig of $$('.photo')) {
+    fig.addEventListener('click', e => { if (e.pointerType !== 'mouse' && !e.target.closest('a')) fig.classList.toggle('on'); });
+    // A mouse over the photo, or over the page header it sits in (the About name), shows the colour.
+    const zone = fig.closest('.split') || fig;
+    zone.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse' || e.pointerType === 'pen') fig.classList.add('hov'); });
+    zone.addEventListener('pointerleave', () => fig.classList.remove('hov'));
+  }
 
   // ---------- Home map: point at, focus or tap a sector (or a link) to light up what it connects ----------
   // Pointing or keyboard focus previews; a click or tap pins it until the next click, tap or Escape.
@@ -82,6 +88,13 @@
   });
   // Coming back with the Back button: clear the door so the page isn't left dark.
   addEventListener('pageshow', e => { if (e.persisted) for (const o of $$('.portal-out')) o.remove(); });
+
+  // ---------- About: tiles take their colour under a mouse, or on a tap ----------
+  for (const lg of $$('.lg')) {
+    lg.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse' || e.pointerType === 'pen') lg.classList.add('hov'); });
+    lg.addEventListener('pointerleave', () => lg.classList.remove('hov'));
+    lg.addEventListener('click', e => { if (e.pointerType !== 'mouse') lg.classList.toggle('on'); });
+  }
 
   // ---------- Keep drawn pieces sized to their boxes ----------
   const resize = () => segs.forEach(segInd);

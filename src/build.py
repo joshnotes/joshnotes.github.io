@@ -169,6 +169,20 @@ def pitch_table(research):
             f'<p class="fnote">Prices at the {esc(as_of)}. Values are probability-weighted, from each pitch. Personal research, not investment advice.</p></div>')
 
 
+def logo_tiles(items):
+    """About: one tile per organisation. Grey until a mouse is over it or it is tapped, then it takes the brand colour.
+    Drop an official logo at assets/img/logos/<slug>.svg (or .png / .webp) and it replaces the name, black and white
+    until hovered. No logo files ship with the site: use them only where the owner's brand rules allow."""
+    out = []
+    for o in items:
+        logo = next((f'/assets/img/logos/{o["slug"]}.{ext}' for ext in ('svg', 'png', 'webp')
+                     if (ROOT / 'assets' / 'img' / 'logos' / f'{o["slug"]}.{ext}').exists()), '')
+        mark = (f'<img src="{logo}" alt="{esc(o["name"])}" loading="lazy" decoding="async">' if logo else esc(o['name']))
+        note = f'<span class="lg-note">{"<br>".join(esc(x) for x in o["note"].split("|"))}</span>' if o.get('note') else ''  # | breaks a line
+        out.append(f'      <li class="lg{" has-img" if logo else ""}" style="--c:{o["bg"]};--f:{o["fg"]}"><span class="lg-mark">{mark}</span>{note}</li>')
+    return '\n'.join(out)
+
+
 def ratings_compact(research):
     """The home page's narrow ratings table: company, rating, and how far value sits from price."""
     ps = pitches(research)
@@ -431,6 +445,8 @@ def main():
     # Method, About, 404
     for name, nav, body_class in (('method', 'research', 'method'), ('about', 'about', ''), ('404', '', 'page-404')):
         meta, content = read_doc(SRC / 'content' / 'pages' / f'{name}.html')
+        if name == 'about':
+            content = content.replace('{{WORK_LOGOS}}', logo_tiles(meta['work'])).replace('{{LEARN_LOGOS}}', logo_tiles(meta['learn']))
         target = '/404.html' if name == '404' else meta['path']
         text = page(meta, content, nav, body_class=body_class)
         if name == '404':

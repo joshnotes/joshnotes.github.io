@@ -252,7 +252,7 @@
   }
 
   // The wheel leans a few degrees toward the pointer, eased so it drifts rather than snaps.
-  if (!reduce && window.matchMedia && matchMedia('(hover: hover) and (pointer: fine)').matches) {
+  if (!reduce) { // only mouse movement drives it (checked per event), so touch screens never tilt
     let tx = 0, ty = 0, x = 0, y = 0, raf = 0;
     const step = () => {
       x += (tx - x) * 0.08; y += (ty - y) * 0.08;
