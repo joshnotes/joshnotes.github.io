@@ -115,5 +115,14 @@
   "page": "https://commons.wikimedia.org/wiki/File:Eccles_Building_(26088200676).jpg",
   "w": 1200,
   "h": 800
+ },
+ "research-palantir": {
+  "alt": "Aerial view of the Pentagon in Arlington, Virginia",
+  "artist": "Carol M. Highsmith, Library of Congress",
+  "license": "Public domain",
+  "license_url": "",
+  "page": "https://commons.wikimedia.org/wiki/File:Aerial_view_of_the_Pentagon,_Arlington,_Virginia_LCCN2011632609.tif",
+  "w": 1200,
+  "h": 800
  }
 }
