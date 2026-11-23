@@ -3,7 +3,7 @@
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
   const hasIO = 'IntersectionObserver' in window;
-  const reduce = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const reduce = false; // the site's motion plays for everyone, whatever the device's reduce-motion setting
   const animate = hasIO && !reduce;
   const rootEl = document.documentElement;
   if (hasIO) rootEl.classList.add('io');

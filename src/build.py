@@ -476,7 +476,7 @@ def main():
     head = ('<link rel="preload" href="/assets/fonts/instrument-serif-latin-400-italic.woff2" as="font" type="font/woff2" crossorigin>\n'
             '<link rel="stylesheet" href="/assets/wisdom.css">\n'
             '<meta name="theme-color" content="#000000">\n'
-            '<script>if(!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("portal")</script>\n'
+            '<script>document.documentElement.classList.add("portal")</script>\n'
             '<script src="/assets/wisdom.js" defer></script>\n')
     content = content.replace('{{WZ_TILES}}', '\n'.join(tiles)).replace('{{WZ_DATA}}', data)
     built.append(write('/wisdom/', page(meta, content, 'wisdom', og_extra=head, body_class='wisdom')))

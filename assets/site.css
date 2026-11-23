@@ -78,7 +78,6 @@ main>section:last-child,main>.sec:last-child{padding-bottom:112px}
 .atom i:nth-of-type(3){offset-path:path("M6 19.66A10 3.4 120 1 1 16 2.34A10 3.4 120 1 1 6 19.66");animation-duration:17s;animation-delay:-5s}
 @keyframes atom-orbit{to{offset-distance:100%}}
 @supports not (offset-path:path("M0 0")){.atom i{display:none}}
-@media(prefers-reduced-motion:reduce){.atom i{animation:none}.atom i:nth-of-type(1){offset-distance:15%}.atom i:nth-of-type(2){offset-distance:62%}.atom i:nth-of-type(3){offset-distance:38%}}
 @media(min-width:641px) and (max-width:900px){.links{gap:0 24px}}
 @media(max-width:640px){.nav .wrap{min-height:64px;padding-block:6px}.mark{font-size:18px}.links{gap:0 20px}
   /* Phones: the door sits on the name's row, the four sections on the row below. */
@@ -458,5 +457,4 @@ footer ::selection{background:var(--bone);color:var(--black)}
 :is(.grid2>.cardlink,.list>.lrow,.ratings tbody tr,.logos>.lg):nth-child(4){animation-delay:.14s}
 :is(.grid2>.cardlink,.list>.lrow,.ratings tbody tr,.logos>.lg):nth-child(5){animation-delay:.17s}
 
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
 @media print{.nav,footer,.segc,.pager,.me-pic{display:none}body{background:#fff;color:#000;font-size:12pt;line-height:1.5}.chartbox,.tablewrap{break-inside:avoid}}

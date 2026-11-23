@@ -7,7 +7,7 @@
 
   const shows = JSON.parse(data.textContent);
   const N = shows.length, STEP = 360 / N;
-  const reduce = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const reduce = false; // the page's motion plays for everyone, whatever the device's reduce-motion setting
   const $ = s => root.querySelector(s);
   const tiles = [...root.querySelectorAll('.wz-show')];
   const comet = $('.wz-comet'), spinBtn = $('.wz-spin'), ticker = $('.wz-ticker'), hubCover = $('.wz-hub-cover');

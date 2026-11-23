@@ -149,8 +149,4 @@ body.wisdom{
 .portal-skip .wz-title{animation-delay:.3s}
 @keyframes wz-sheen{from{background-position:100% 0}to{background-position:0 0}}
 
-@media(prefers-reduced-motion:reduce){
-  .portal .wz-portal{display:none}
-  .wz-card.in,.wz-title,.wz-ring,.wz-up,.wz-spin::after{animation:none}
-  .wz-title{background-position:0 0}
 }
