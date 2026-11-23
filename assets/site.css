@@ -98,6 +98,9 @@ footer ::selection{background:var(--bone);color:var(--black)}
 .head .sub{font-size:17px;line-height:28px}
 .head .pagetitle+.sub{margin-top:18px}
 .head-row{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 24px;max-width:none}
+/* Section headings without the black bar (Research), with an action at the right end of the line. */
+.head.plain h2::before{content:none}
+.head-row.plain{align-items:center}
 .ctas{display:flex;flex-wrap:wrap;gap:12px 28px;margin-top:32px;align-items:center}
 @media(max-width:640px){.hero{padding-block:64px 36px}.hero h1,.pagetitle{font-size:40px;line-height:44px}.head h2{font-size:26px;line-height:32px}}
 
