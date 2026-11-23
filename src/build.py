@@ -184,7 +184,7 @@ def pitch_table(research):
             '<thead><tr><th scope="col">Company</th><th scope="col">Rating</th><th scope="col" class="n">Value per share</th>'
             '<th scope="col" class="n hide-s">Price</th><th scope="col" class="n">Value vs price</th></tr></thead>\n<tbody>\n'
             + '\n'.join(rows) + '\n</tbody></table>\n'
-            f'<p class="fnote">Prices at the {esc(as_of)}. Values are probability-weighted, from each pitch. Personal research, not investment advice.</p></div>')
+            f'<p class="fnote">Prices at the {esc(as_of)}.</p></div>')
 
 
 def logo_tiles(items):
@@ -438,7 +438,7 @@ def main():
     # Notes index
     meta, content = read_doc(SRC / 'content' / 'pages' / 'notes.html')
     note_cards = '\n'.join(
-        f'      <a class="cardlink" href="{m["path"]}"><div class="card"><p class="kick">{esc(m["topic"])}</p><h3>{esc(m["title"])}</h3><p class="dek">{esc(m["dek"])}</p></div></a>'
+        f'      <a class="cardlink" href="{m["path"]}"><div class="card"><h3>{esc(m["title"])}</h3><p class="dek">{esc(m["dek"])}</p></div></a>'
         for m, _ in notes)
     built.append(write('/notes/', page(meta, content.replace('{{NOTES_CARDS}}', note_cards), 'notes')))
 
@@ -457,7 +457,7 @@ def main():
     meta, content = read_doc(SRC / 'content' / 'pages' / 'research.html')
     # The pitches are already in the ratings table, so the list below it holds everything else.
     rows = '\n'.join(
-        f'      <a class="lrow" href="{m["path"]}"><p class="kick">{esc(m["kick"])}</p><div><h3>{esc(m["title"])}</h3><p>{esc(m["dek"])}</p></div><p class="tp">{esc(m["topic"])}</p></a>'
+        f'      <a class="lrow" href="{m["path"]}"><h3>{esc(m["title"])}</h3><p>{esc(m["dek"])}</p></a>'
         for m, _ in research if m.get('kind') != 'pitch')
     content = (content.replace('{{RESEARCH_ROWS}}', rows)
                .replace('{{PITCH_TABLE}}', pitch_table(research)))
