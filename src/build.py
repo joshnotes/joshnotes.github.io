@@ -200,12 +200,19 @@ def logo_tiles(items):
         size = f' style="--h:{o["h"]}px"' if o.get('h') else ''  # per-logo height, so marks look about the same size
         mark = (f'<img src="/assets/{path}?v={asset_version(path)}" alt="{esc(o["name"])}"{size} loading="lazy" decoding="async">'
                 if path else esc(o['name']))
-        verify = f'<a class="lg-link" href="{esc(o["url"])}" target="_blank" rel="noopener">Verify</a>' if o.get('url') else ''
-        roles = ''.join(f'<span class="lg-pos"><b>{esc(title)}</b><span><span class="nw">{esc(when)}</span>{verify if i == len(o["roles"]) - 1 else ""}</span></span>'
-                        for i, (title, when) in enumerate(o.get('roles', [])))
+        roles = ''.join(f'<span class="lg-pos"><b>{esc(title)}</b>' + (f'<span><span class="nw">{esc(when)}</span></span>' if when else '') + '</span>'
+                        for title, when in o.get('roles', []))
+        # A credential link makes the whole tile clickable (opens in a new tab), with a small arrow shown on hover.
+        cover = ''
+        if o.get('url'):
+            what = o['roles'][0][0] if o.get('roles') else o['name']
+            label = what if what.lower().startswith(o['name'].lower()) else f'{o["name"]} {what}'
+            cover = (f'<a class="lg-cover" href="{esc(o["url"])}" target="_blank" rel="noopener" '
+                     f'aria-label="{esc(label)}: view the credential (opens in a new tab)">'
+                     '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M5.5 4.5h6v6"/></svg></a>')
         style = f'--c:{o["bg"]};--f:{o["fg"]};--on:{knock[o.get("on", "none")]}'
-        out.append(f'      <li class="lg{" has-img" if path else " no-img"}" style="{style}"><span class="lg-mark">{mark}</span>'
-                   f'<span class="lg-roles">{roles}</span></li>')
+        out.append(f'      <li class="lg{" has-img" if path else " no-img"}{" linked" if cover else ""}" style="{style}"><span class="lg-mark">{mark}</span>'
+                   f'<span class="lg-roles">{roles}</span>{cover}</li>')
     return '\n'.join(out)
 
 
