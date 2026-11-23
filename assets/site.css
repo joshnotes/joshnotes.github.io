@@ -20,7 +20,7 @@
   --rule:light-dark(#C2BCB5,#2E2B28);
   --surface:light-dark(#ECE8E4,#141312);
   --quiet:light-dark(#B3ACA4,#4A4642);
-  --panel:light-dark(var(--bone),#141312);
+  --panel:light-dark(var(--bone),var(--black));
   --container:1120px;
   --reading:680px;
   --gut:max(24px,env(safe-area-inset-left,0px));
