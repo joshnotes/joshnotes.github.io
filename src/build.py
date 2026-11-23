@@ -408,6 +408,24 @@ def main():
                .replace('{{PITCH_TABLE}}', pitch_table(research)))
     built.append(write('/research/', page(meta, content, 'research')))
 
+    # Daily Dose of Wisdom: a dark page of its own, with its own stylesheet and script.
+    meta, content = read_doc(SRC / 'content' / 'pages' / 'wisdom.html')
+    shows = meta['shows']
+    tiles = []
+    for i, s in enumerate(shows):  # evenly round the wheel, the first at 12 o'clock
+        a = math.radians(-90 + i * 360 / len(shows))
+        tiles.append(f'        <li class="wz-show" style="left:{50 + 43 * math.cos(a):.2f}%;top:{50 + 43 * math.sin(a):.2f}%">'
+                     f'<img src="{esc(s["art"])}/300x300bb.jpg" alt="{esc(s["name"])}" width="300" height="300" decoding="async"></li>')
+    data = json.dumps([{k: s[k] for k in ('id', 'name', 'host', 'art', 'apple')} for s in shows],
+                      separators=(',', ':'), ensure_ascii=False).replace('</', '<\\/')
+    head = ('<link rel="preload" href="/assets/fonts/instrument-serif-latin-400-italic.woff2" as="font" type="font/woff2" crossorigin>\n'
+            '<link rel="stylesheet" href="/assets/wisdom.css">\n'
+            '<meta name="theme-color" content="#05070F">\n'
+            '<script>if(!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("portal")</script>\n'
+            '<script src="/assets/wisdom.js" defer></script>\n')
+    content = content.replace('{{WZ_TILES}}', '\n'.join(tiles)).replace('{{WZ_DATA}}', data)
+    built.append(write('/wisdom/', page(meta, content, 'wisdom', og_extra=head, body_class='wisdom')))
+
     # Method, About, 404
     for name, nav, body_class in (('method', 'research', 'method'), ('about', 'about', ''), ('404', '', 'page-404')):
         meta, content = read_doc(SRC / 'content' / 'pages' / f'{name}.html')

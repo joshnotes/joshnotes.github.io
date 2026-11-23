@@ -1,0 +1,131 @@
+/* Daily Dose of Wisdom: a different room from the rest of the site.
+   Midnight, starlight text, and one warm lamp-light colour for whatever is lit.
+   Instrument Serif for the voice of the page; Geist and Geist Mono for everything you press. */
+
+@font-face{font-family:"Instrument Serif";font-style:italic;font-weight:400;font-display:swap;src:url(/assets/fonts/instrument-serif-latin-400-italic.woff2) format("woff2")}
+@font-face{font-family:"Instrument Serif";font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/instrument-serif-latin-400-normal.woff2) format("woff2")}
+
+:root:has(body.wisdom){color-scheme:dark;background:#05070F}
+body.wisdom{
+  --night:#05070F;
+  --navy:#0B1022;
+  --star:#E9E4DA;
+  --mist:#8C93AD;
+  --lamp:#F3B562;
+  --lamp-rgb:243,181,98;
+  --serif:"Instrument Serif",Georgia,"Times New Roman",serif;
+  --bg:var(--night);--ink:var(--star);--ink2:var(--mist);--rule:#1A2140;--surface:var(--navy);--quiet:#3A4266;--panel:var(--night);
+  color-scheme:dark;background:var(--night);color:var(--star)
+}
+.wisdom ::selection{background:var(--lamp);color:var(--night)}
+.wisdom :focus-visible{outline-color:var(--lamp)}
+
+/* The room: a faint lamp glow behind the wheel, indigo haze above, and a few stars. */
+.wisdom main{position:relative;overflow:hidden}
+.wisdom main::before,.wisdom main::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none}
+.wisdom main::before{background:
+  radial-gradient(42% 38% at 50% 52%,rgba(var(--lamp-rgb),.10),transparent 70%),
+  radial-gradient(70% 55% at 15% -5%,rgba(72,88,180,.24),transparent 70%),
+  radial-gradient(60% 50% at 95% 105%,rgba(84,62,160,.18),transparent 70%)}
+.wisdom main::after{opacity:.5;background:
+  radial-gradient(1px 1px at 23px 41px,#fff,transparent),
+  radial-gradient(1px 1px at 131px 97px,#cfd6ff,transparent),
+  radial-gradient(1.5px 1.5px at 71px 163px,#fff,transparent),
+  radial-gradient(1px 1px at 197px 19px,#ffe9c7,transparent);
+  background-size:211px 199px,263px 241px,317px 283px,379px 331px}
+
+/* ---------- Page ---------- */
+.wz{text-align:center;padding-block:52px 88px}
+.wz-name{font:400 12px/16px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--lamp)}
+.wz-pre{font:italic 400 clamp(36px,5.2vw,60px)/1.08 var(--serif);letter-spacing:-.01em;color:var(--star);margin:18px auto 0;max-width:14em;text-wrap:balance}
+.wz-credit{margin:56px auto 0;font-size:13px;line-height:19px;color:var(--mist);max-width:52ch}
+.wz-live{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+/* ---------- The wheel ---------- */
+.wz-stage{container:wz/inline-size;position:relative;max-width:max(340px,min(660px,calc(100svh - 250px)));margin:36px auto 0}
+.wz-wheel{position:relative;width:100%;aspect-ratio:1}
+.wz-orbit{position:absolute;inset:7%;border-radius:50%;border:1px solid rgba(233,228,218,.09)}
+/* The light that runs round the orbit: a short bright head with a fading tail, turned by the script. */
+.wz-comet{position:absolute;inset:-2px;opacity:0;transition:opacity .4s;will-change:transform}
+/* Head and tail, then a wider soft copy for the glow (no filters, so turning it costs the GPU nothing). */
+.wz-comet i,.wz-comet::before{position:absolute;border-radius:50%;
+  background:conic-gradient(from -70deg,transparent 0deg,rgba(var(--lamp-rgb),0) 4deg,rgba(var(--lamp-rgb),.55) 58deg,#FFE3B5 70deg,transparent 70.5deg)}
+.wz-comet i{inset:0;-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2.5px));mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2.5px))}
+.wz-comet::before{content:"";inset:-14px;opacity:.75;
+  -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 30px),rgba(0,0,0,.55) calc(100% - 16px),transparent 100%);
+  mask:radial-gradient(farthest-side,transparent calc(100% - 30px),rgba(0,0,0,.55) calc(100% - 16px),transparent 100%)}
+.wz[data-state=spinning] .wz-comet,.wz[data-state=loading] .wz-comet{opacity:1}
+.wz[data-state=landed] .wz-comet{opacity:.45}
+
+.wz-shows{list-style:none;margin:0;padding:0}
+.wz-show{position:absolute;width:13%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:14px}
+.wz-show img{width:100%;height:100%;object-fit:cover;border-radius:inherit;background:var(--navy);
+  box-shadow:0 0 0 1px rgba(233,228,218,.12),0 10px 30px -12px #000;transition:transform .18s,box-shadow .18s,opacity .25s,filter .25s}
+.wz[data-state=spinning] .wz-show img,.wz[data-state=loading] .wz-show img,.wz[data-state=landed] .wz-show img{opacity:.42;filter:saturate(.6)}
+.wz .wz-show.on img{opacity:1;filter:none;transform:scale(1.1);
+  box-shadow:0 0 0 2px var(--lamp),0 0 26px 4px rgba(var(--lamp-rgb),.55),0 0 70px 10px rgba(var(--lamp-rgb),.18)}
+
+/* The hub: idle, it is the button; spinning, it calls out each show as the light passes. */
+.wz-hub{position:absolute;left:50%;top:50%;width:58%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
+  background:radial-gradient(circle at 50% 38%,#141C3A 0,#0A0F22 55%,#070A17 100%);
+  box-shadow:0 0 0 1px rgba(233,228,218,.08),inset 0 0 60px rgba(0,0,0,.6),0 30px 80px -30px #000;display:grid;place-items:center}
+.wz-hub>*{grid-area:1/1}
+.wz-spin{width:100%;height:100%;border-radius:50%;border:0;background:none;color:var(--star);cursor:pointer;display:grid;place-items:center;position:relative;-webkit-tap-highlight-color:transparent}
+.wz-spin::before{content:"";position:absolute;inset:10%;border-radius:50%;border:1px solid rgba(var(--lamp-rgb),.55);
+  box-shadow:0 0 22px rgba(var(--lamp-rgb),.28),inset 0 0 22px rgba(var(--lamp-rgb),.14);transition:box-shadow .3s,border-color .3s,inset .3s}
+.wz-spin span{font:500 13px/21px var(--mono);letter-spacing:.14em;text-transform:uppercase;max-width:15ch;text-wrap:balance}
+.wz-spin:hover::before,.wz-spin:focus-visible::before{border-color:var(--lamp);box-shadow:0 0 34px rgba(var(--lamp-rgb),.5),inset 0 0 30px rgba(var(--lamp-rgb),.22)}
+.wz-spin:focus-visible{outline:none}
+.wz-spin:focus-visible::before{inset:8%}
+.wz-ticker{display:none;font:italic 400 clamp(20px,4.4cqi,28px)/1.15 var(--serif);color:var(--lamp);max-width:70%;text-wrap:balance;text-shadow:0 0 18px rgba(var(--lamp-rgb),.45)}
+.wz[data-state=spinning] .wz-spin,.wz[data-state=loading] .wz-spin,.wz[data-state=landed] .wz-spin{visibility:hidden}
+.wz[data-state=spinning] .wz-ticker,.wz[data-state=loading] .wz-ticker{display:block}
+.wz-hub-cover{width:62%;height:auto;border-radius:12px;box-shadow:0 0 0 1px rgba(233,228,218,.12),0 0 40px rgba(var(--lamp-rgb),.25)}
+
+/* ---------- The episode card: inside the hub on wide screens, under the wheel on narrow ones ---------- */
+.wz-card{text-align:left;display:grid;gap:14px}
+.wz-card[hidden]{display:none}
+.wz-head{display:flex;gap:14px;align-items:center}
+.wz-cover{width:56px;height:56px;border-radius:8px;flex:none;box-shadow:0 0 0 1px rgba(233,228,218,.12)}
+.wz-show-name{font:500 11px/15px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--lamp)}
+.wz-meta{font-size:13px;line-height:19px;color:var(--mist);margin-top:3px;font-variant-numeric:tabular-nums}
+.wz-ep{font:400 22px/27px var(--serif);letter-spacing:-.005em;color:var(--star);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;outline:none}
+.wz-audio{width:100%;height:36px;color-scheme:dark;border-radius:999px}
+.wz-audio[hidden]{display:none}
+.wz-actions{display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px}
+.wz-again{min-height:40px;padding:0 18px;border-radius:999px;border:1px solid var(--lamp);background:rgba(var(--lamp-rgb),.08);color:var(--star);
+  font:500 12px/16px var(--mono);letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .2s,box-shadow .2s}
+.wz-again:hover{background:rgba(var(--lamp-rgb),.18);box-shadow:0 0 20px rgba(var(--lamp-rgb),.3)}
+.wz-apple{font-size:13px;line-height:19px;color:var(--mist);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;min-height:40px;display:inline-flex;align-items:center}
+.wz-apple:hover{color:var(--star)}
+.wz-card.in{animation:wz-in .45s cubic-bezier(.2,.8,.2,1) both}
+@keyframes wz-in{from{opacity:0;transform:translate(var(--tx,0),var(--ty,0)) scale(.94);filter:blur(6px)}}
+
+@container wz (min-width:640px){
+  .wz-card{position:absolute;left:50%;top:50%;width:272px;--tx:-50%;--ty:-50%;transform:translate(-50%,-50%)}
+  .wz-hub-cover{display:none}
+}
+@container wz (max-width:639px){
+  .wz-card{margin:28px auto 0;max-width:440px;padding:20px;border-radius:16px;background:linear-gradient(180deg,rgba(20,28,58,.85),rgba(10,15,34,.85));
+    box-shadow:0 0 0 1px rgba(233,228,218,.08),0 0 40px -10px rgba(var(--lamp-rgb),.25)}
+  .wz-show{border-radius:10px}
+  .wz-spin span{font-size:11px;line-height:17px;max-width:13ch}
+  .wz[data-state=landed] .wz-hub-cover:not([hidden]){display:block}
+}
+@media(max-width:640px){.wz{padding-block:48px 72px}.wz-stage{margin-top:36px}.wz-credit{margin-top:40px}}
+
+/* ---------- The way in: a point of light opens into the room, and the page comes through it ---------- */
+.wz-portal{display:none}
+.portal .wz-portal{display:block;position:fixed;inset:0;z-index:100;pointer-events:none;background:var(--night,#05070F);
+  animation:wz-portal-fade .6s ease-out .75s forwards}
+/* Both layers are drawn at full size and grown from a point, so the ring stays a fine line as it opens. */
+.wz-portal i,.wz-portal b{position:absolute;left:50%;top:50%;width:260vmax;height:260vmax;margin:-130vmax 0 0 -130vmax;border-radius:50%;will-change:transform,opacity}
+.wz-portal i{background:radial-gradient(closest-side,#FFF4E0 0,rgba(var(--lamp-rgb),.7) 8%,rgba(var(--lamp-rgb),.18) 30%,rgba(var(--lamp-rgb),0) 60%);animation:wz-bloom 1.2s cubic-bezier(.55,0,.15,1) both}
+.wz-portal b{background:radial-gradient(closest-side,transparent calc(100% - 14px),rgba(var(--lamp-rgb),.25) calc(100% - 7px),rgba(255,232,196,.95) calc(100% - 2px),transparent 100%);animation:wz-ring 1.15s cubic-bezier(.3,0,.1,1) .06s both}
+@keyframes wz-bloom{0%{transform:scale(0);opacity:0}25%{transform:scale(.04);opacity:1}100%{transform:scale(1);opacity:0}}
+@keyframes wz-ring{0%{transform:scale(0);opacity:0}12%{opacity:1}100%{transform:scale(.62);opacity:0}}
+@keyframes wz-portal-fade{to{opacity:0;visibility:hidden}}
+.portal .wz{animation:wz-warp 1.05s cubic-bezier(.16,.84,.24,1) .5s both}
+@keyframes wz-warp{from{opacity:0;transform:scale(1.07);filter:blur(12px)}}
+
+@media(prefers-reduced-motion:reduce){.portal .wz-portal{display:none}.wz-card.in{animation:none}}
