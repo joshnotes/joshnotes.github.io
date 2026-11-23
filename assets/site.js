@@ -39,6 +39,34 @@
   // ---------- Photos: black and white until hovered; on touch screens a tap turns colour on and off ----------
   for (const fig of $$('.photo')) fig.addEventListener('click', e => { if (!e.target.closest('a')) fig.classList.toggle('on'); });
 
+  // ---------- Home map: point at, focus or tap a sector (or a link) to light up what it connects ----------
+  // Pointing or keyboard focus previews; a click or tap pins it until the next click, tap or Escape.
+  for (const wm of $$('.wm')) {
+    let pinned = '', peek = '';
+    const show = () => {
+      const k = peek || pinned;
+      if (k) wm.dataset.on = k; else delete wm.dataset.on;
+      for (const b of $$('[role=button][data-k]', wm)) b.setAttribute('aria-pressed', String(b.dataset.k === pinned));
+    };
+    const keyAt = el => (el && el.closest ? el.closest('[data-k]') : null);
+    wm.addEventListener('pointerover', e => { if (e.pointerType === 'mouse') { const t = keyAt(e.target); peek = t ? t.dataset.k : ''; show(); } });
+    wm.addEventListener('pointerleave', () => { peek = ''; show(); });
+    wm.addEventListener('focusin', e => { const t = keyAt(e.target); if (t && t.matches(':focus-visible')) { peek = t.dataset.k; show(); } });
+    wm.addEventListener('focusout', () => { peek = ''; show(); });
+    const pin = k => { pinned = pinned === k ? '' : k; show(); };
+    wm.addEventListener('click', e => {
+      const t = keyAt(e.target);
+      if (!t || t.closest('a')) return; // filled dots are links: let them open the piece
+      pin(t.dataset.k);
+    });
+    wm.addEventListener('keydown', e => {
+      const t = keyAt(e.target);
+      if (e.key === 'Escape') { pinned = ''; show(); }
+      else if (t && t.getAttribute('role') === 'button' && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); pin(t.dataset.k); }
+    });
+    document.addEventListener('click', e => { if (pinned && !wm.contains(e.target)) { pinned = ''; show(); } });
+  }
+
   // ---------- Keep drawn pieces sized to their boxes ----------
   const resize = () => segs.forEach(segInd);
   requestAnimationFrame(resize);

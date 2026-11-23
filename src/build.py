@@ -7,6 +7,7 @@ Every page is written as <path>/index.html so GitHub Pages serves clean URLs.
 import datetime
 import html
 import json
+import math
 import pathlib
 import re
 
@@ -132,9 +133,9 @@ def ticker(company, body):
     return m.group(1) if m else ''
 
 
-def pitch_table(research):
-    """Ratings table for the stock pitches, read from each pitch's key-figure strip."""
-    rows, as_of = [], ''
+def pitches(research):
+    """One dict per stock pitch, read from the pitch's key-figure strip."""
+    out = []
     for meta, body in research:
         if meta.get('kind') != 'pitch':
             continue
@@ -145,11 +146,18 @@ def pitch_table(research):
         if len(cells) < 4:
             continue
         (rating, _), (value, _), (gap, _), (price, price_label) = cells[:4]
-        as_of = as_of or re.sub(r'^Price (at )?', '', price_label)
         company = meta['title'].split(':')[0].split(' after ')[0]
-        tk = ticker(company, body)
-        rows.append(f'<tr><th scope="row"><a href="{meta["path"]}">{esc(company)}</a><span>{tk + ", " if tk else ""}{esc(meta["topic"])}</span></th>'
-                    f'<td>{rating}</td><td class="n">{value}</td><td class="n hide-s">{price}</td><td class="n">{gap}</td></tr>')
+        out.append({'meta': meta, 'company': company, 'ticker': ticker(company, body), 'rating': rating, 'value': value,
+                    'gap': gap, 'price': price, 'as_of': re.sub(r'^Price (at )?', '', price_label)})
+    return out
+
+
+def pitch_table(research):
+    """Ratings table for the stock pitches, read from each pitch's key-figure strip."""
+    ps = pitches(research)
+    as_of = ps[0]['as_of'] if ps else ''
+    rows = [f'<tr><th scope="row"><a href="{p["meta"]["path"]}">{esc(p["company"])}</a><span>{p["ticker"] + ", " if p["ticker"] else ""}{esc(p["meta"]["topic"])}</span></th>'
+            f'<td>{p["rating"]}</td><td class="n">{p["value"]}</td><td class="n hide-s">{p["price"]}</td><td class="n">{p["gap"]}</td></tr>' for p in ps]
     if not rows:
         return ''
     return ('<div class="ratings"><table>\n'
@@ -157,6 +165,156 @@ def pitch_table(research):
             '<th scope="col" class="n hide-s">Price</th><th scope="col" class="n">Value vs price</th></tr></thead>\n<tbody>\n'
             + '\n'.join(rows) + '\n</tbody></table>\n'
             f'<p class="fnote">Prices at the {esc(as_of)}. Values are probability-weighted, from each pitch. Personal research, not investment advice.</p></div>')
+
+
+def ratings_compact(research):
+    """The home page's narrow ratings table: company, rating, and how far value sits from price."""
+    ps = pitches(research)
+    if not ps:
+        return ''
+    rows = '\n'.join(f'<tr><th scope="row"><a href="{p["meta"]["path"]}">{esc(p["company"])}</a><span>{p["ticker"]}</span></th>'
+                     f'<td>{p["rating"]}</td><td class="n">{p["gap"]}</td></tr>' for p in ps)
+    return ('<table class="rt">\n<thead><tr><th scope="col">Company</th><th scope="col">Rating</th>'
+            '<th scope="col" class="n">Value vs price</th></tr></thead>\n'
+            f'<tbody>\n{rows}\n</tbody></table>\n<p class="fnote">Prices at the {esc(ps[0]["as_of"])}.</p>')
+
+
+# ---------- Home: the map of sectors and companies I follow ----------
+# The list itself lives in pages/home.html (meta "watchlist"). This sets where things sit.
+# at:   sector centre and where its name goes (n, s, e, w of the square)
+# fan:  angles its companies fan out at, in degrees clockwise from 3 o'clock
+# side: where a link's label sits next to its dot
+MAP_LAYOUTS = {
+    'wide': {'w': 720, 'h': 400, 'r': 66, 'font': 13,
+             'at': {'metals': (130, 286, 's'), 'energy': (250, 106, 'w'), 'computing': (420, 206, 'e'),
+                    'defense': (590, 106, 'e'), 'healthcare': (590, 306, 'ne')},
+             'fan': {'metals': [40, 140, -130], 'energy': [-150, -90, -30, 60], 'computing': [150, -90, 90],
+                     'defense': [-100, -40, 40], 'healthcare': [10, 70, 130]},
+             'side': {'copper': 'e', 'power': 'ne', 'pltr': 'nw', 'drugs': 'ne'}},
+    'tall': {'w': 380, 'h': 640, 'r': 58, 'font': 14,
+             'at': {'metals': (110, 80, 'ne'), 'energy': (250, 215, 'e'), 'computing': (190, 380, 'e'),
+                    'defense': (290, 540, 'w'), 'healthcare': (110, 560, 'w')},
+             'fan': {'metals': [-120, 180, 140], 'energy': [160, -100, -40, 50], 'computing': [180, -140, 90],
+                     'defense': [-50, 30, 100], 'healthcare': [0, 60, 120]},
+             'side': {'copper': 'w', 'power': 'e', 'pltr': 'e', 'drugs': 'w'}},
+}
+
+
+def and_join(items):
+    items = list(items)
+    if len(items) < 3:
+        return ' and '.join(items)
+    return ', '.join(items[:-1]) + ', and ' + items[-1]
+
+
+def piece_label(url, pieces):
+    """Link text for a company's or a link's piece: the pitch's rating, or the note's title."""
+    p = pieces.get(url, {})
+    return f'Stock pitch: {p["rating"]}' if p.get('rating') else p.get('title', 'Read it')
+
+
+def watch_map(watch, pieces):
+    """The connection map: an SVG for wide screens, one for phones, and the captions they share.
+    Returns (html, css). The css lights up whatever belongs to the sector or link under the pointer."""
+    sectors, bridges = watch['sectors'], watch['bridges']
+    sid = {s['id']: s for s in sectors}
+    near = {s['id']: [b for b in bridges if s['id'] in b['between']] for s in sectors}
+    keys = [s['id'] for s in sectors] + [b['id'] for b in bridges]
+
+    def toks(*groups):
+        out = set()
+        for g in groups:
+            out.update([g] if isinstance(g, str) else g)
+        return ' '.join(sorted(out))
+
+    def sector_toks(s):
+        return toks(s, *[[b['id'], *b['between']] for b in near[s]])
+
+    def link(text, url):
+        return f'<a href="{url}">{esc(text)}</a>' if url else esc(text)
+
+    # Captions: one per sector, one per link, and the default.
+    caps = ['<p class="wc wc-0">Hover or tap a sector. Filled dots have a pitch or note behind them.</p>']
+    for s in sectors:
+        names = [link(c[1], c[2] if len(c) > 2 else '') for c in s['companies']]
+        names = [link(b['name'], b.get('url', '')) for b in near[s['id']] if b.get('ticker')] + names
+        other = [f'to {esc(sid[[x for x in b["between"] if x != s["id"]][0]]["name"])} through {esc(b["via"])}' for b in near[s['id']]]
+        caps.append(f'<p class="wc wc-{s["id"]}" id="wc-{s["id"]}"><b>{esc(s["name"])}:</b> {and_join(names)}.'
+                    + (f' Linked {and_join(other)}.' if other else '') + '</p>')
+    for b in bridges:
+        a, c = (sid[x]['name'] for x in b['between'])
+        head = b.get('name') or b['label']
+        more = f' {link(piece_label(b["url"], pieces), b["url"])}.' if b.get('url') else ''
+        caps.append(f'<p class="wc wc-{b["id"]}" id="wc-{b["id"]}"><b>{esc(head)}, between {esc(a)} and {esc(c)}:</b> {esc(b["text"])}{more}</p>')
+
+    def svg(name, lay):
+        W, H, R, F = lay['w'], lay['h'], lay['r'], lay['font']
+        pos = {k: (x, y) for k, (x, y, _) in lay['at'].items()}
+        lines, nodes, under = [], {}, []
+
+        def label(x, y, side, text, cls, gap=10):
+            d = gap * 0.75  # diagonal sides sit a little closer
+            tx, ty, anchor = {'n': (x, y - gap, 'middle'), 's': (x, y + gap + 0.75 * F, 'middle'),
+                              'e': (x + gap, y + 0.35 * F, 'start'), 'w': (x - gap, y + 0.35 * F, 'end'),
+                              'ne': (x + d, y - d, 'start'), 'nw': (x - d, y - d, 'end'),
+                              'se': (x + d, y + d + 0.75 * F, 'start'), 'sw': (x - d, y + d + 0.75 * F, 'end')}[side]
+            return f'<text class="{cls}" x="{tx:.0f}" y="{ty:.0f}" text-anchor="{anchor}">{esc(text)}</text>'
+
+        def side_of(deg):
+            c, s = math.cos(math.radians(deg)), math.sin(math.radians(deg))
+            return 'e' if c > 0.42 else 'w' if c < -0.42 else ('s' if s > 0 else 'n')
+
+        for s in sectors:
+            x, y = pos[s['id']]
+            out = []
+            for (c, deg) in zip(s['companies'], lay['fan'][s['id']]):
+                cx, cy = x + R * math.cos(math.radians(deg)), y + R * math.sin(math.radians(deg))
+                lines.append(f'<line class="x sp" data-s="{s["id"]}" x1="{x}" y1="{y}" x2="{cx:.1f}" y2="{cy:.1f}" pathLength="1"/>')
+                under.append(f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="5"/>')
+                url = c[2] if len(c) > 2 else ''
+                inner = (f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="4.5"/>' + label(cx, cy, side_of(deg), c[0], 'tk')
+                         + f'<title>{esc(c[1])}{": " + esc(piece_label(url, pieces)) if url else ""}</title>')
+                if url:
+                    out.append(f'<a class="x cn pc" href="{url}" data-s="{s["id"]}" data-k="{s["id"]}">{inner}</a>')
+                else:
+                    out.append(f'<g class="x cn" data-s="{s["id"]}" data-k="{s["id"]}">{inner}</g>')
+            lx, ly, side = lay['at'][s['id']]
+            under.append(f'<rect x="{x - 8}" y="{y - 8}" width="16" height="16"/>')
+            out.append(f'<g class="x sn" data-s="{sector_toks(s["id"])}" data-k="{s["id"]}" tabindex="0" role="button" '
+                       f'aria-pressed="false" aria-label="{esc(s["name"])}" aria-describedby="wc-{s["id"]}">'
+                       f'<circle class="hit" cx="{x}" cy="{y}" r="22"/><rect x="{x - 7}" y="{y - 7}" width="14" height="14"/>'
+                       + label(x, y, side, s['name'].upper(), 'snl', 16) + '</g>')
+            nodes[s['id']] = out
+        for b in bridges:
+            (x1, y1), (x2, y2) = (pos[x] for x in b['between'])
+            t = toks(b['id'], b['between'])
+            lines.insert(0, f'<line class="x br" data-s="{t}" x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" pathLength="1"/>')
+            mx, my = (x1 + x2) / 2, (y1 + y2) / 2
+            side = lay['side'][b['id']]
+            text = b.get('ticker') or b['label']
+            cls = 'tk' if b.get('ticker') else 'bll'
+            under.append(f'<circle cx="{mx:.1f}" cy="{my:.1f}" r="9"/>')
+            inner = (f'<circle class="halo" cx="{mx:.1f}" cy="{my:.1f}" r="9"/><circle cx="{mx:.1f}" cy="{my:.1f}" r="{5.5 if b.get("ticker") else 4.5}"/>'
+                     + label(mx, my, side, text if b.get('ticker') else text.upper(), cls, 12) + f'<title>{esc(b.get("name") or b["label"])}</title>')
+            if b.get('url'):
+                nodes[b['id']] = [f'<a class="x bn pc" href="{b["url"]}" data-s="{t}" data-k="{b["id"]}" aria-describedby="wc-{b["id"]}">{inner}</a>']
+            else:
+                nodes[b['id']] = [f'<g class="x bn" data-s="{t}" data-k="{b["id"]}" tabindex="0" role="button" aria-pressed="false" '
+                                  f'aria-label="{esc(b["label"])}" aria-describedby="wc-{b["id"]}">{inner}</g>']
+        # Reading order: each sector, then any link whose two ends have both appeared.
+        order, seen = [], set()
+        for s in sectors:
+            order.append(s['id'])
+            seen.add(s['id'])
+            order += [b['id'] for b in bridges if b['id'] not in order and set(b['between']) <= seen]
+        body = '\n'.join(n for k in order for n in nodes[k])
+        return (f'<svg class="wsvg wsvg-{name}" viewBox="0 0 {W} {H}" role="group" aria-label="Sectors and companies I follow" '
+                f'style="--f:{F}px">\n<g class="lines">{"".join(lines)}</g>\n<g class="under" aria-hidden="true">{"".join(under)}</g>\n{body}\n</svg>')
+
+    html_out = ('<figure class="wm">\n' + svg('wide', MAP_LAYOUTS['wide']) + '\n' + svg('tall', MAP_LAYOUTS['tall'])
+                + '\n<figcaption class="wcap" aria-live="polite">' + ''.join(caps) + '</figcaption>\n</figure>')
+    css = ''.join(f'.wm[data-on={k}] .x:not([data-s~={k}]){{opacity:.12}}.wm[data-on={k}] .wc-{k}{{visibility:visible}}' for k in keys)
+    return html_out, f'<style>{css}</style>\n'
 
 
 def main():
@@ -174,30 +332,25 @@ def main():
 
     # Home
     meta, content = read_doc(SRC / 'content' / 'pages' / 'home.html')
-    lead, rest = notes[0][0], [m for m, _ in notes[1:]]
-    # Latest pitch: most recent date; on a tie, the first in research order.
-    pitches = [(m, b) for m, b in research if m.get('kind') == 'pitch']
-    pm, pb = max(pitches, key=lambda x: (x[0]['date'], -pitches.index(x)))
-    company = pm['title'].split(':')[0].split(' after ')[0]
-    rating = re.search(r'<div class="kf[^"]*"><div><b>(.*?)</b>', pb)
-    tk = ticker(company, pb)
-    pitch_line = esc(company) + (f' ({tk})' if tk else '') + (f': {rating.group(1)}' if rating else '')
-    cards = '\n'.join(
-        f'      <a class="cardlink" href="{m["path"]}"><div class="card"><p class="kick">{esc(m["topic"])}</p><h3>{esc(m["title"])}</h3><p class="dek">{esc(m["dek"])}</p></div></a>'
-        for m in rest)
+    lead = notes[0][0]
+    pieces = {m['path']: {'title': m['title']} for m, _ in notes + research}
+    for p in pitches(research):
+        pieces[p['meta']['path']]['rating'] = p['rating']
+    map_html, map_css = watch_map(meta['watchlist'], pieces)
+    heads = lambda items: '\n'.join(f'        <li><a href="{m["path"]}">{esc(m["title"])}</a></li>' for m in items)
     content = (content.replace('{{LEAD_TITLE}}', esc(lead['title']))
                .replace('{{LEAD_URL}}', lead['path'])
-               .replace('{{PITCH_URL}}', pm['path'])
-               .replace('{{PITCH_LINE}}', pitch_line)
-               .replace('{{NOTES_CARDS}}', cards)
-               .replace('{{PITCH_TABLE}}', pitch_table(research)))
+               .replace('{{WATCH_MAP}}', map_html)
+               .replace('{{RATINGS}}', ratings_compact(research))
+               .replace('{{NOTES_HEADLINES}}', heads(m for m, _ in notes[1:]))
+               .replace('{{RESEARCH_HEADLINES}}', heads(m for m, _ in research if m.get('kind') != 'pitch')))
     # Old single-page links looked like /#a-eaton. Send them to the new pages.
     legacy = {'research': '/research/', 'about': '/about/', 'r-method': '/research/method/', 'library': '/research/', 'thoughts': '/notes/'}
     legacy.update({m['legacy']: m['path'] for m, _ in notes + research if m.get('legacy')})
     redirect = ('<script>(function(){var m=' + json.dumps(legacy, separators=(',', ':')) +
                 ';function go(){var h=location.hash.slice(1);if(m[h])location.replace(m[h]);}'
                 'go();addEventListener("hashchange",go);})();</script>\n')
-    built.append(write('/', page(meta, content, '', og_extra=redirect, body_class='home')))
+    built.append(write('/', page(meta, content, '', og_extra=redirect + map_css, body_class='home')))
 
     # Notes index
     meta, content = read_doc(SRC / 'content' / 'pages' / 'notes.html')

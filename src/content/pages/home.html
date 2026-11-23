@@ -1,35 +1,62 @@
 <!--meta
-{"title": "Joshuva Johnson", "page_title": "Joshuva Johnson | Stock pitches and notes on markets", "dek": "Takes on markets and stock pitches by Joshuva Johnson, a finance analyst in New York.", "path": "/", "nav": "thoughts", "legacy": "thoughts"}
+{"title": "Joshuva Johnson", "page_title": "Joshuva Johnson", "dek": "Stock pitches, research and notes on markets by Joshuva Johnson.", "path": "/", "nav": "", "legacy": "thoughts",
+ "watchlist": {
+  "sectors": [
+   {"id": "metals", "name": "Precious Metals", "companies": [["NEM", "Newmont"], ["AEM", "Agnico Eagle"], ["WPM", "Wheaton Precious Metals"]]},
+   {"id": "energy", "name": "Energy", "companies": [["ETN", "Eaton", "/research/eaton/"], ["GEV", "GE Vernova"], ["VRT", "Vertiv"], ["CEG", "Constellation Energy"]]},
+   {"id": "computing", "name": "Computing", "companies": [["QNT", "Quantinuum", "/research/quantinuum/"], ["MSFT", "Microsoft", "/notes/ai-bottleneck/"], ["NVDA", "Nvidia"]]},
+   {"id": "defense", "name": "Defense", "companies": [["LMT", "Lockheed Martin"], ["RTX", "RTX"], ["GD", "General Dynamics"]]},
+   {"id": "healthcare", "name": "Healthcare", "companies": [["LLY", "Eli Lilly"], ["UNH", "UnitedHealth"], ["ISRG", "Intuitive Surgical"]]}
+  ],
+  "bridges": [
+   {"id": "copper", "label": "Copper", "via": "copper", "between": ["metals", "energy"], "url": "/research/copper/",
+    "text": "Grids need copper. Newmont mined 135,000 tonnes of it last year, and Wheaton's biggest gold stream comes from a copper mine."},
+   {"id": "power", "label": "AI power", "via": "AI power demand", "between": ["energy", "computing"], "url": "/notes/ai-bottleneck/",
+    "text": "Microsoft's AI capacity is running late on buildings, grid connections and power gear, which is what Eaton, Vertiv and GE Vernova sell."},
+   {"id": "pltr", "ticker": "PLTR", "name": "Palantir", "via": "Palantir", "between": ["computing", "defense"], "url": "/research/palantir/",
+    "text": "Palantir sells the same software to companies and to the U.S. military."},
+   {"id": "drugs", "label": "Drug discovery", "via": "AI drug discovery", "between": ["computing", "healthcare"],
+    "text": "Lilly's AI supercomputer, built for drug discovery, runs on 1,016 Nvidia GPUs."}
+  ]
+ }
+}
 -->
-<header class="split">
-  <div class="split-l">
-    <div class="split-in">
-      <h1 class="wordmark">Joshuva Johnson</h1>
-      <ul class="leads">
-        <li><p class="kick">Latest stock pitch</p><a href="{{PITCH_URL}}">{{PITCH_LINE}}</a></li>
-        <li><p class="kick">Latest note</p><a href="{{LEAD_URL}}">{{LEAD_TITLE}}</a></li>
-      </ul>
-    </div>
-  </div>
-  <figure class="split-r photo">
-    <img src="/assets/img/facade-1280.webp" srcset="/assets/img/facade-640.webp 640w, /assets/img/facade-1280.webp 1280w" sizes="(max-width: 900px) 100vw, 50vw" width="1280" height="1280" alt="Looking up a gridded office tower facade" fetchpriority="high">
-  </figure>
+<header class="hero gut front-hero">
+  <div class="wrap"><h1>A place to stash my work and thoughts as they come.</h1></div>
 </header>
 
-<section class="sec gut" aria-labelledby="pitches-title">
-  <div class="wrap">
-    <div class="head head-row"><h2 id="pitches-title">Latest stock pitches</h2><a class="textlink" href="/research/">All research</a></div>
-    {{PITCH_TABLE}}
+<div class="gut">
+  <div class="wrap front">
+    <section class="front-main" aria-labelledby="following-title">
+      <h2 class="lbl" id="following-title">Following</h2>
+{{WATCH_MAP}}
+    </section>
+    <aside class="front-side">
+      <section aria-labelledby="ratings-title">
+        <div class="lbl-row"><h2 class="lbl" id="ratings-title">Ratings</h2><a href="/research/method/#rating-rule">How I rate</a></div>
+{{RATINGS}}
+      </section>
+      <section aria-labelledby="latest-title">
+        <h2 class="lbl" id="latest-title">Latest note</h2>
+        <a class="latest" href="{{LEAD_URL}}">{{LEAD_TITLE}}</a>
+      </section>
+    </aside>
   </div>
-</section>
+</div>
 
-<section class="sec gut" aria-labelledby="more-title">
-  <div class="wrap">
-    <div class="head"><h2 id="more-title">More notes</h2></div>
-    <div class="grid2" id="t-grid">
-{{NOTES_CARDS}}
-    </div>
+<div class="sec gut">
+  <div class="wrap cols2">
+    <section aria-labelledby="notes-title">
+      <div class="lbl-row"><h2 class="lbl" id="notes-title">Notes</h2><a href="/notes/">All notes</a></div>
+      <ul class="hl">
+{{NOTES_HEADLINES}}
+      </ul>
+    </section>
+    <section aria-labelledby="research-title">
+      <div class="lbl-row"><h2 class="lbl" id="research-title">Research</h2><a href="/research/">All research</a></div>
+      <ul class="hl">
+{{RESEARCH_HEADLINES}}
+      </ul>
+    </section>
   </div>
-</section>
-
-<p class="colophon gut"><span class="wrap">Home photo: <a href="https://commons.wikimedia.org/wiki/File:Upward_view_of_a_gridded_high-rise_facade_in_Frankfurt_(2025).jpg">Paul Colin Hennig</a>, cropped, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.</span></p>
+</div>
