@@ -322,6 +322,17 @@ footer ::selection{background:var(--bone);color:var(--black)}
 .srow li::marker{color:var(--ink2)}
 @media(max-width:640px){.srow{grid-template-columns:minmax(0,1fr);padding:24px 0}}
 
+/* Where I've worked and studied: names set large, like a row of wordmarks, with role and years underneath. */
+.marks{list-style:none;padding:0;margin:0 0 72px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
+.marks li{padding:16px 24px 32px;border-left:1px solid var(--rule);display:grid;align-content:start;gap:14px}
+.marks li:first-child{padding-left:0;border-left:0}
+.marks .mk{font-size:28px;line-height:32px;font-weight:600;letter-spacing:-.03em;margin-bottom:6px;min-height:64px}
+.marks p:not(.mk){font-size:15px;line-height:22px}
+.marks p span{display:block;color:var(--ink2)}
+.marks+.srow{border-top-color:var(--ink)}
+@media(max-width:980px){.marks{grid-template-columns:repeat(3,minmax(0,1fr))}.marks .mk{min-height:0}.marks li:nth-child(3n+1){padding-left:0;border-left:0}.marks li:nth-child(n+4){border-top:1px solid var(--rule)}}
+@media(max-width:640px){.marks{grid-template-columns:minmax(0,1fr);margin-bottom:56px}.marks li,.marks li:nth-child(3n+1){padding:20px 0 24px;border-left:0;gap:10px}.marks li:nth-child(n+2){border-top:1px solid var(--rule)}.marks .mk{font-size:24px;line-height:28px;min-height:0;margin-bottom:2px}}
+
 /* ---------- Method page: five steps, each with a real exhibit ---------- */
 .st{display:grid;grid-template-columns:280px minmax(0,1fr);gap:16px 48px;padding:40px 0;border-top:1px solid var(--rule);align-items:start}
 .st:first-child{border-top-color:var(--ink)}
