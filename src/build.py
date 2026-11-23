@@ -188,19 +188,24 @@ def pitch_table(research):
 
 
 def logo_tiles(items):
-    """About: one tile per organisation. Its logo (assets/img/logos/<slug>.webp, .svg or .png) shows in black and white
-    until a mouse is over it or it is tapped, then in colour. Without a logo file the name is set as a wordmark.
-    The logos in the repo are public-domain files from Wikimedia Commons (see logo_source in pages/about.html)."""
+    """About: one tile per organisation. The logo (assets/img/logos/<slug>.webp, .svg or .png) is black and white until
+    a mouse is over the tile or it is tapped; then the whole tile takes the brand colour (bg), its text turns fg, and the
+    logo shows knocked out in white or black, or in its own colours ("on": white / black / none).
+    Each position is a title with its years underneath. Logo sources are recorded in pages/about.html."""
+    knock = {'white': 'brightness(0) invert(1)', 'black': 'brightness(0)', 'none': 'none'}
     out = []
     for o in items:
-        logo = next((f'/assets/img/logos/{o["slug"]}.{ext}' for ext in ('svg', 'webp', 'png')
+        path = next((f'img/logos/{o["slug"]}.{ext}' for ext in ('svg', 'webp', 'png')
                      if (ROOT / 'assets' / 'img' / 'logos' / f'{o["slug"]}.{ext}').exists()), '')
         size = f' style="--h:{o["h"]}px"' if o.get('h') else ''  # per-logo height, so marks look about the same size
-        mark = (f'<img src="{logo}" alt="{esc(o["name"])}"{size} loading="lazy" decoding="async">' if logo else esc(o['name']))
-        lines = "<br>".join(esc(x) for x in o['note'].split('|')) if o.get('note') else ''  # | breaks a line
-        verify = f' <a class="lg-link" href="{esc(o["url"])}" target="_blank" rel="noopener">Verify</a>' if o.get('url') else ''
-        note = f'<span class="lg-note">{lines}{verify}</span>' if lines or verify else ''
-        out.append(f'      <li class="lg{" has-img" if logo else " no-img"}"><span class="lg-mark">{mark}</span>{note}</li>')
+        mark = (f'<img src="/assets/{path}?v={asset_version(path)}" alt="{esc(o["name"])}"{size} loading="lazy" decoding="async">'
+                if path else esc(o['name']))
+        verify = f'<a class="lg-link" href="{esc(o["url"])}" target="_blank" rel="noopener">Verify</a>' if o.get('url') else ''
+        roles = ''.join(f'<span class="lg-pos"><b>{esc(title)}</b><span><span class="nw">{esc(when)}</span>{verify if i == len(o["roles"]) - 1 else ""}</span></span>'
+                        for i, (title, when) in enumerate(o.get('roles', [])))
+        style = f'--c:{o["bg"]};--f:{o["fg"]};--on:{knock[o.get("on", "none")]}'
+        out.append(f'      <li class="lg{" has-img" if path else " no-img"}" style="{style}"><span class="lg-mark">{mark}</span>'
+                   f'<span class="lg-roles">{roles}</span></li>')
     return '\n'.join(out)
 
 
