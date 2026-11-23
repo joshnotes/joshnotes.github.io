@@ -18,103 +18,118 @@
   const html = document.documentElement;
   const rnd = (a, b) => a + Math.random() * (b - a);
 
-  // ---------- The way in: light spirals into the black hole, timed off the CSS animation of its centre ----------
+  // ---------- The way in: a jump to hyperspace, timed off the CSS fade of the overlay ----------
+  // Stars live in 3D in front of you and fly toward the screen. Seen in perspective they rush outward from the
+  // centre; each is drawn as a line from where it is now back to where it was a moment ago, so the faster you go,
+  // the longer the streaks. The centre stays dark because the far stars there are faint and barely move.
   const portal = document.querySelector('.wz-portal');
   if (portal) {
     const done = () => { if (portal.isConnected) portal.remove(); };
     if (reduce || !html.classList.contains('portal')) done();
     else {
-      const core = portal.querySelector('.bh-core'), cv = portal.querySelector('.wz-infall'), c = cv.getContext && cv.getContext('2d');
-      const coreAnim = core.getAnimations ? core.getAnimations()[0] : null;
+      const cv = portal.querySelector('.wz-jump'), c = cv.getContext && cv.getContext('2d');
+      const fade = portal.getAnimations ? portal.getAnimations()[0] : null;
       const t0 = performance.now();
-      const clock = () => (coreAnim && coreAnim.currentTime != null ? coreAnim.currentTime : performance.now() - t0) / 1000;
+      const clock = () => (fade && fade.currentTime != null ? fade.currentTime : performance.now() - t0) / 1000;
       let running = !!c;
       if (c) {
         const D = Math.min(1.5, devicePixelRatio || 1), W = innerWidth, H = innerHeight, cx = W / 2, cy = H / 2;
         cv.width = W * D; cv.height = H * D; c.setTransform(D, 0, 0, D, 0, 0);
-        const rMax = Math.hypot(W, H) / 2 * 1.05, horizon = Math.min(W, H) * 0.14; // the CSS centre is 28vmin across
-        const coreR = t => { // follows the bh-core keyframes closely enough to swallow the light at the rim
-          const k = t / 2.4;
-          if (k < 0.28) return horizon * Math.sin(k / 0.28 * Math.PI / 2);
-          if (k < 0.6) return horizon * (1 + 0.08 * (k - 0.28) / 0.32);
-          return horizon * (1.08 + 12.92 * Math.pow(Math.min(1, (k - 0.6) / 0.32), 2.2));
+        const F = Math.max(W, H) * 0.55, NEAR = 0.03, END = 2.65;
+        // Speed through the field (depth units per second): a slow drift, then a long build to full speed.
+        const speed = t => {
+          if (t < 0.3) return 0.06;
+          const k = Math.min(1, (t - 0.3) / 1.55);
+          return 0.06 + 3.6 * k * k * k;
         };
-        const tones = ['255,246,230', '255,232,196', '243,181,98', '255,214,160'];
-        const n = Math.min(420, Math.round(W * H / 3200));
-        const spawn = (p, outer) => {
-          p.a = rnd(0, Math.PI * 2); p.r = outer ? rMax * rnd(0.9, 1.1) : rMax * rnd(0.25, 1.1);
-          p.w = rnd(0.5, 1.7); p.v = rnd(0.6, 1.4); p.tone = tones[Math.floor(Math.random() * tones.length)]; p.age = 0;
-          return p;
+        const n = Math.max(300, Math.min(1100, Math.round(W * H / 1200)));
+        const spawn = (s, deep) => {
+          s.x = rnd(-1, 1); s.y = rnd(-1, 1); s.z = deep ? rnd(0.05, 1) : rnd(0.75, 1);
+          s.tone = Math.random() < 0.8 ? 0 : 1;
+          return s;
         };
-        const ps = Array.from({length: n}, () => spawn({}, false));
+        const stars = Array.from({length: n}, () => spawn({}, true));
+        const BINS = 8, tones = ['233,228,218', '255,250,242'];
+        const paths = Array.from({length: BINS * 2}, () => []);
         let last = clock();
         const frame = () => {
           if (!running) return;
           const t = clock(), dt = Math.min(0.05, Math.max(0, t - last)); last = t;
-          c.fillStyle = 'rgba(0,0,0,0.24)'; c.fillRect(0, 0, W, H); // short trails
-          const rc = coreR(t);
-          c.lineCap = 'round';
-          for (const p of ps) {
-            if (p.dead) continue;
-            const x0 = cx + Math.cos(p.a) * p.r, y0 = cy + Math.sin(p.a) * p.r;
-            const pull = (0.35 + 2.6 * Math.pow(rMax / Math.max(p.r, 1), 0.9)) * p.v * (0.6 + t * 0.9);
-            p.r -= p.r * pull * dt * 0.55;
-            p.a += pull * dt * 0.9; // the closer it gets, the faster it turns
-            p.age += dt;
-            if (p.r <= rc * 1.02) { if (t < 1.55) spawn(p, true); else p.dead = true; continue; }
-            const x1 = cx + Math.cos(p.a) * p.r, y1 = cy + Math.sin(p.a) * p.r;
-            const alpha = Math.min(1, p.age * 3) * Math.min(1, 0.25 + 1.4 * (1 - p.r / rMax));
-            c.strokeStyle = `rgba(${p.tone},${alpha.toFixed(3)})`; c.lineWidth = p.w;
-            c.beginPath(); c.moveTo(x0, y0); c.lineTo(x1, y1); c.stroke();
+          const v = speed(t), trail = Math.max(0.004, v * 0.07);
+          const lift = Math.min(1, t / 0.25); // stars fade in over the first beat
+          const calm = 1 - Math.min(1, Math.max(0, t - 0.3) / 1.2); // far stars are easy to see at rest, faint at speed
+          for (const p of paths) p.length = 0;
+          for (const s of stars) {
+            s.z -= v * dt;
+            const x1 = cx + s.x / s.z * F, y1 = cy + s.y / s.z * F;
+            if (s.z < NEAR || x1 < -40 || x1 > W + 40 || y1 < -40 || y1 > H + 40) { spawn(s, false); continue; }
+            const zt = Math.min(1.05, s.z + trail);
+            const x0 = cx + s.x / zt * F, y0 = cy + s.y / zt * F;
+            const near = 1 - s.z; // 0 far .. 1 close
+            const bin = Math.min(BINS - 1, Math.floor(near * BINS));
+            paths[bin * 2 + s.tone].push(x0, y0, x1, y1);
           }
-          if (t < 2.4) requestAnimationFrame(frame); else running = false;
+          c.clearRect(0, 0, W, H);
+          c.lineCap = 'round';
+          for (let b = 0; b < BINS; b++) {
+            const near = (b + 0.5) / BINS;
+            const alpha = lift * Math.min(1, 0.08 + 0.42 * calm + near * near * 1.25);
+            c.lineWidth = 0.5 + near * near * 2.2;
+            for (let k = 0; k < 2; k++) {
+              const seg = paths[b * 2 + k];
+              if (!seg.length) continue;
+              c.strokeStyle = `rgba(${tones[k]},${alpha.toFixed(3)})`;
+              c.beginPath();
+              for (let i = 0; i < seg.length; i += 4) { c.moveTo(seg[i], seg[i + 1]); c.lineTo(seg[i + 2], seg[i + 3]); }
+              c.stroke();
+            }
+          }
+          if (t < END) requestAnimationFrame(frame); else running = false;
         };
         requestAnimationFrame(frame);
       }
       const skip = () => { running = false; html.classList.add('portal-skip'); done(); };
       portal.addEventListener('pointerdown', skip, {once: true});
       addEventListener('keydown', function k(e) { if (!portal.isConnected) return removeEventListener('keydown', k); if (!e.metaKey && !e.ctrlKey && !e.altKey) skip(); });
-      setTimeout(() => { running = false; done(); }, 3000);
+      // Take the overlay away when its fade ends (or after 3 s if the browser can't say).
+      const finish = () => { running = false; done(); };
+      if (fade && fade.finished) fade.finished.then(finish, () => {}); else setTimeout(finish, 3000);
     }
   }
 
-  // ---------- The sky: every star keeps its own time, some flare at random, and now and then one falls ----------
+  // ---------- The sky: stars breathe a little, one brightens now and then, and once in a while one falls ----------
+  // Kept quiet on purpose: enough to show the sky is alive, never enough to pull the eye off the wheel.
   const sky = document.querySelector('.wz-sky');
   const ctx = sky && sky.getContext && sky.getContext('2d');
   if (ctx) {
     const tones = ['255,250,240', '255,238,212', '233,228,218', '255,214,160'];
-    let W = 0, H = 0, stars = [], meteors = [], nextMeteor = performance.now() + rnd(2500, 5000), lastDraw = 0;
+    let W = 0, H = 0, stars = [], meteors = [], nextMeteor = performance.now() + rnd(5000, 9000), lastDraw = 0;
     const build = () => {
       const D = Math.min(1.5, devicePixelRatio || 1);
       W = innerWidth; H = innerHeight; sky.width = W * D; sky.height = H * D; ctx.setTransform(D, 0, 0, D, 0, 0);
       stars = Array.from({length: Math.min(260, Math.round(W * H / 6500))}, () => ({
         x: Math.random() * W, y: Math.random() * H, r: Math.random() < 0.86 ? rnd(0.35, 0.95) : rnd(1.05, 1.7),
-        a: rnd(0.12, 0.6), s: rnd(0.25, 1.4), p: rnd(0, 6.283), c: tones[Math.floor(Math.random() * tones.length)], f: 0, fd: 0}));
+        a: rnd(0.12, 0.55), s: rnd(0.15, 0.55), p: rnd(0, 6.283), c: tones[Math.floor(Math.random() * tones.length)], f: 0, fd: 0}));
     };
     const draw = now => {
       ctx.clearRect(0, 0, W, H);
       for (const s of stars) {
         let k = 0;
-        if (!s.f && Math.random() < 0.0009) { s.f = now; s.fd = rnd(700, 1600); } // a random star flares
+        if (!s.f && Math.random() < 0.00003) { s.f = now; s.fd = rnd(1400, 2400); } // about one star every few seconds brightens
         if (s.f) { const q = (now - s.f) / s.fd; if (q >= 1) s.f = 0; else k = Math.sin(Math.PI * q); }
-        const tw = s.a * (0.55 + 0.45 * Math.sin(now / 1000 * s.s + s.p));
-        const al = Math.min(1, tw + k * 0.95), r = s.r * (1 + k * 0.9);
+        const tw = s.a * (0.85 + 0.15 * Math.sin(now / 1000 * s.s + s.p));
+        const al = Math.min(1, tw + k * 0.45), r = s.r * (1 + k * 0.35);
         ctx.fillStyle = `rgba(${s.c},${al.toFixed(3)})`;
         ctx.beginPath(); ctx.arc(s.x, s.y, r, 0, 6.283); ctx.fill();
-        if (k > 0.25) { // the glint of a flaring star
-          const g = r * 7 * k;
-          ctx.strokeStyle = `rgba(${s.c},${(k * 0.55).toFixed(3)})`; ctx.lineWidth = 0.7;
-          ctx.beginPath(); ctx.moveTo(s.x - g, s.y); ctx.lineTo(s.x + g, s.y); ctx.moveTo(s.x, s.y - g); ctx.lineTo(s.x, s.y + g); ctx.stroke();
-        }
       }
       if (now > nextMeteor) { // a shooting star, from the top half, slanting down either way
         const dir = Math.random() < 0.5 ? -1 : 1, ang = rnd(0.32, 0.62), sp = rnd(800, 1300);
         meteors.push({x: rnd(W * 0.15, W * 0.85), y: rnd(-20, H * 0.35), vx: Math.cos(ang) * sp * dir, vy: Math.sin(ang) * sp, len: rnd(140, 280), t0: now, life: rnd(700, 1100)});
-        nextMeteor = now + rnd(2500, 7000);
+        nextMeteor = now + rnd(12000, 22000);
       }
       meteors = meteors.filter(m => now - m.t0 < m.life);
       for (const m of meteors) {
-        const e = (now - m.t0) / 1000, q = (now - m.t0) / m.life, al = Math.sin(Math.PI * q);
+        const e = (now - m.t0) / 1000, q = (now - m.t0) / m.life, al = 0.7 * Math.sin(Math.PI * q);
         const hx = m.x + m.vx * e, hy = m.y + m.vy * e, sp = Math.hypot(m.vx, m.vy), L = m.len * Math.min(1, q * 3);
         const tx = hx - m.vx / sp * L, ty = hy - m.vy / sp * L;
         const gr = ctx.createLinearGradient(tx, ty, hx, hy);
