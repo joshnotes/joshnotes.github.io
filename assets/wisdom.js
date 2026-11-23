@@ -98,23 +98,35 @@
     }
   }
 
-  // ---------- The sky: stars breathe a little, one brightens now and then, and once in a while one falls ----------
+  // ---------- The sky: drifting slowly, as if floating through space ----------
+  // Every star has a depth: near ones drift a little faster than far ones, so the field has parallax.
+  // They breathe a little, one brightens now and then, and once in a while one falls.
   // Kept quiet on purpose: enough to show the sky is alive, never enough to pull the eye off the wheel.
   const sky = document.querySelector('.wz-sky');
   const ctx = sky && sky.getContext && sky.getContext('2d');
   if (ctx) {
     const tones = ['255,250,240', '255,238,212', '233,228,218', '255,214,160'];
-    let W = 0, H = 0, stars = [], meteors = [], nextMeteor = performance.now() + rnd(5000, 9000), lastDraw = 0;
+    let W = 0, H = 0, stars = [], meteors = [], nextMeteor = performance.now() + rnd(5000, 9000), lastDraw = 0, lastT = 0;
+    const DRIFT = 8, DX = -0.94, DY = -0.34; // px per second for the nearest stars, heading up and to the left
     const build = () => {
       const D = Math.min(1.5, devicePixelRatio || 1);
       W = innerWidth; H = innerHeight; sky.width = W * D; sky.height = H * D; ctx.setTransform(D, 0, 0, D, 0, 0);
-      stars = Array.from({length: Math.min(260, Math.round(W * H / 6500))}, () => ({
-        x: Math.random() * W, y: Math.random() * H, r: Math.random() < 0.86 ? rnd(0.35, 0.95) : rnd(1.05, 1.7),
-        a: rnd(0.12, 0.55), s: rnd(0.15, 0.55), p: rnd(0, 6.283), c: tones[Math.floor(Math.random() * tones.length)], f: 0, fd: 0}));
+      stars = Array.from({length: Math.min(260, Math.round(W * H / 6500))}, () => {
+        const z = Math.pow(Math.random(), 1.6) * 0.85 + 0.15; // most stars are far away
+        return {x: Math.random() * W, y: Math.random() * H, z,
+          r: z > 0.8 && Math.random() < 0.5 ? rnd(1.05, 1.7) : rnd(0.35, 0.95) * (0.7 + 0.4 * z),
+          a: rnd(0.12, 0.55) * (0.65 + 0.35 * z), s: rnd(0.15, 0.55), p: rnd(0, 6.283), c: tones[Math.floor(Math.random() * tones.length)], f: 0, fd: 0};
+      });
     };
     const draw = now => {
+      const dt = lastT ? Math.min(0.1, (now - lastT) / 1000) : 0; lastT = now;
       ctx.clearRect(0, 0, W, H);
       for (const s of stars) {
+        if (dt) { // drift, and come back in on the far side
+          s.x += DX * DRIFT * s.z * dt; s.y += DY * DRIFT * s.z * dt;
+          if (s.x < -4) s.x += W + 8; else if (s.x > W + 4) s.x -= W + 8;
+          if (s.y < -4) s.y += H + 8; else if (s.y > H + 4) s.y -= H + 8;
+        }
         let k = 0;
         if (!s.f && Math.random() < 0.00003) { s.f = now; s.fd = rnd(1400, 2400); } // about one star every few seconds brightens
         if (s.f) { const q = (now - s.f) / s.fd; if (q >= 1) s.f = 0; else k = Math.sin(Math.PI * q); }
@@ -144,11 +156,11 @@
     if (reduce) draw(0); // a still sky
     else {
       const loop = now => {
-        // Full rate while a star is falling, half rate otherwise (it only twinkles),
-        // and the sky holds still while the wheel spins so the spin gets every frame.
+        // Full rate while a star is falling, half rate otherwise (the drift is slow enough for that),
+        // and a quarter rate while the wheel spins so the spin gets nearly every frame.
         const busy = root.dataset.state === 'spinning';
         if (busy) nextMeteor = Math.max(nextMeteor, now + 1500);
-        if (meteors.length || (!busy && now - lastDraw > 32)) { draw(now); lastDraw = now; }
+        if (meteors.length || now - lastDraw > (busy ? 64 : 32)) { draw(now); lastDraw = now; }
         requestAnimationFrame(loop);
       };
       requestAnimationFrame(loop);
