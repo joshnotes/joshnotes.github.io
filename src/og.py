@@ -148,7 +148,7 @@ def photo_panel(im, path, x0, y0=0, w=None, h=H, focus=(0.5, 0.5)):
 
 def article_image(meta, body):
     im, d = canvas()
-    section = 'Thoughts' if meta['section'] == 'thoughts' else 'Research'
+    section = 'Notes' if meta['section'] == 'notes' else 'Research'
     figs = key_figures(body) if meta.get('kind') == 'pitch' else []
     photo = ROOT / 'assets' / 'img' / 'lead' / f'{key_for(meta["path"])}-1200.webp'
     panel = 400 if (figs or photo.exists()) else 0
@@ -179,7 +179,7 @@ def article_image(meta, body):
 def home_image(meta):
     im, d = canvas()
     half = W // 2
-    tracked(d, M, 270, 'THOUGHTS_', sans(64, 400), BLACK, 0.03)
+    tracked(d, M, 270, 'JOSHUVA JOHNSON_', sans(40, 400), BLACK, 0.03)
     if not photo_panel(im, ROOT / 'assets' / 'img' / 'facade-1280.webp', half):
         d.rectangle([half * S, 0, W * S, H * S], fill=BLACK)
     wordmark(d, M, M - 8, size=20)
@@ -210,8 +210,8 @@ def page_image(title, sub, label, panel_rows=None, photo=None):
 
 def main():
     made = []
-    thoughts, research = load_articles('thoughts'), load_articles('research')
-    for meta, body in thoughts + research:
+    notes, research = load_articles('notes'), load_articles('research')
+    for meta, body in notes + research:
         made.append(save(article_image(meta, body), key_for(meta['path'])))
     made.append(save(home_image(None), 'home'))
     rows = []

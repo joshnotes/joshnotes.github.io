@@ -60,7 +60,7 @@ def page(meta, content, nav='', og_type='website', og_extra='', body_class=''):
         '{{CANONICAL}}': canonical,
         '{{OG_TYPE}}': og_type,
         '{{OG_EXTRA}}': og_extra + ('<meta name="robots" content="noindex">\n' if meta.get('noindex') else ''),
-        '{{NAV_THOUGHTS}}': cur if nav == 'thoughts' else '',
+        '{{NAV_NOTES}}': cur if nav == 'notes' else '',
         '{{NAV_RESEARCH}}': cur if nav == 'research' else '',
         '{{NAV_ABOUT}}': cur if nav == 'about' else '',
         '{{BODY_CLASS}}': body_class,
@@ -108,8 +108,8 @@ def lead_photo(meta):
 
 
 def article_html(meta, body, prev_item, next_item):
-    section_name = 'Thoughts' if meta['section'] == 'thoughts' else 'Research'
-    section_url = '/' if meta['section'] == 'thoughts' else '/research/'
+    section_name = 'Notes' if meta['section'] == 'notes' else 'Research'
+    section_url = '/notes/' if meta['section'] == 'notes' else '/research/'
     pager = '<nav class="pager" aria-label="More in ' + section_name + '">'
     if prev_item:
         pager += f'<a class="nextup" href="{prev_item["path"]}"><p class="kick">Previous</p><h3>{esc(prev_item["title"])}</h3></a>'
@@ -161,20 +161,20 @@ def pitch_table(research):
 
 def main():
     built = []
-    thoughts = load_articles('thoughts')
+    notes = load_articles('notes')
     research = load_articles('research')
 
     # Articles
-    for items, nav in ((thoughts, 'thoughts'), (research, 'research')):
+    for items, nav in ((notes, 'notes'), (research, 'research')):
         for i, (meta, body) in enumerate(items):
             prev_item = items[i - 1][0] if i > 0 else None
             next_item = items[i + 1][0] if i + 1 < len(items) else None
             og_extra = f'<meta property="article:published_time" content="{meta["date"]}">\n<meta property="article:author" content="Joshuva Johnson">\n'
             built.append(write(meta['path'], page(meta, article_html(meta, body, prev_item, next_item), nav, 'article', og_extra, 'article')))
 
-    # Home (Thoughts)
+    # Home
     meta, content = read_doc(SRC / 'content' / 'pages' / 'home.html')
-    lead, rest = thoughts[0][0], [m for m, _ in thoughts[1:]]
+    lead, rest = notes[0][0], [m for m, _ in notes[1:]]
     # Latest pitch: most recent date; on a tie, the first in research order.
     pitches = [(m, b) for m, b in research if m.get('kind') == 'pitch']
     pm, pb = max(pitches, key=lambda x: (x[0]['date'], -pitches.index(x)))
@@ -189,20 +189,33 @@ def main():
                .replace('{{LEAD_URL}}', lead['path'])
                .replace('{{PITCH_URL}}', pm['path'])
                .replace('{{PITCH_LINE}}', pitch_line)
-               .replace('{{THOUGHTS_CARDS}}', cards)
+               .replace('{{NOTES_CARDS}}', cards)
                .replace('{{PITCH_TABLE}}', pitch_table(research)))
     # Old single-page links looked like /#a-eaton. Send them to the new pages.
-    legacy = {'research': '/research/', 'about': '/about/', 'r-method': '/research/method/', 'library': '/research/'}
-    legacy.update({m['legacy']: m['path'] for m, _ in thoughts + research if m.get('legacy')})
+    legacy = {'research': '/research/', 'about': '/about/', 'r-method': '/research/method/', 'library': '/research/', 'thoughts': '/notes/'}
+    legacy.update({m['legacy']: m['path'] for m, _ in notes + research if m.get('legacy')})
     redirect = ('<script>(function(){var m=' + json.dumps(legacy, separators=(',', ':')) +
-                ';function go(){var h=location.hash.slice(1);if(m[h])location.replace(m[h]);else if(h==="thoughts")history.replaceState(null,"","/");}'
+                ';function go(){var h=location.hash.slice(1);if(m[h])location.replace(m[h]);}'
                 'go();addEventListener("hashchange",go);})();</script>\n')
-    built.append(write('/', page(meta, content, 'thoughts', og_extra=redirect, body_class='home')))
+    built.append(write('/', page(meta, content, '', og_extra=redirect, body_class='home')))
 
-    # /thoughts/ points at the home page, which is the Thoughts index
-    built.append(write('/thoughts/', '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Thoughts | Joshuva Johnson</title>'
-                       f'<link rel="canonical" href="{SITE}/"><meta http-equiv="refresh" content="0; url=/"><meta name="robots" content="noindex"></head>'
-                       '<body><p>Thoughts live on the <a href="/">home page</a>.</p></body></html>\n'))
+    # Notes index
+    meta, content = read_doc(SRC / 'content' / 'pages' / 'notes.html')
+    note_cards = '\n'.join(
+        f'      <a class="cardlink" href="{m["path"]}"><div class="card"><p class="kick">{esc(m["topic"])}</p><h3>{esc(m["title"])}</h3><p class="dek">{esc(m["dek"])}</p></div></a>'
+        for m, _ in notes)
+    built.append(write('/notes/', page(meta, content.replace('{{NOTES_CARDS}}', note_cards), 'notes')))
+
+    # The notes used to live under /thoughts/. Forward old links, keeping any #anchor.
+    def forward(old, new, title):
+        return ('<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">'
+                f'<title>{esc(title)} | Joshuva Johnson</title><link rel="canonical" href="{SITE}{new}">'
+                f'<meta name="robots" content="noindex"><meta http-equiv="refresh" content="0; url={new}">'
+                f'<script>location.replace("{new}"+location.hash)</script></head>'
+                f'<body><p>This page moved to <a href="{new}">{esc(title)}</a>.</p></body></html>\n')
+    built.append(write('/thoughts/', forward('/thoughts/', '/notes/', 'Notes')))
+    for m, _ in notes:
+        built.append(write(f'/thoughts/{m["slug"]}/', forward(f'/thoughts/{m["slug"]}/', m['path'], m['title'])))
 
     # Research index
     meta, content = read_doc(SRC / 'content' / 'pages' / 'research.html')
@@ -226,8 +239,8 @@ def main():
 
     # sitemap.xml, robots.txt, .nojekyll
     today = datetime.date.today().isoformat()
-    urls = ['/', '/research/', '/research/method/', '/about/'] + [m['path'] for m, _ in thoughts + research]
-    lastmod = {m['path']: m['date'] for m, _ in thoughts + research}
+    urls = ['/', '/notes/', '/research/', '/research/method/', '/about/'] + [m['path'] for m, _ in notes + research]
+    lastmod = {m['path']: m['date'] for m, _ in notes + research}
     sitemap = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     sitemap += [f'  <url><loc>{SITE}{u}</loc><lastmod>{lastmod.get(u, today)}</lastmod></url>' for u in urls]
     sitemap.append('</urlset>')
