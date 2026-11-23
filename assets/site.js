@@ -67,6 +67,22 @@
     document.addEventListener('click', e => { if (pinned && !wm.contains(e.target)) { pinned = ''; show(); } });
   }
 
+  // ---------- The way into daily dose of wisdom: midnight opens from the click, then the page loads ----------
+  document.addEventListener('click', e => {
+    const a = e.target.closest && e.target.closest('a[href="/wisdom/"]');
+    if (!a || reduce || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    if (location.pathname === '/wisdom/') return;
+    e.preventDefault();
+    const o = document.createElement('div');
+    o.className = 'portal-out';
+    o.style.setProperty('--x', (e.clientX || innerWidth / 2) + 'px');
+    o.style.setProperty('--y', (e.clientY || innerHeight / 2) + 'px');
+    document.body.appendChild(o);
+    setTimeout(() => { location.href = a.href; }, 520);
+  });
+  // Coming back with the Back button: clear the door so the page isn't left dark.
+  addEventListener('pageshow', e => { if (e.persisted) for (const o of $$('.portal-out')) o.remove(); });
+
   // ---------- Keep drawn pieces sized to their boxes ----------
   const resize = () => segs.forEach(segInd);
   requestAnimationFrame(resize);

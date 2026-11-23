@@ -7,6 +7,8 @@
 @font-face{font-family:"Geist Mono";font-style:normal;font-display:swap;font-weight:100 900;src:url(/assets/fonts/geist-mono-latin-wght-normal.woff2) format("woff2-variations"),url(/assets/fonts/geist-mono-latin-wght-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 @font-face{font-family:"Geist Mono";font-style:normal;font-display:swap;font-weight:100 900;src:url(/assets/fonts/geist-mono-latin-ext-wght-normal.woff2) format("woff2-variations"),url(/assets/fonts/geist-mono-latin-ext-wght-normal.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
 
+@font-face{font-family:"Instrument Serif";font-style:italic;font-weight:400;font-display:swap;src:url(/assets/fonts/instrument-serif-latin-400-italic.woff2) format("woff2")}
+
 /* ---------- Tokens ---------- */
 :root{
   color-scheme:light dark;
@@ -60,10 +62,21 @@ main>section:last-child,main>.sec:last-child{padding-bottom:112px}
 .nav .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0 32px;min-height:72px}
 .mark{font-size:18px;line-height:24px;font-weight:400;letter-spacing:.04em;text-transform:uppercase;text-decoration:none;display:inline-flex;align-items:center;min-height:44px;white-space:nowrap}
 .mark::after{content:"_";content:"_"/"";margin-left:1px}
-.links{display:flex;gap:0 32px;list-style:none;padding:0}
+.links{display:flex;flex-wrap:wrap;gap:0 32px;list-style:none;padding:0}
 .links a{display:inline-flex;align-items:center;min-height:44px;font:400 13px/16px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink);text-decoration:none;text-underline-offset:7px;text-decoration-thickness:1px}
 .links a:hover,.links a[aria-current=page]{text-decoration:underline}
-@media(max-width:640px){.nav .wrap{min-height:64px;padding-block:6px}.mark{font-size:16px}.links{gap:0 22px}}
+.links a.dose{font:italic 400 19px/16px "Instrument Serif",Georgia,serif;letter-spacing:0;text-transform:none;text-underline-offset:6px}
+/* The door to the other room: a small lamp beside its name. */
+.links a.dose::before{content:"";width:5px;height:5px;border-radius:50%;background:#F3B562;box-shadow:0 0 8px 1px rgba(243,181,98,.7);margin-right:8px;flex:none}
+@media(max-width:640px){.nav .wrap{min-height:64px;padding-block:6px}.mark{font-size:16px}.links{gap:0 20px}
+  /* Phones: the door sits on the name's row, the four sections on the row below. */
+  .nav .wrap{justify-content:flex-start;column-gap:20px}.nav .links{display:contents}.nav .links li{order:2}.nav .links .door{order:1;margin-left:auto}
+  .nav .links a.dose{font-size:17px}}
+@media(max-width:400px){.nav .wrap{column-gap:12px}.nav .mark{font-size:15px}.nav .links a.dose{font-size:16px}.links a.dose::before{margin-right:6px}}
+/* Going through that door: midnight opens from where you clicked. */
+.portal-out{position:fixed;z-index:200;left:var(--x);top:var(--y);width:300vmax;height:300vmax;margin:-150vmax 0 0 -150vmax;border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side,#05070F 0 96%,rgba(243,181,98,.55) 98.5%,rgba(243,181,98,0) 100%);transform:scale(0);animation:portal-out .55s cubic-bezier(.7,0,.25,1) forwards}
+@keyframes portal-out{to{transform:scale(1)}}
 
 /* ---------- Footer: always ends on black ---------- */
 footer{--ink:var(--bone);--ink2:#A29D97;--rule:#2E2B28;background:light-dark(var(--black),#141312);color:var(--ink2);font-size:14px;line-height:21px;padding-block:56px 64px}

@@ -13,7 +13,7 @@ import sys
 import tempfile
 
 from fontTools.ttLib import TTFont
-from PIL import Image, ImageDraw, ImageFont, ImageOps
+from PIL import Image, ImageDraw, ImageFilter, ImageFont, ImageOps
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from build import MAP_LAYOUTS, ROOT, SRC, load_articles, map_geometry, nice_date, read_doc  # noqa: E402
@@ -259,6 +259,76 @@ def page_image(title, sub, label, panel_rows=None, photo=None):
     return im
 
 
+def serif_italic(size):
+    return ImageFont.truetype(font_file('instrument-serif-latin-400-italic'), size * S)
+
+
+def wisdom_image():
+    """daily dose of wisdom: the name in the page's serif on midnight, and the wheel with its light."""
+    import math
+    NIGHT, STAR, MIST, LAMP = (5, 7, 15), (233, 228, 218), (140, 147, 173), (243, 181, 98)
+    im = Image.new('RGB', (W * S, H * S), NIGHT)
+    # Warm glow behind the wheel and indigo haze top left, drawn soft.
+    glow = Image.new('RGB', (W * S, H * S), NIGHT)
+    g = ImageDraw.Draw(glow)
+    cx, cy, R = 885, 313, 214
+    g.ellipse([(cx - 260) * S, (cy - 260) * S, (cx + 260) * S, (cy + 260) * S], fill=(40, 32, 26))
+    g.ellipse([-260 * S, -300 * S, 420 * S, 240 * S], fill=(18, 24, 58))
+    im = Image.blend(im, glow.filter(ImageFilter.GaussianBlur(120 * S)), 1.0)
+    d = ImageDraw.Draw(im)
+    for i, (x, y) in enumerate([(130, 520), (520, 90), (610, 560), (1150, 70), (700, 300), (60, 300), (1160, 590), (400, 420)]):
+        r = (1.6 if i % 3 else 2.2) * S
+        d.ellipse([x * S - r, y * S - r, x * S + r, y * S + r], fill=(200, 205, 230))
+    tracked(d, M, M - 8, 'JOSHUVA JOHNSON_', sans(24, 400), STAR, 0.04)
+    f = serif_italic(92)
+    for k, line in enumerate(['daily dose', 'of wisdom']):
+        d.text((M * S, (196 + k * 96) * S), line, font=f, fill=STAR)
+    d.text((M * S, 432 * S), 'Spin for a random episode', font=sans(24), fill=MIST)
+    d.text((M * S, 466 * S), 'from seven podcasts.', font=sans(24), fill=MIST)
+    # Orbit, then the light running round it (a soft copy underneath for the glow).
+    d.ellipse([(cx - R) * S, (cy - R) * S, (cx + R) * S, (cy + R) * S], outline=(30, 36, 62), width=2)
+    arc = Image.new('RGBA', (W * S, H * S), (0, 0, 0, 0))
+    a = ImageDraw.Draw(arc)
+    box = [(cx - R) * S, (cy - R) * S, (cx + R) * S, (cy + R) * S]
+    for k in range(24):  # tail fades toward the back
+        start = 146 + k * 3  # head ends on the lit tile at about 219 degrees
+        a.arc(box, start, start + 3.4, fill=LAMP + (int(30 + 225 * k / 23),), width=5 * S // 2)
+    soft = arc.filter(ImageFilter.GaussianBlur(7 * S))
+    im.paste(soft, (0, 0), soft)
+    im.paste(arc, (0, 0), arc)
+    d = ImageDraw.Draw(im)
+    # Seven tiles evenly round the orbit; the one under the light is lit.
+    for i in range(7):
+        ang = math.radians(-90 + i * 360 / 7)
+        x, y, h = cx + R * math.cos(ang), cy + R * math.sin(ang), 30
+        lit = i == 6
+        if lit:
+            halo = Image.new('RGBA', (W * S, H * S), (0, 0, 0, 0))
+            ImageDraw.Draw(halo).rounded_rectangle([(x - h - 10) * S, (y - h - 10) * S, (x + h + 10) * S, (y + h + 10) * S], 18 * S, fill=LAMP + (150,))
+            halo = halo.filter(ImageFilter.GaussianBlur(14 * S))
+            im.paste(halo, (0, 0), halo)
+            d = ImageDraw.Draw(im)
+        d.rounded_rectangle([(x - h) * S, (y - h) * S, (x + h) * S, (y + h) * S], 12 * S,
+                            fill=(26, 33, 64) if not lit else (58, 52, 40), outline=LAMP if lit else (52, 60, 96), width=3 if lit else 2)
+    # The hub and its lamp-light ring.
+    hr = 128
+    d.ellipse([(cx - hr) * S, (cy - hr) * S, (cx + hr) * S, (cy + hr) * S], fill=(12, 17, 38), outline=(28, 34, 60), width=2)
+    rr = 102
+    ring = Image.new('RGBA', (W * S, H * S), (0, 0, 0, 0))
+    ImageDraw.Draw(ring).ellipse([(cx - rr) * S, (cy - rr) * S, (cx + rr) * S, (cy + rr) * S], outline=LAMP + (255,), width=3)
+    glow_ring = ring.filter(ImageFilter.GaussianBlur(6 * S))
+    im.paste(glow_ring, (0, 0), glow_ring)
+    im.paste(ring, (0, 0), ring)
+    d = ImageDraw.Draw(im)
+    fm = mono(12, 500)
+    tracked(d, cx - tracked_width('GET MY', fm, 0.18) / 2, cy - 44, 'GET MY', fm, LAMP, 0.18)
+    fs = serif_italic(30)
+    for k, line in enumerate(['daily dose', 'of wisdom']):
+        w = fs.getlength(line) / S
+        d.text(((cx - w / 2) * S, (cy - 22 + k * 32) * S), line, font=fs, fill=STAR)
+    return im
+
+
 def main():
     made = []
     notes, research = load_articles('notes'), load_articles('research')
@@ -272,10 +342,11 @@ def main():
             rows.append((meta['title'].split(':')[0].split(' after ')[0], figs[0][0], figs[2][0]))
     portrait = ROOT / 'assets' / 'img' / 'joshuva-johnson-1440.jpg'
     pages = {'research': ('Research', None, 'Research', rows[:3], None),
-             'research-method': ('How I build a pitch', 'Five steps, from the industry down to one value per share.', 'Research / Method', None, None),
+             'research-method': ('Pitch Framework', 'Five steps, from the industry down to one value per share.', 'Research / Pitch Framework', None, None),
              'about': ('Joshuva Johnson', 'Analyst, JPMorgan Chase, New York', 'About', None, portrait)}
     for key, (title, sub, label, panel_rows, photo) in pages.items():
         made.append(save(page_image(title, sub, label, panel_rows, photo), key))
+    made.append(save(wisdom_image(), 'wisdom'))
     for p in made:
         print('drew', p.relative_to(ROOT))
 

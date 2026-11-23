@@ -61,6 +61,8 @@ def page(meta, content, nav='', og_type='website', og_extra='', body_class=''):
         '{{CANONICAL}}': canonical,
         '{{OG_TYPE}}': og_type,
         '{{OG_EXTRA}}': og_extra + ('<meta name="robots" content="noindex">\n' if meta.get('noindex') else ''),
+        '{{NAV_HOME}}': cur if nav == 'home' else '',
+        '{{NAV_WISDOM}}': cur if nav == 'wisdom' else '',
         '{{NAV_NOTES}}': cur if nav == 'notes' else '',
         '{{NAV_RESEARCH}}': cur if nav == 'research' else '',
         '{{NAV_ABOUT}}': cur if nav == 'about' else '',
@@ -378,7 +380,7 @@ def main():
     redirect = ('<script>(function(){var m=' + json.dumps(legacy, separators=(',', ':')) +
                 ';function go(){var h=location.hash.slice(1);if(m[h])location.replace(m[h]);}'
                 'go();addEventListener("hashchange",go);})();</script>\n')
-    built.append(write('/', page(meta, content, '', og_extra=redirect + map_css, body_class='home')))
+    built.append(write('/', page(meta, content, 'home', og_extra=redirect + map_css, body_class='home')))
 
     # Notes index
     meta, content = read_doc(SRC / 'content' / 'pages' / 'notes.html')
@@ -438,7 +440,7 @@ def main():
 
     # sitemap.xml, robots.txt, .nojekyll
     today = datetime.date.today().isoformat()
-    urls = ['/', '/notes/', '/research/', '/research/method/', '/about/'] + [m['path'] for m, _ in notes + research]
+    urls = ['/', '/notes/', '/research/', '/research/method/', '/about/', '/wisdom/'] + [m['path'] for m, _ in notes + research]
     lastmod = {m['path']: m['date'] for m, _ in notes + research}
     sitemap = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     sitemap += [f'  <url><loc>{SITE}{u}</loc><lastmod>{lastmod.get(u, today)}</lastmod></url>' for u in urls]
