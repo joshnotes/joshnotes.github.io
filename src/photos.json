@@ -1,13 +1,4 @@
 {
- "research-eaton": {
-  "alt": "The switchyard of a 750-kilovolt electrical substation",
-  "artist": "Novoklimov",
-  "license": "CC BY 4.0",
-  "license_url": "https://creativecommons.org/licenses/by/4.0/",
-  "page": "https://commons.wikimedia.org/wiki/File:Switchyard_of_electric_substation_750kV.png",
-  "w": 1200,
-  "h": 800
- },
  "research-honeywell": {
   "alt": "Three valve wheels on an industrial pipe manifold",
   "artist": "Dietmar Rabich",
@@ -23,15 +14,6 @@
   "license": "Public domain",
   "license_url": "",
   "page": "https://commons.wikimedia.org/wiki/File:Quantum_Computing;_Ion_Trapping_(5941055642).jpg",
-  "w": 1200,
-  "h": 800
- },
- "research-palantir": {
-  "alt": "Aerial view of the Pentagon in Arlington, Virginia",
-  "artist": "Carol M. Highsmith, Library of Congress",
-  "license": "Public domain",
-  "license_url": "",
-  "page": "https://commons.wikimedia.org/wiki/File:Aerial_view_of_the_Pentagon,_Arlington,_Virginia_LCCN2011632609.tif",
   "w": 1200,
   "h": 800
  }

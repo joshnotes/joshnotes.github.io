@@ -388,7 +388,7 @@ def watch_map(watch, pieces):
                 nodes[b['id']] = [f'<a class="x bn pc" href="{b["url"]}" data-s="{t}" data-k="{b["id"]}" aria-describedby="wc-{b["id"]}">{inner}</a>']
             else:
                 nodes[b['id']] = [f'<g class="x bn" data-s="{t}" data-k="{b["id"]}" tabindex="0" role="button" aria-pressed="false" '
-                                  f'aria-label="{esc(b["label"])}" aria-describedby="wc-{b["id"]}">{inner}</g>']
+                                  f'aria-label="{esc(b.get("name") or b["label"])}" aria-describedby="wc-{b["id"]}">{inner}</g>']
         # Reading order: each sector, then any link whose two ends have both appeared.
         order, seen = [], set()
         for s in sectors:
@@ -468,8 +468,7 @@ def main():
     rows = '\n'.join(
         f'      <a class="lrow" href="{m["path"]}"><h3>{esc(m["title"])}</h3><p>{esc(m["dek"])}</p></a>'
         for m, _ in research if m.get('kind') != 'pitch')
-    if not rows:  # nothing beyond the pitches yet: leave the "More research" section out
-        content = re.sub(r'<!--more-->.*?<!--/more-->', '', content, flags=re.S)
+    rows = rows or '      <p class="soon">My first deep dive is on the way.</p>'  # until the first one is out
     content = (content.replace('<!--more-->', '').replace('<!--/more-->', '')
                .replace('{{RESEARCH_ROWS}}', rows)
                .replace('{{PITCH_TABLE}}', pitch_table(research)))

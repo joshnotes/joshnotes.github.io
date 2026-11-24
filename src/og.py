@@ -4,7 +4,7 @@
 Run after changing content:  python3 src/og.py && python3 src/build.py
 Needs Pillow, fontTools and brotli:  pip install pillow fonttools brotli
 Each page gets assets/og/<key>.png at 1200 x 627, where the key comes from its path:
-/ -> home, /research/ -> research, /research/eaton/ -> research-eaton.
+/ -> home, /research/ -> research, /research/honeywell/ -> research-honeywell.
 build.py adds the og:image tags for every page that has an image.
 """
 import pathlib
