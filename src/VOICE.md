@@ -22,7 +22,7 @@ The model is Aswath Damodaran's blog, Musings on Markets: a teacher thinking out
 
 ## Structure
 
-- **Thoughts:** 900–1,400 words. One idea, one concept taught, one exhibit or two, a clear take, and what would change my mind.
+- **Notes:** 500–800 words. These are me thinking out loud, exploring an idea, not finished research. Write in Joshuva's own voice: first person, plain words, contractions, the questions I'm working through, and where I land for now. One idea, at most one exhibit, and what would change my mind. If it reads like a polished report or like AI wrote it, cut it down.
 - **Stock pitches:** follow the five steps on [Pitch Framework](/research/method/): map the industry, understand the business, build the model, value it three ways (trading comparables, precedent transactions, DCF) and cross-check against the price, then write the risks as bear, base and bull cases with probabilities.
 - **Exhibits:** numbered ("Exhibit 1"), with a title that states the finding, the chart or table, and a "Source:" line. Mark estimates as mine.
 - **Revisions:** a dated note at the top of the piece when the view changes.
