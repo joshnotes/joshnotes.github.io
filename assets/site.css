@@ -183,6 +183,8 @@ footer ::selection{background:var(--bone);color:var(--black)}
 .hl li{border-bottom:1px solid var(--rule)}
 .hl li:first-child{border-top:1px solid var(--rule)}
 .hl a{display:block;padding:16px 0;font-size:19px;line-height:26px;letter-spacing:-.005em;text-decoration:none}
+.soon{margin:0;padding:16px 0;font-size:19px;line-height:26px;color:var(--ink2)}
+.grid2>.soon{padding:28px 0;border-top:1px solid var(--rule)}
 @media(max-width:980px){.front{grid-template-columns:minmax(0,1fr)}.front-side{grid-template-columns:repeat(2,minmax(0,1fr));gap:40px 48px}}
 @media(max-width:760px){.cols2,.front-side{grid-template-columns:minmax(0,1fr)}.cols2{gap:56px}.hl a{font-size:18px;line-height:25px}}
 

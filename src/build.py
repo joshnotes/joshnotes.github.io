@@ -172,6 +172,11 @@ def pitches(research):
     return out
 
 
+# What a list says while it has nothing in it yet.
+SOON = '      <p class="soon">The first note is on its way.</p>'
+SOON_LI = '        <li><p class="soon">The first note is on its way.</p></li>'
+
+
 def pitch_table(research):
     """Ratings table for the stock pitches, read from each pitch's key-figure strip."""
     ps = pitches(research)
@@ -415,7 +420,7 @@ def main():
 
     # Home
     meta, content = read_doc(SRC / 'content' / 'pages' / 'home.html')
-    lead = notes[0][0]
+    lead = notes[0][0] if notes else {'title': '', 'path': '/notes/'}
     pieces = {m['path']: {'title': m['title']} for m, _ in notes + research}
     for p in pitches(research):
         pieces[p['meta']['path']]['rating'] = p['rating']
@@ -425,8 +430,8 @@ def main():
                .replace('{{LEAD_URL}}', lead['path'])
                .replace('{{WATCH_MAP}}', map_html)
                .replace('{{RATINGS}}', ratings_compact(research))
-               .replace('{{NOTES_HEADLINES}}', heads([m for m, _ in (notes[1:] or notes)][:3]))  # three each; the arrow leads to the rest
-               .replace('{{RESEARCH_HEADLINES}}', heads([m for m, _ in research if m.get('kind') != 'pitch'][:3])))
+               .replace('{{NOTES_HEADLINES}}', heads([m for m, _ in (notes[1:] or notes)][:3]) or SOON_LI)  # three each; the arrow leads to the rest
+               .replace('{{RESEARCH_HEADLINES}}', heads(([m for m, _ in research if m.get('kind') != 'pitch'] or [m for m, _ in research])[:3]) or SOON_LI))
     # With a single note, the Notes column lists it, so the separate Latest note box would only repeat it.
     if len(notes) < 2:
         content = re.sub(r'\s*<!--latest-->.*?<!--/latest-->', '', content, flags=re.S)
@@ -444,7 +449,7 @@ def main():
     note_cards = '\n'.join(
         f'      <a class="cardlink" href="{m["path"]}"><div class="card"><h3>{esc(m["title"])}</h3><p class="dek">{esc(m["dek"])}</p></div></a>'
         for m, _ in notes)
-    built.append(write('/notes/', page(meta, content.replace('{{NOTES_CARDS}}', note_cards), 'notes')))
+    built.append(write('/notes/', page(meta, content.replace('{{NOTES_CARDS}}', note_cards or SOON), 'notes')))
 
     # The notes used to live under /thoughts/. Forward old links, keeping any #anchor.
     def forward(old, new, title):
@@ -463,7 +468,10 @@ def main():
     rows = '\n'.join(
         f'      <a class="lrow" href="{m["path"]}"><h3>{esc(m["title"])}</h3><p>{esc(m["dek"])}</p></a>'
         for m, _ in research if m.get('kind') != 'pitch')
-    content = (content.replace('{{RESEARCH_ROWS}}', rows)
+    if not rows:  # nothing beyond the pitches yet: leave the "More research" section out
+        content = re.sub(r'<!--more-->.*?<!--/more-->', '', content, flags=re.S)
+    content = (content.replace('<!--more-->', '').replace('<!--/more-->', '')
+               .replace('{{RESEARCH_ROWS}}', rows)
                .replace('{{PITCH_TABLE}}', pitch_table(research)))
     built.append(write('/research/', page(meta, content, 'research')))
 

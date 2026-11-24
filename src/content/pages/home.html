@@ -4,14 +4,14 @@
   "sectors": [
    {"id": "metals", "name": "Precious Metals", "companies": [["NEM", "Newmont"], ["AEM", "Agnico Eagle"], ["WPM", "Wheaton Precious Metals"]]},
    {"id": "energy", "name": "Energy", "companies": [["ETN", "Eaton", "/research/eaton/"], ["GEV", "GE Vernova"], ["VRT", "Vertiv"], ["CEG", "Constellation Energy"]]},
-   {"id": "computing", "name": "Computing", "companies": [["QNT", "Quantinuum", "/research/quantinuum/"], ["MSFT", "Microsoft", "/notes/ai-bottleneck/"], ["NVDA", "Nvidia"]]},
+   {"id": "computing", "name": "Computing", "companies": [["QNT", "Quantinuum", "/research/quantinuum/"], ["MSFT", "Microsoft"], ["NVDA", "Nvidia"]]},
    {"id": "defense", "name": "Defense", "companies": [["LMT", "Lockheed Martin"], ["RTX", "RTX"], ["GD", "General Dynamics"]]},
    {"id": "healthcare", "name": "Healthcare", "companies": [["LLY", "Eli Lilly"], ["UNH", "UnitedHealth"], ["ISRG", "Intuitive Surgical"]]}
   ],
   "bridges": [
-   {"id": "copper", "label": "Copper", "via": "copper", "between": ["metals", "energy"], "url": "/research/copper/",
+   {"id": "copper", "label": "Copper", "via": "copper", "between": ["metals", "energy"],
     "text": "Grids need copper. Newmont mined 135,000 tonnes of it last year, and Wheaton's biggest gold stream comes from a copper mine."},
-   {"id": "power", "label": "AI power", "via": "AI power demand", "between": ["energy", "computing"], "url": "/notes/ai-bottleneck/",
+   {"id": "power", "label": "AI power", "via": "AI power demand", "between": ["energy", "computing"],
     "text": "Microsoft's AI capacity is running late on buildings, grid connections and power gear, which is what Eaton, Vertiv and GE Vernova sell."},
    {"id": "pltr", "ticker": "PLTR", "name": "Palantir", "via": "Palantir", "between": ["computing", "defense"], "url": "/research/palantir/",
     "text": "Palantir sells the same software to companies and to the U.S. military."},
