@@ -419,6 +419,18 @@ footer ::selection{background:var(--bone);color:var(--black)}
 .st>.chartbox,.st>.tablewrap{margin:0}
 .method-end{max-width:var(--reading);margin-top:40px;color:var(--ink2);font-size:17px;line-height:27px}
 @media(max-width:900px){.st{grid-template-columns:minmax(0,1fr)}}
+/* Pitch Framework, coming soon: a blurred picture of the page with a note on top. The text itself is not shipped. */
+.vault{position:relative;margin-top:8px;border-top:1px solid var(--ink);overflow:hidden;user-select:none;-webkit-user-select:none}
+.vault-img{display:block;width:100%;height:clamp(480px,64vw,780px);object-fit:cover;object-position:top;transform:scale(1.04);transform-origin:top;-webkit-mask-image:linear-gradient(#000 50%,transparent 96%);mask-image:linear-gradient(#000 50%,transparent 96%);pointer-events:none}
+.vault-img.d{display:none}
+:root[data-theme=dark] .vault-img.l{display:none}:root[data-theme=dark] .vault-img.d{display:block}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .vault-img.l{display:none}:root:not([data-theme=light]) .vault-img.d{display:block}}
+.vault-note{position:absolute;left:50%;top:clamp(72px,11vw,140px);transform:translateX(-50%);width:min(460px,calc(100% - 32px));box-sizing:border-box;padding:32px 36px 36px;background:var(--bg);border:1px solid var(--ink);animation:vault-in .5s cubic-bezier(.2,.7,.2,1) .15s both}
+.vault-note::before{content:"";display:block;width:56px;height:6px;background:var(--ink);margin-bottom:24px}
+.vault-note .kick{margin:0 0 8px}
+.vault-line{margin:0 0 28px;font-size:clamp(24px,3vw,30px);line-height:1.2;letter-spacing:-.015em;color:var(--ink)}
+@keyframes vault-in{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translate(-50%,0)}}
+@media(max-width:600px){.vault-note{padding:26px 24px 28px}}
 @media(max-width:640px){.st>.chartbox,.st>.tablewrap{margin:0 calc(-1*var(--gut))}}
 
 /* ---------- Ratings table ---------- */
