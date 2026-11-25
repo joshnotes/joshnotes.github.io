@@ -175,6 +175,7 @@ def pitches(research):
 # What a list says while it has nothing in it yet.
 SOON = '      <p class="soon">The first note is on its way.</p>'
 SOON_LI = '        <li><p class="soon">The first note is on its way.</p></li>'
+DEEP_SOON_LI = '        <li><p class="soon">First deep dive on the way.</p></li>'
 
 
 def pitch_table(research):
@@ -431,7 +432,7 @@ def main():
                .replace('{{WATCH_MAP}}', map_html)
                .replace('{{RATINGS}}', ratings_compact(research))
                .replace('{{NOTES_HEADLINES}}', heads([m for m, _ in (notes[1:] or notes)][:3]) or SOON_LI)  # three each; the arrow leads to the rest
-               .replace('{{RESEARCH_HEADLINES}}', heads(([m for m, _ in research if m.get('kind') != 'pitch'] or [m for m, _ in research])[:3]) or SOON_LI))
+               .replace('{{RESEARCH_HEADLINES}}', heads([m for m, _ in research if m.get('kind') != 'pitch'][:3]) or DEEP_SOON_LI))  # pitches already sit in the Ratings box
     # With a single note, the Notes column lists it, so the separate Latest note box would only repeat it.
     if len(notes) < 2:
         content = re.sub(r'\s*<!--latest-->.*?<!--/latest-->', '', content, flags=re.S)
